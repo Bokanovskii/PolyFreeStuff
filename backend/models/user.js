@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
     trim: true,
   },
   Listings: [{
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Listing"
   }]
 }, {collection : 'users_list'});
