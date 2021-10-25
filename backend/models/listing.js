@@ -8,25 +8,27 @@ const ListingSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: False,
+    required: false,
     trim: true,
   },
   pickup_location: {
       type: String,
-      required: False,
+      required: false,
       trim: true,
   },
   Image: {
     type: String,
-    required: False,
+    required: false,
     trim: true,
   },
   Seller: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
       ref: 'User',
   },
   Buyer: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
       ref: 'User',
   },
   is_available: {
@@ -39,6 +41,6 @@ const ListingSchema = new mongoose.Schema({
   }
 }, {collection : 'Listings'});
 
-const Listing = mongoose.model("Listing", UserSchema);
+const Listing = mongoose.model("Listing", ListingSchema);
 
 module.exports = Listing;

@@ -8,11 +8,11 @@ const UserSchema = new mongoose.Schema({
   },
   Image: {
     type: String,
-    required: true,
+    required: false,
     trim: true,
   },
   Listings: [{
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Listing"
   }]
 }, {collection : 'users_list'});
