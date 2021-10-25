@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="./style.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <title>topbar</title>
+    </head>
+    <body>
+        <div id="seller-view-page">
+            <!-- include topbar -->
+            <div id="seller-view-left">
+                <input type="text" id="item-name-input" placeholder="Item name" />
+                <textarea id="item-description-input" placeholder="Item description"></textarea>
+                <div id="tag-select">
+                    <input type="text" id="item-tag-input" placeholder="Tags" />
+                    <button id="add-tag" ontouchstart>+</button>
+                </div>
+            </div>
+            <div id="seller-view-right">
+                <div id="item-image-div" class="file-area">Browse...<input type="file" /></div>
+                <div id="tag-list">
+                    <!-- tag examples -->
+                    <div class="tag">tag1</div>
+                    <div class="tag">tag2</div>
+                    <!-- end -->
+                    <span id="tag-info">Click a tag to remove it</span>
+                </div>
+                <input type="submit" id="item-submit-input" ontouchstart />
+            </div>
+        </div>
+    </body>
+</html>

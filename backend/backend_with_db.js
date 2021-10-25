@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 mongoose.connect(
-    'mongodb://localhost:27017/users',
+    'mongodb+srv://polyfreestuff:csc307@cluster0.odqfk.mongodb.net/Cluster0?retryWrites=true&w=majority',
     {
       useNewUrlParser: true,
       useUnifiedTopology: true
