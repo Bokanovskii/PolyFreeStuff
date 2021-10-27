@@ -19,6 +19,19 @@ mongoose
   })
   .catch((error) => console.log(error));
 
+async function createNewUser(email) {
+  const basic_user = {
+    name: "New User",
+    email: email,
+    image: "",
+    listings: [],
+  };
+  // if correctly placed in the database, return the created usr
+  //    will have a '_id' variable appended as part of the addUser call
+  if (await addUser(basic_user)) return basic_user;
+  else return null;
+}
+
 //dummy function
 app.get("/", async (req, res) => {
   //res.send('Hello World!');
@@ -53,7 +66,7 @@ app.post("/test_add_user", async (req, res) => {
 app.post("/test_add_listing", async (req, res) => {
   const listing = req.body;
   // General format:
-  // let listing = {'name': 'listing #', 'description': 'haha', 'Seller': user['_id'], 'is_available': true, 'creation_date': Date.now()}
+  // let listing = {'name': 'listing #', 'description': 'haha', 'seller': user['_id'], 'is_available': true, 'creation_date': Date.now()}
   if (await add_listing(listing)) res.status(201).send(listing);
   else res.status(500).send(listing);
 });
@@ -70,6 +83,7 @@ async function add_user(user) {
     return false;
   }
 }
+
 // Basic implementation for this (may need more work)
 async function add_listing(listing) {
   try {
@@ -78,8 +92,8 @@ async function add_listing(listing) {
     let added_listing = await ListingToAdd.save();
     listing["_id"] = added_listing._id;
     // Update the user with the listing
-    const user = await userMode.findById(listing["Seller"]);
-    user["Listings"] += added_listing._id;
+    const user = await userMode.findById(listing["seller"]);
+    user["listings"] += added_listing._id;
     await userModel.findByIdAndUpdate(user["_id"], user);
     return true;
   } catch (error) {

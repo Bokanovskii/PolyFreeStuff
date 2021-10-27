@@ -16,17 +16,17 @@ const ListingSchema = new mongoose.Schema({
       required: false,
       trim: true,
   },
-  Image: {
+  image: {
     type: String,
     required: false,
     trim: true,
   },
-  Seller: {
+  seller: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'User',
   },
-  Buyer: {
+  buyer: {
       type: mongoose.Schema.Types.ObjectId,
       required: false,
       ref: 'User',

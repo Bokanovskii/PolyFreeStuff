@@ -1,135 +1,149 @@
 :root {
-                  --black: #333;
-                  --white: #ddd;
-                 --accent: #555;
+  --black: #333;
+  --white: #ddd;
+  --accent: #555;
 }
 
 body {
-                    width: 100%;
-                   height: 100%;
-                   margin: 0;
-         background-color: var(--white);
-                font-size: 14px;
-              font-family: Arial, Helvetica, sans-serif;
-   -webkit-font-smoothing: antialiased;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: var(--white);
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-                    color: var(--black)
+  color: var(--black);
 }
 
 code {
-              font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
 
 input {
-       -webkit-appearance: none;
+  -webkit-appearance: none;
 }
 
-input[type=text], textarea {
-                   border: 1px solid var(--black);
-            border-radius: 3px;
-                  padding: 7px;
-               box-sizing: border-box;
-         background-color: #fff;
+input[type="text"],
+textarea {
+  border: 1px solid var(--black);
+  border-radius: 3px;
+  padding: 7px;
+  box-sizing: border-box;
+  background-color: #fff;
 }
 
-input[type=file] {
-                 position: absolute;
-                      top: 0;
-                    right: 0;
-                min-width: 100%;
-               min-height: 100%;
-                font-size: 100px;
-               text-align: right;
-                   filter: alpha(opacity=0);
-                  opacity: 0;
-                  outline: none;
-               background: var(--white);
-                   cursor: inherit;
-                  display: block;
+input[type="file"] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: var(--white);
+  cursor: inherit;
+  display: block;
 }
 
 .file-area {
-                 position: relative;
-                 overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 
-input[type=button], input[type=submit], button, .btn {
-               box-sizing: border-box;
-                  padding: 7px;
-                   border: solid 1px var(--black);
-            border-radius: 3px;
-         background-color: var(--black);
-                    color: var(--white);
-                   cursor: pointer;
-                min-width: 30px;
-               transition: background-color 0.1s, color 0.1s, border-color 0.1s;
+input[type="button"],
+input[type="submit"],
+button,
+.btn {
+  box-sizing: border-box;
+  padding: 7px;
+  border: solid 1px var(--black);
+  border-radius: 3px;
+  background-color: var(--black);
+  color: var(--white);
+  cursor: pointer;
+  min-width: 30px;
+  transition: background-color 0.1s, color 0.1s, border-color 0.1s;
 }
 
-input[type=button]:hover, input[type=submit]:hover, button:hover, .btn:hover {
-         background-color: var(--accent);
-             border-color: var(--accent);
+input[type="button"]:hover,
+input[type="submit"]:hover,
+button:hover,
+.btn:hover {
+  background-color: var(--accent);
+  border-color: var(--accent);
 }
 
-input[type=button]:active, input[type=submit]:active, button:active, .btn:active {
-         background-color: var(--white);
-                    color: var(--black);
-             border-color: var(--black);
+input[type="button"]:active,
+input[type="submit"]:active,
+button:active,
+.btn:active {
+  background-color: var(--white);
+  color: var(--black);
+  border-color: var(--black);
 }
 
-a:focus, button:focus, input:focus, textarea:focus {
-                  outline: none;
+a:focus,
+button:focus,
+input:focus,
+textarea:focus {
+  outline: none;
 }
 
 .noselect {
-    -webkit-touch-callout: none;
-      -webkit-user-select: none;
-       -khtml-user-select: none;
-         -moz-user-select: none;
-          -ms-user-select: none;
-              user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 /* TOPBAR */
 
 #topbar {
-                  display: flex;
-                    width: 100%;
-                    color: var(--white);
-         background-color: var(--black);
+  display: flex;
+  width: 100%;
+  color: var(--white);
+  background-color: var(--black);
 }
 
 .user-page-link {
-                  display: inline-block;
-                  padding: 17px;
-                    color: inherit;
-          text-decoration: none;
+  display: inline-block;
+  padding: 17px;
+  color: inherit;
+  text-decoration: none;
 }
 
-.user-page-link:hover, .user-page-link:active {
-         background-color: var(--accent);
+.user-page-link:hover,
+.user-page-link:active {
+  background-color: var(--accent);
 }
 
 #search-area {
-                  display: inline-block;
-                     flex: 1;
+  display: inline-block;
+  flex: 1;
 }
 
 #search-bar {
-                  display: inline-block;
-                    width: 100%;
-                  padding: 10px;
-               box-sizing: border-box;
+  display: inline-block;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
-#search-bar>input {
-                    width: 100%;
-                max-width: 500px;
+#search-bar > input {
+  width: 100%;
+  max-width: 500px;
 }
 
 .icon {
-                 position: absolute;
-                transform: translate(-5px, -4px);
+  position: absolute;
+  transform: translate(-5px, -4px);
 }
 
 /* SELLER VIEW :TODO: */
-
