@@ -1,12 +1,18 @@
 import logo from './logo.svg';
 import './App.css';
+import {useState} from "react";
 
 import Login from "./login-page/Login"
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [email, setEmail] = useState("");
   return (
     <div className="App">
-      <Login/>
+      <Login
+          email={email} setEmail={setEmail}
+          loggedIn={loggedIn} setLoggedIn={setLoggedIn}
+      />
     </div>
   );
 }
