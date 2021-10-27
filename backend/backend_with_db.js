@@ -19,19 +19,6 @@ mongoose
   })
   .catch((error) => console.log(error));
 
-async function createNewUser(email) {
-  const basic_user = {
-    name: "New User",
-    email: email,
-    image: "",
-    listings: [],
-  };
-  // if correctly placed in the database, return the created usr
-  //    will have a '_id' variable appended as part of the addUser call
-  if (await addUser(basic_user)) return basic_user;
-  else return null;
-}
-
 //dummy function
 app.get("/", async (req, res) => {
   //res.send('Hello World!');
@@ -44,21 +31,20 @@ app.get("/login/:email", async (req, res) => {
   const email = req.params["email"];
   const user = await userModel.find({ email: email });
 
-  if (user === undefined || user === null) {
-    newUser = createNewUser(email);
-
+  if (user.length === 0) {
+    const newUser = await createNewUser(email);
     // internal server error
     if (newUser == null) res.status(500).send(null);
-    else res.status(201).send({ users_list: createNewUser(email) }); // created
+    else res.status(201).send(newUser); // created
   } else {
-    res.status(302).send({ users_list: user }); // found
+    res.status(302).send(user[0]); // found
   }
 });
 
 //Dummy function
 app.post("/test_add_user", async (req, res) => {
   const user = req.body;
-  if (await add_user(user)) res.status(201).send(user);
+  if (await addUser(user)) res.status(201).send(user);
   else res.status(500).send(user);
 });
 
@@ -66,13 +52,27 @@ app.post("/test_add_user", async (req, res) => {
 app.post("/test_add_listing", async (req, res) => {
   const listing = req.body;
   // General format:
-  // let listing = {'name': 'listing #', 'description': 'haha', 'seller': user['_id'], 'is_available': true, 'creation_date': Date.now()}
+  // {'name': 'listing #', 'description': 'haha', 'seller': user['_id'], 'is_available': true, 'creation_date': Date.now()}
   if (await add_listing(listing)) res.status(201).send(listing);
   else res.status(500).send(listing);
 });
 
+async function createNewUser(email) {
+  const basicUser = {
+    name: "New User",
+    email: email,
+    image: "",
+    listings: [],
+  };
+  // if correctly placed in the database, return the created usr
+  //    will have a '_id' variable appended as part of the addUser call
+  if (await addUser(basicUser)) {
+    return basicUser;
+  } else return null;
+}
+
 // Basic implementation for this (may need more work)
-async function add_user(user) {
+async function addUser(user) {
   try {
     const userToAdd = new userModel(user);
     let added_user = await userToAdd.save();
