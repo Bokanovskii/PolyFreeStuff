@@ -12,21 +12,20 @@ const port = 5000;
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(
-    'mongodb://localhost:27017/free_stuff',
+mongoose.connect('mongodb://localhost:27017/free_stuff',
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }
 ).catch(error => console.log(error));
-
+//dummy function
 app.get('/', async (req, res) => {
     //res.send('Hello World!');
     const users_from_db = await userModel.find();
     res.send({users_list: users_from_db});
     
 });
-
+//Dummy function
 app.post('/test_add_user', async (req, res) => {
     const user = req.body;
     if (await add_user(user))
@@ -34,7 +33,7 @@ app.post('/test_add_user', async (req, res) => {
     else
         res.status(500).send(user)
 });
-
+// Dummy function
 app.post('/test_add_listing', async (req, res) => {
     const listing = req.body;
     // General format:
@@ -44,7 +43,7 @@ app.post('/test_add_listing', async (req, res) => {
     else
         res.status(500).send(listing)
 });
-
+// Basic implementation for this (may need more work)
 async function add_user(user){
     try{
         const userToAdd = new userModel(user);
@@ -56,7 +55,7 @@ async function add_user(user){
         return false;
     }   
 }
-
+// Basic implementation for this (may need more work)
 async function add_listing(listing){
     try{
         // add listing to the database
