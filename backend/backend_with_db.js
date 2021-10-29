@@ -37,7 +37,7 @@ app.get("/login/:email", async (req, res) => {
     if (newUser == null) res.status(500).send(null);
     else res.status(201).send(newUser); // created
   } else {
-    res.status(302).send(user[0]); // found
+    res.status(201).send(user[0]); // found
   }
 });
 
