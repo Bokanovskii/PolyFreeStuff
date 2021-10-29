@@ -19,13 +19,6 @@ mongoose
   })
   .catch((error) => console.log(error));
 
-//dummy function
-app.get("/", async (req, res) => {
-  //res.send('Hello World!');
-  const users_from_db = await userModel.find();
-  res.send({ users_list: users_from_db });
-});
-
 // user login endpoint
 app.get("/login/:email", async (req, res) => {
   const email = req.params["email"];
@@ -37,24 +30,55 @@ app.get("/login/:email", async (req, res) => {
     if (newUser == null) res.status(500).send(null);
     else res.status(201).send(newUser); // created
   } else {
-    res.status(302).send(user[0]); // found
+    res.status(201).send(user[0]); // found
   }
 });
 
-//Dummy function
-app.post("/test_add_user", async (req, res) => {
-  const user = req.body;
-  if (await addUser(user)) res.status(201).send(user);
-  else res.status(500).send(user);
+// Create a listing endpoint
+app.post("/listing", async (req, res) => {
+  const listing = req.body;
+  if (await addListing(listing)) res.status(201).send(listing);
+  else res.status(500).send(null);
 });
 
-// Dummy function
-app.post("/test_add_listing", async (req, res) => {
-  const listing = req.body;
-  // General format:
-  // {'name': 'listing #', 'description': 'haha', 'seller': user['_id'], 'is_available': true, 'creation_date': Date.now()}
-  if (await add_listing(listing)) res.status(201).send(listing);
-  else res.status(500).send(listing);
+// Get a listing by its database id
+app.get("/listing/:id", async (req, res) => {
+  const id = req.params["id"];
+  const listing_from_db = await listingModel.findById(id);
+  res.status(201).send({ listing_from_db });
+});
+
+// Get all listings
+app.get("/listings", async (req, res) => {
+  const listings_from_db = await listingModel.find();
+  res.status(201).send({ listing_list: listings_from_db });
+});
+
+// Delete a listing by its database id
+app.delete("/listing/:id", async (req, res) => {
+  const id = req.params["id"];
+  if (await deleteListing(id)) res.status(201).send();
+  else res.status(500).send();
+});
+
+// Delete all users and lisitings from database
+app.delete("/reset_db", async (req, res) => {
+  await listingModel.deleteMany();
+  await userModel.deleteMany();
+  res.status(201).send();
+});
+
+// Get all users
+app.get("/users", async (req, res) => {
+  const users_from_db = await userModel.find();
+  res.status(201).send({ users_list: users_from_db });
+});
+
+// Get user by their database id
+app.get("/user/:id", async (req, res) => {
+  const id = req.params["id"];
+  const user_from_db = await userModel.findById(id);
+  res.status(201).send({ user_from_db });
 });
 
 async function createNewUser(email) {
@@ -64,14 +88,13 @@ async function createNewUser(email) {
     image: "",
     listings: [],
   };
-  // if correctly placed in the database, return the created usr
-  //    will have a '_id' variable appended as part of the addUser call
+  // if correctly placed in the database, return the created user
+  //    will have an '_id' variable appended as part of the addUser call
   if (await addUser(basicUser)) {
     return basicUser;
   } else return null;
 }
 
-// Basic implementation for this (may need more work)
 async function addUser(user) {
   try {
     const userToAdd = new userModel(user);
@@ -84,16 +107,32 @@ async function addUser(user) {
   }
 }
 
-// Basic implementation for this (may need more work)
-async function add_listing(listing) {
+async function addListing(listing) {
   try {
     // add listing to the database
     const ListingToAdd = new listingModel(listing);
     let added_listing = await ListingToAdd.save();
     listing["_id"] = added_listing._id;
     // Update the user with the listing
-    const user = await userMode.findById(listing["seller"]);
-    user["listings"] += added_listing._id;
+    const user = await userModel.findById(listing["seller"]);
+    user["listings"].push(added_listing._id);
+    await userModel.findByIdAndUpdate(user["_id"], user);
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+async function deleteListing(id) {
+  try {
+    // delete listing from the database
+    const deleted_listing = await listingModel.findById(id);
+    if (deleted_listing === null) return false;
+    await listingModel.findByIdAndDelete(id);
+    // Update the user with the deleted listing
+    const user = await userModel.findById(deleted_listing["seller"]);
+    user["listings"].remove(id);
     await userModel.findByIdAndUpdate(user["_id"], user);
     return true;
   } catch (error) {
