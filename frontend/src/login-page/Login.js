@@ -1,28 +1,50 @@
+import {useState} from "react";
+
 function Login(props){
 
-    async function login(setEmail, setLoggedIn) {
+    const [validEmail, setValidEmail] = useState(null);
+
+    function login (email, setEmail, setLoggedIn) {
         //Make post req here when backend ready
-        setEmail("evanwitulski@gmail.com");
+        setEmail(email);
         //If backend says user already exists, set logged in.
-        //setLoggedIn(true);
+        setLoggedIn(true);
     }
 
     function checkLoggedIn(){
-        console.log(props.loggedIn)
+        console.log(props.email)
         if(props.loggedIn){
             return(<p>Successfully Logged In</p>)
         }
         return;
     }
 
+    function checkValidEmail(){
+        if(validEmail != null && !validEmail){
+            return <p>Invalid email, make sure it ends with "@calpoly.edu" </p>
+        }
+    }
+
+    function handleSubmit(e){
+        e.preventDefault();
+        let email = e.target.email.value;
+        if(email.endsWith("@calpoly.edu")){
+            setValidEmail(true);
+            login(email, props.setEmail, props.setLoggedIn);
+        } else {
+            setValidEmail(false);
+        }
+    }
+
     return(
         <div>
-            <form>
-                <label>Email</label>
+            <form onSubmit={(e) => handleSubmit(e)}>
+                <label>Email: </label>
                 <input type={"text"} id={"email"} name={"email"}/>
-                <button type={"Submit"} onSubmit={login(props.setEmail, props.setLoggedIn)}>Sign In</button>
+                <button type ={"submit"}>Sign In</button>
             </form>
             {checkLoggedIn()}
+            {checkValidEmail()}
         </div>
     )
 }
