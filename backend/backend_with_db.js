@@ -111,7 +111,7 @@ async function addUser(user) {
 async function deleteUser(id) {
   try {
     const result = await userModel.findByIdAndDelete(id);
-    return result;
+    return true;
   } catch (error) {
     console.log(error);
     return false;
