@@ -14,9 +14,9 @@ import Homepage from "./home-page/homepage";
 import MyListings from "./my-listings-page/my-listings";
 
 function App() {
-  /*const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
-  return (
+  /*return (
     <div className="App">
       <Login
           email={email} setEmail={setEmail}
@@ -28,7 +28,10 @@ function App() {
     <Router>
       <Switch>
         <Route path="/login">
-          <Login />
+          <Login
+            email={email} setEmail={setEmail}
+            loggedIn={loggedIn} setLoggedIn={setLoggedIn}
+          />
         </Route>
         <Route path="/">
           <Homepage />
