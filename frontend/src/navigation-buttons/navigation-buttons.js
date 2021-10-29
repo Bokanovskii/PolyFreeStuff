@@ -1,13 +1,10 @@
 import React from 'react';
 import SearchBar from './search-bar';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-  } from "react-router-dom";
+import {Link} from "react-router-dom";
 
-function NavBar() {
+function NavBar(props) {
+    let user_nav_path = props.loggedIn ? "/account-info" : "/login";
+    let user_nav_string = props.loggedIn ? "Account Info" : "Log In";
     return (
         <div id="topbar" class="noselect">
             <div id="user-page-area">
@@ -23,10 +20,10 @@ function NavBar() {
                         &emsp;&emsp;My Listings
                     </a>
                 </Link>
-                <Link to='/login'>
+                <Link to={user_nav_path}>
                     <a href="#" id="user-page" ontouchstart class="user-page-link" title="account info">
                         <span class="material-icons icon">account_circle</span>
-                        &emsp;&emsp;Account Info
+                        &emsp;&emsp;{user_nav_string}
                     </a>
                 </Link>
             </div>
