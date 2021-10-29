@@ -94,6 +94,11 @@ textarea:focus {
   outline: none;
 }
 
+a {
+  -webkit-appearance: none;
+  color: inherit;
+}
+
 .noselect {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
