@@ -3,7 +3,7 @@ import NavBar from '../navigation-buttons/navigation-buttons';
 
 function About() {
     return (
-        <div id="about-page"></div>
+        <div id="about-page">ABOUT PAGE</div>
     );
 }
 

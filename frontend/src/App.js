@@ -5,8 +5,7 @@ import {useState} from "react";
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 
 import Login from "./login-page/Login";
@@ -15,7 +14,7 @@ import MyListings from "./my-listings-page/my-listings";
 import NavBar from "./navigation-buttons/navigation-buttons";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [email, setEmail] = useState("");
   /*return (
     <div className="App">
