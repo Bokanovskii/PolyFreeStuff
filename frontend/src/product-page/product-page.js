@@ -1,10 +1,10 @@
 import React from 'react';
 import NavBar from '../navigation-buttons/navigation-buttons';
 
-function About() {
+function ProductPage() {
     return (
         <NavBar />
     );
 }
 
-export default About;
+export default ProductPage;

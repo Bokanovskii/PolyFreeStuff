@@ -41,6 +41,30 @@ app.get("/login/:email", async (req, res) => {
   }
 });
 
+// user profile edit endpoint
+app.post("/replace_user", async (req, res) => {
+  const user = req.body;
+  if (await userModel.findByIdAndUpdate(user._id, user))
+    res.status(200).send(user);
+  else res.status(404).send(null);
+});
+
+// user profile delete endpoint
+app.delete("/users/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const result = await deleteUser(id);
+    if (result) {
+      res.status(202).send();
+    } else {
+      res.status(404).send("User id not found");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("An error ocurred in the server.");
+  }
+});
+
 //Dummy function
 app.post("/test_add_user", async (req, res) => {
   const user = req.body;
@@ -77,6 +101,16 @@ async function addUser(user) {
     const userToAdd = new userModel(user);
     let added_user = await userToAdd.save();
     user["_id"] = added_user._id;
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+async function deleteUser(id) {
+  try {
+    const result = await userModel.findByIdAndDelete(id);
     return true;
   } catch (error) {
     console.log(error);
