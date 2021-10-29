@@ -1,14 +1,24 @@
 import {useState} from "react";
+import axios from "axios";
 
 function Login(props){
 
     const [validEmail, setValidEmail] = useState(null);
 
-    function login (email, setEmail, setLoggedIn) {
-        //Make post req here when backend ready
-        setEmail(email);
-        //If backend says user already exists, set logged in.
-        setLoggedIn(true);
+    async function login (email, setEmail, setLoggedIn) {
+        //Make get req here when backend ready
+        await axios.get('http://localhost:5000/login/'.concat(email.toString()))
+            .then((resonse) => {
+                let status = resonse.status;
+                if(status === 201){
+                    console.log("Good login")
+                    setEmail(email);
+                    setLoggedIn(true);
+                }
+            }
+        ).catch((error) => {
+            window.alert(error.toString());
+            });
     }
 
     function checkLoggedIn(){
@@ -28,7 +38,9 @@ function Login(props){
     function handleSubmit(e){
         e.preventDefault();
         let email = e.target.email.value;
-        if(email.endsWith("@calpoly.edu")){
+        let endsWithCPEmail = email.endsWith("@calpoly.edu");
+        let emailLongerThan0 = email.substr(0, email.indexOf('@')).length > 0;
+        if(endsWithCPEmail && emailLongerThan0){
             setValidEmail(true);
             login(email, props.setEmail, props.setLoggedIn);
         } else {
