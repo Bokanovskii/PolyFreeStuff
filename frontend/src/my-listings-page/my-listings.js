@@ -2,7 +2,7 @@ import React from 'react';
 
 function MyListings() {
     return (
-        <div id="my-listings-page" class="btn">MY LISTINGS PAGE</div>
+        <div id="my-listings-page">MY LISTINGS PAGE</div>
     );
 }
 
