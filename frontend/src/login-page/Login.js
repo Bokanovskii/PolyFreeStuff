@@ -16,7 +16,7 @@ function Login(props){
                     console.log("Good login")
                     setEmail(email);
                     setLoggedIn(true);
-                    history.push('/my-listings')
+                    history.push('/')
                 }
             }
         ).catch((error) => {
