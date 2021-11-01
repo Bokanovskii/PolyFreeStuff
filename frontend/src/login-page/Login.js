@@ -1,10 +1,10 @@
 import {useState} from "react";
 import axios from "axios";
-import {useHistory} from "react-router-dom";
+
 function Login(props){
 
     const [validEmail, setValidEmail] = useState(null);
-    const history = useHistory();
+
     async function login (email, setEmail, setLoggedIn) {
         //Make get req here when backend ready
         await axios.get('http://localhost:5000/login/'.concat(email.toString()))
@@ -14,7 +14,6 @@ function Login(props){
                     console.log("Good login")
                     setEmail(email);
                     setLoggedIn(true);
-                    history.push('/my-listings')
                 }
             }
         ).catch((error) => {
