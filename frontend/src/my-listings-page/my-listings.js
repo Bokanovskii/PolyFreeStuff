@@ -1,10 +1,8 @@
 import React from 'react';
-import NavBar from '../navigation-buttons/navigation-buttons';
 
 function MyListings() {
     return (
-        <NavBar />
-
+        <div id="my-listings-page">MY LISTINGS PAGE</div>
     );
 }
 

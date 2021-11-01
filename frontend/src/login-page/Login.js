@@ -1,9 +1,11 @@
 import {useState} from "react";
 import axios from "axios";
+import { useHistory } from 'react-router-dom';
 
 function Login(props){
 
     const [validEmail, setValidEmail] = useState(null);
+    let history = useHistory();
 
     async function login (email, setEmail, setLoggedIn) {
         //Make get req here when backend ready
@@ -14,6 +16,7 @@ function Login(props){
                     console.log("Good login")
                     setEmail(email);
                     setLoggedIn(true);
+                    history.push('/');
                 }
             }
         ).catch((error) => {
@@ -24,14 +27,15 @@ function Login(props){
     function checkLoggedIn(){
         console.log(props.email)
         if(props.loggedIn){
-            return(<p>Successfully Logged In</p>)
+            history.push('/');
+            return(<span>Successfully Logged In</span>);
         }
         return;
     }
 
     function checkValidEmail(){
         if(validEmail != null && !validEmail){
-            return <p>Invalid email, make sure it ends with "@calpoly.edu" </p>
+            return <span>Invalid email, make sure it ends with "@calpoly.edu" </span>
         }
     }
 
@@ -49,16 +53,18 @@ function Login(props){
     }
 
     return(
-        <div>
+        <div id="login-page">
             <form onSubmit={(e) => handleSubmit(e)}>
                 <label>Email: </label>
-                <input type={"text"} id={"email"} name={"email"}/>
-                <button type ={"submit"}>Sign In</button>
+                <input type={"text"} id={"login-email"} name={"email"} placeholder="username@calpoly.edu" />
+                <button type={"submit"} id={"login-btn"}>Sign In</button>
             </form>
-            {checkLoggedIn()}
-            {checkValidEmail()}
+            <p>&emsp;
+                {checkLoggedIn()}
+                {checkValidEmail()}
+            </p>
         </div>
-    )
+    );
 }
 
 export default Login;

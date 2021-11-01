@@ -1,9 +1,8 @@
 import React from 'react';
-import NavBar from '../navigation-buttons/navigation-buttons';
 
 function ProductPage() {
     return (
-        <NavBar />
+        <div id="product-page">PRODUCT PAGE</div>
     );
 }
 
