@@ -103,6 +103,14 @@ app.delete("/listing/:id", async (req, res) => {
   else res.status(500).send();
 });
 
+app.get("/categories", async (req, res) => {
+  const listings_from_db = await listingModel.find();
+  const category_set = new Set();
+  for (let i = 0; i < listings_from_db.length; i++)
+    category_set.add(listings_from_db[i]["category"]);
+  res.status(201).send({ cetegories: Array.from(category_set) });
+});
+
 // Delete all users and lisitings from database
 app.delete("/reset_db", async (req, res) => {
   await listingModel.deleteMany();
