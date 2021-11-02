@@ -3,6 +3,9 @@
   --white: #ddd;
   --accent: #555;
   --gray: #888;
+  --gap: 5px;
+  --radius: 3px;
+  --icon-size: 24px;
 }
 
 body {
@@ -28,9 +31,10 @@ input {
 
 input[type="text"],
 textarea {
+  display: block;
   box-sizing: border-box;
   border: 1px solid var(--black);
-  border-radius: 3px;
+  border-radius: var(--radius);
   padding: 7px;
   box-sizing: border-box;
   background-color: #fff;
@@ -64,7 +68,7 @@ button,
   box-sizing: border-box;
   padding: 7px;
   border: solid 1px var(--black);
-  border-radius: 3px;
+  border-radius: var(--radius);
   background-color: var(--black);
   color: var(--white);
   cursor: pointer;
@@ -129,6 +133,7 @@ a {
 }
 
 #login-email {
+  display: inline-block;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-right: none;
@@ -179,7 +184,39 @@ a {
 
 .icon {
   position: absolute;
+  height: var(--icon-size);
+  border-radius: 50%;
   transform: translate(-5px, -4px);
 }
 
 /* SELLER VIEW :TODO: */
+
+#seller-view-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-row-gap: var(--gap);
+  grid-column-gap: var(--gap);
+  place-items: center;
+  margin-top: var(--gap);
+}
+
+#item-submit-input {
+  grid-auto-columns: auto;
+  grid-column: 1 / span 2;
+}
+
+#item-name-input {
+}
+
+#item-description-input {
+}
+
+#cat-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-row-gap: var(--gap);
+}
+
+.cat {
+  text-align: center;
+}
