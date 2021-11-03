@@ -13,11 +13,24 @@ app.use(cors());
 app.use(express.json());
 
 mongoose
-  .connect("mongodb://localhost:27017/free_stuff", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    "mongodb+srv://" +
+      process.env.MONGO_USER +
+      ":" +
+      process.env.MONGO_PWD +
+      "@polygold.uvj73.mongodb.net/" +
+      process.env.MONGO_DB +
+      "?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .catch((error) => console.log(error));
+
+app.get("/", async (req, res) => {
+  res.status(201).send("hello PolyGold user");
+});
 
 // user login endpoint
 app.get("/login/:email", async (req, res) => {
@@ -180,6 +193,7 @@ async function deleteListing(id) {
   }
 }
 
-app.listen(process.env.PORT || port, () => {
-  console.log("REST API is listening.");
+const port_real = process.env.PORT || port;
+app.listen(port_real, () => {
+  console.log("REST API is listening at " + port_real);
 });
