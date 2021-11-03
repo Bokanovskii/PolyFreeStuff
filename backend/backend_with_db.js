@@ -56,9 +56,13 @@ app.get("/user/:id", async (req, res) => {
 });
 
 // user profile delete endpoint
-app.delete("/users/:id", async (req, res) => {
+app.delete("/user/:id", async (req, res) => {
   const id = req.params.id;
   try {
+    const user_from_db = await userModel.findById(id);
+    for (let i = 0; i < user_from_db["listings"].length; i++) {
+      await deleteListing(user_from_db["listings"][i]);
+    }
     const result = await deleteUser(id);
     if (result) {
       res.status(202).send();
@@ -74,6 +78,7 @@ app.delete("/users/:id", async (req, res) => {
 // Create a listing endpoint
 app.post("/listing", async (req, res) => {
   const listing = req.body;
+  listing["creation_date"] = new Date();
   if (await addListing(listing)) res.status(201).send(listing);
   else res.status(500).send(null);
 });
@@ -176,5 +181,5 @@ async function deleteListing(id) {
 }
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`PolyGold Backend: http://localhost:${port}`);
 });
