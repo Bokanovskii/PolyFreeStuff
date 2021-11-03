@@ -66,7 +66,7 @@ function App() {
           ) : (
             <div>
               <NavBar userData={userData} />
-              <MyListings />
+              <MyListings userData={userData} />
             </div>
           )}
         </Route>
