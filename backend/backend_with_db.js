@@ -52,7 +52,7 @@ app.post("/replace_user", async (req, res) => {
 app.get("/user/:id", async (req, res) => {
   const id = req.params["id"];
   const user_from_db = await userModel.findById(id);
-  res.status(201).send({ user_from_db });
+  res.status(201).send(user_from_db);
 });
 
 // user profile delete endpoint

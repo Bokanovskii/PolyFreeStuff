@@ -3,14 +3,13 @@ import SearchBar from "./search-bar";
 import { Link } from "react-router-dom";
 
 function NavBar(props) {
-  let email = localStorage.getItem("email");
-  let user_nav_path = email ? "/account-info" : "/login";
-  let user_nav_string = email ? "Account Info" : "Log In";
-  let username = email ? email.replace("@calpoly.edu", "") : null; // TODO: pass the username through to props from session???
-  let user_nav_icon = email ? (
+  let name = props.userData ? props.userData.name : null;
+  let user_nav_path = name ? "/account-info" : "/login";
+  let user_nav_string = name ? "Account Info" : "Log In";
+  let user_nav_icon = name ? (
     <img
       className="icon"
-      src={`https://avatars.dicebear.com/api/initials/${username}.svg`}
+      src={`https://avatars.dicebear.com/api/initials/${name}.svg`}
       alt="avatar"
     />
   ) : (
