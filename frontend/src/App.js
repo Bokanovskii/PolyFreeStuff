@@ -1,7 +1,6 @@
 import "./index.css";
 //import './App.css';
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 import {
   BrowserRouter as Router,
@@ -21,33 +20,17 @@ import NavBar from "./navigation-buttons/navigation-buttons";
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
+  const [id, setId] = useState("");
 
   async function checkLogin() {
-    const loggedInEmail = localStorage.getItem("email");
-    if (loggedInEmail) {
-      await axios
-        .get("http://localhost:5000/login/".concat(loggedInEmail.toString()))
-        .then((response) => {
-          if (response.status === 201) {
-            setEmail(loggedInEmail);
-            setLoggedIn(true);
-          } else {
-            setEmail("");
-            setLoggedIn(false);
-            localStorage.removeItem("email");
-          }
-        });
-    } else {
-      setEmail("");
-      setLoggedIn(false);
-      localStorage.removeItem("email");
-    }
-  }
+    const storedEmail = localStorage.getItem("email");
+    const storedId = localStorage.getItem("id");
 
-  function logout() {
-    localStorage.removeItem("email");
-    setEmail("");
-    setLoggedIn(false);
+    if (storedId) {
+      setEmail(storedEmail);
+      setId(storedId);
+      setLoggedIn(true);
+    }
   }
 
   useEffect(() => {
@@ -63,6 +46,8 @@ function App() {
             setEmail={setEmail}
             loggedIn={loggedIn}
             setLoggedIn={setLoggedIn}
+            id={id}
+            setId={setId}
           />
         </Route>
         <Route exact path="/my-listings">
@@ -85,7 +70,7 @@ function App() {
           ) : (
             <div>
               <NavBar loggedIn={loggedIn} />
-              <AccountInfo logout={logout} />
+              <AccountInfo id={id} setId={setId} setEmail={setEmail} setLoggedIn={setLoggedIn} />
             </div>
           )}
         </Route>
