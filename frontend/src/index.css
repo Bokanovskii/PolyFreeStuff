@@ -14,7 +14,7 @@ body {
   height: 100%;
   margin: 0;
   background-color: var(--white);
-  font-size: 14px;
+  font-size: 1rem;
   font-family: var(--font);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -26,8 +26,61 @@ code {
     monospace;
 }
 
-input {
+input,
+textarea,
+button {
   -webkit-appearance: none;
+  font-size: 1rem;
+  font-family: var(--font);
+}
+
+input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkbox-container {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+  width: min-content;
+}
+
+.checkbox {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  border: solid 1px var(--black);
+  border-radius: var(--radius);
+  background-color: var(--white);
+  color: var(--black);
+  text-align: center;
+  padding: 0.5em 1em;
+  min-width: 3em;
+  white-space: pre;
+  transition: background-color 0.1s, color 0.1s, border-color 0.1s;
+}
+
+.checkbox-container:hover input ~ .checkbox {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--white);
+}
+
+.checkbox-container:active input ~ .checkbox {
+  background-color: var(--black);
+  border-color: var(--black);
+  color: var(--white);
+}
+
+.checkbox-container input:checked ~ .checkbox {
+  background-color: var(--black);
+  border-color: var(--black);
+  color: var(--white);
 }
 
 input[type="text"],
@@ -37,7 +90,7 @@ textarea {
   box-sizing: border-box;
   border: 1px solid var(--black);
   border-radius: var(--radius);
-  padding: 7px;
+  padding: 0.5em;
   box-sizing: border-box;
   background-color: #fff;
 }
@@ -68,13 +121,13 @@ input[type="submit"],
 button,
 .btn {
   box-sizing: border-box;
-  padding: 7px;
+  padding: 0.5em 1em;
   border: solid 1px var(--black);
   border-radius: var(--radius);
   background-color: var(--black);
   color: var(--white);
   cursor: pointer;
-  min-width: 30px;
+  min-width: 3em;
   text-align: center;
   transition: background-color 0.1s, color 0.1s, border-color 0.1s;
 }
@@ -118,13 +171,13 @@ a {
 }
 
 #pg404 {
-  margin-top: 30px;
-  font-size: 30px;
+  margin-top: 2rem;
+  font-size: 2rem;
 }
 
 #pg404 span {
   display: block;
-  font-size: 50px;
+  font-size: 3.8rem;
 }
 
 /* LOGIN */
@@ -176,13 +229,13 @@ a {
 #search-bar {
   display: inline-block;
   width: 100%;
-  padding: 10px;
+  padding: 0.5em;
   box-sizing: border-box;
 }
 
 #search-bar > input {
   width: 100%;
-  max-width: 500px;
+  max-width: 60ch;
 }
 
 .icon {
@@ -196,6 +249,7 @@ a {
 
 #seller-view-page {
   display: grid;
+  margin: var(--gap);
   grid-template-columns: 2fr 1fr;
   gap: var(--gap);
   place-items: center;
@@ -207,13 +261,23 @@ a {
   grid-column: 1 / span 2;
 }
 
+#cat-select > label {
+  margin: var(--gap);
+}
+
 @media (max-width: 600px) {
   #seller-view-page {
     display: grid;
+    margin: var(--gap);
     grid-template-columns: 1fr;
     gap: var(--gap);
     place-items: center;
     margin-top: var(--gap);
+  }
+
+  #item-submit-input {
+    display: block;
+    width: 100%;
   }
 
   #item-submit-input {
@@ -230,39 +294,29 @@ a {
   min-width: 60%;
 }
 
-#item-cat-input {
-  display: inline-block;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border-right: none;
-}
-
-#add-cat {
-  position: relative;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-#add-cat > span {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+#item-image-browse {
+  padding: 0.5em;
 }
 
 #item-image-browse > img {
   display: block;
   aspect-ratio: 1;
   border-radius: var(--radius);
-  background-color: var(--white);
+  background-color: var(--accent);
   min-width: 5rem;
   max-width: 10rem;
   margin: 0;
   margin-bottom: var(--gap);
+  object-fit: cover;
 }
 
-#item-image-browse > span {
-  display: block;
+#item-img-txt {
+  font-size: 0.85rem;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 0fr 1fr;
+  transform: translateX(-0.15em);
+  font-style: italic;
 }
 
 #item-submit-input {
