@@ -12,7 +12,9 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "prettier --check .",
+    "dev": "nodemon backend_with_db.js",
+    "start": "node backend_with_db.js"
   },
   "author": "",
   "license": "ISC"

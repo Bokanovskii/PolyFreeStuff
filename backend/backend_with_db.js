@@ -13,11 +13,24 @@ app.use(cors());
 app.use(express.json());
 
 mongoose
-  .connect("mongodb://localhost:27017/free_stuff", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    "mongodb+srv://" +
+      process.env.MONGO_USER +
+      ":" +
+      process.env.MONGO_PWD +
+      "@polygold.uvj73.mongodb.net/" +
+      process.env.MONGO_DB +
+      "?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .catch((error) => console.log(error));
+
+app.get("/", async (req, res) => {
+  res.status(201).send("hello PolyGold user");
+});
 
 // user login endpoint
 app.get("/login/:email", async (req, res) => {
@@ -56,9 +69,13 @@ app.get("/user/:id", async (req, res) => {
 });
 
 // user profile delete endpoint
-app.delete("/users/:id", async (req, res) => {
+app.delete("/user/:id", async (req, res) => {
   const id = req.params.id;
   try {
+    const user_from_db = await userModel.findById(id);
+    for (let i = 0; i < user_from_db["listings"].length; i++) {
+      await deleteListing(user_from_db["listings"][i]);
+    }
     const result = await deleteUser(id);
     if (result) {
       res.status(202).send();
@@ -74,6 +91,7 @@ app.delete("/users/:id", async (req, res) => {
 // Create a listing endpoint
 app.post("/listing", async (req, res) => {
   const listing = req.body;
+  listing["creation_date"] = new Date();
   if (await addListing(listing)) res.status(201).send(listing);
   else res.status(500).send(null);
 });
@@ -175,6 +193,7 @@ async function deleteListing(id) {
   }
 }
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+const port_real = process.env.PORT || port;
+app.listen(port_real, () => {
+  console.log("REST API is listening at " + port_real);
 });

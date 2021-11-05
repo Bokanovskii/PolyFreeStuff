@@ -1,12 +1,36 @@
 import axios from "axios";
+import settings from "../settings";
+import {useState} from "react";
+import {useHistory} from "react-router-dom";
 
-function CreateListing() {
+function CreateListing(props) {
 
-    function createListing(){
+    const [listingErr, setListingErr] = useState(false);
+    let history = useHistory();
+
+    async function createListing(name, description, seller){
+        await axios
+            .post(settings.URLBase.concat("/listing"), {
+                "name": name,
+                "description": description,
+                "seller": seller,
+                "is_available": true
+            })
+            .then((response) => {
+                if(response.status === 201){
+                    history.push("/my-listings")
+                } else {
+                    setListingErr(true);
+                }
+            });
     }
 
-    function handleSubmit(e){
+    async function handleSubmit(e){
         e.preventDefault();
+        let name = e.target.name.value;
+        let description = e.target.description.value;
+        let seller = props.userData['_id'];
+        await createListing(name, description, seller);
 
     }
 
@@ -34,6 +58,7 @@ function CreateListing() {
                     name={"location"}
                     placeholder={"Yakitutu"}
                 />
+                <div>{() => {if (listingErr){return(<p>Listing Error</p>)}}}</div>
                 <button type={"submit"} id={"listing-btn"}>
                     Create Listing
                 </button>
