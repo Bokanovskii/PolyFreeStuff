@@ -17,6 +17,9 @@ import MyListings from "./my-listings-page/my-listings";
 import AccountInfo from "./account-info/account-info";
 import ProductPage from "./product-page/product-page";
 import NavBar from "./navigation-buttons/navigation-buttons";
+import CreateListing from "./my-listings-page/create-listing";
+
+const URLBase = "http://localhost:5000/";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -26,7 +29,7 @@ function App() {
     const loggedInEmail = localStorage.getItem("email");
     if (loggedInEmail) {
       await axios
-        .get("http://localhost:5000/login/".concat(loggedInEmail.toString()))
+        .get(URLBase.concat("login/").concat(loggedInEmail.toString()))
         .then((response) => {
           if (response.status === 201) {
             setEmail(loggedInEmail);
@@ -93,6 +96,10 @@ function App() {
           <NavBar loggedIn={loggedIn} />
           <ProductPage />
         </Route>
+        <Route exact path="/create-listing">
+          <NavBar loggedIn={loggedIn}/>
+          <CreateListing/>
+        </Route>
         <Route exact path="/">
           {" "}
           {/* homepage */}
@@ -122,3 +129,4 @@ function PageNotFound() {
 }
 
 export default App;
+export default URLBase;

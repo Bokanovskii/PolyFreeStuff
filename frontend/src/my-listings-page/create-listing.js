@@ -1,6 +1,12 @@
-function CreateListings() {
+import axios from "axios";
+
+function CreateListing() {
+
+    function createListing(){
+    }
 
     function handleSubmit(e){
+        e.preventDefault();
 
     }
 
@@ -21,6 +27,13 @@ function CreateListings() {
                     name={"description"}
                     placeholder={"This is a used couch, here for free!!!"}
                 />
+                <label>Pickup Location: </label>
+                <input
+                    type={"text"}
+                    id={"listing-location"}
+                    name={"location"}
+                    placeholder={"Yakitutu"}
+                />
                 <button type={"submit"} id={"listing-btn"}>
                     Create Listing
                 </button>
@@ -29,4 +42,4 @@ function CreateListings() {
     )
 }
 
-export default CreateListings;
+export default CreateListing;

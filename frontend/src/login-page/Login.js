@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import URLBase from "../App";
 
 function Login(props) {
   const [validEmail, setValidEmail] = useState(null);
@@ -9,7 +10,7 @@ function Login(props) {
   async function login(email, setEmail, setLoggedIn) {
     //Make get req here when backend ready
     await axios
-      .get("http://localhost:5000/login/".concat(email.toString()))
+      .get("/login/".concat(email.toString()))
       .then((response) => {
         let status = response.status;
         if (status === 201) {
