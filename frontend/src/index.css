@@ -65,10 +65,12 @@ input[type="checkbox"] {
   transition: background-color 0.1s, color 0.1s, border-color 0.1s;
 }
 
-.checkbox-container:hover input ~ .checkbox {
-  background-color: var(--accent);
-  border-color: var(--accent);
-  color: var(--white);
+@media (hover: hover) {
+  .checkbox-container:hover input ~ .checkbox {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--white);
+  }
 }
 
 .checkbox-container:active input ~ .checkbox {
@@ -132,12 +134,14 @@ button,
   transition: background-color 0.1s, color 0.1s, border-color 0.1s;
 }
 
-input[type="button"]:hover,
-input[type="submit"]:hover,
-button:hover,
-.btn:hover {
-  background-color: var(--accent);
-  border-color: var(--accent);
+@media (hover: hover) {
+  input[type="button"]:hover,
+  input[type="submit"]:hover,
+  button:hover,
+  .btn:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+  }
 }
 
 input[type="button"]:active,
@@ -216,9 +220,11 @@ a {
   text-decoration: none;
 }
 
-.user-page-link:hover,
-.user-page-link:active {
-  background-color: var(--accent);
+@media (hover: hover) {
+  .user-page-link:hover,
+  .user-page-link:active {
+    background-color: var(--accent);
+  }
 }
 
 #search-area {
