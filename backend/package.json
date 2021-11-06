@@ -10,7 +10,9 @@
     "mongoose": "^6.0.12",
     "nodemon": "^2.0.14"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "prettier": "2.4.1"
+  },
   "scripts": {
     "test": "prettier --check .",
     "dev": "nodemon backend_with_db.js",
