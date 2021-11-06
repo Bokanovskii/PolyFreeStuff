@@ -22,6 +22,7 @@ import CreateListing from "./my-listings-page/create-listing";
 
 function App() {
   const [userData, setUserData] = useState(null);
+  const [validCreateListing, setValidCreateListing] = useState(false);
 
   async function checkLogin() {
     const LSUserData = JSON.parse(localStorage.getItem("userData"));
@@ -91,8 +92,17 @@ function App() {
           <ProductPage />
         </Route>
         <Route exact path="/create-listing">
-          <NavBar/>
-          <CreateListing userData={userData}/>
+          {validCreateListing ? ()=>{
+            console.log("Reading as true...")
+            setValidCreateListing(false);
+            return (<Redirect to={"/my-listings"}/>);
+          }:(
+              <div>
+                <NavBar/>
+                <CreateListing setValidCreateListing={setValidCreateListing} userData={userData}/>
+              </div>
+          )}
+
         </Route>
         <Route exact path="/">
           {" "}

@@ -1,7 +1,7 @@
 import axios from "axios";
 import settings from "../settings";
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import { categories } from "../categories";
 import Catlist from "./category-checkboxes";
 
@@ -32,7 +32,8 @@ function CreateListing(props) {
       })
       .then((response) => {
         if (response.status === 201) {
-          history.push("/my-listings");
+          console.log("Successfully Posted")
+          props.setValidCreateListing(true);
         } else {
           setListingErr(true);
         }
@@ -111,13 +112,13 @@ function CreateListing(props) {
             <input type="text" name="name" placeholder="Item" />
             <label>Item description:</label>
             <textarea
-              name="listing-description"
+              name="description"
               placeholder="Description"
             ></textarea>
             <label>Planned location of transaction:</label>
             <input
               type="text"
-              name="listing-location"
+              name="location"
               placeholder="On-campus location"
             />
             <label>Categories:</label>
