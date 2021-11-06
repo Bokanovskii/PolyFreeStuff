@@ -28,7 +28,9 @@ function App() {
     const LSUserData = JSON.parse(localStorage.getItem("userData"));
     if (LSUserData) {
       await axios
-        .get(settings.URLBase.concat("/user/").concat(LSUserData["_id"].toString()))
+        .get(
+          settings.URLBase.concat("/user/").concat(LSUserData["_id"].toString())
+        )
         .then((response) => {
           if (response.status === 201) {
             localStorage.setItem("userData", JSON.stringify(response.data));
@@ -92,17 +94,21 @@ function App() {
           <ProductPage />
         </Route>
         <Route exact path="/create-listing">
-          {validCreateListing ? ()=>{
-            console.log("Reading as true...")
-            setValidCreateListing(false);
-            return (<Redirect to={"/my-listings"}/>);
-          }:(
-              <div>
-                <NavBar/>
-                <CreateListing setValidCreateListing={setValidCreateListing} userData={userData}/>
-              </div>
+          {validCreateListing ? (
+            () => {
+              console.log("Reading as true...");
+              setValidCreateListing(false);
+              return <Redirect to={"/my-listings"} />;
+            }
+          ) : (
+            <div>
+              <NavBar />
+              <CreateListing
+                setValidCreateListing={setValidCreateListing}
+                userData={userData}
+              />
+            </div>
           )}
-
         </Route>
         <Route exact path="/">
           {" "}
