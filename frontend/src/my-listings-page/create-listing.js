@@ -106,7 +106,7 @@ function CreateListing(props) {
   return (
     <div id="create-listings">
       <form onSubmit={(e) => handleSubmit(e)}>
-        <div id="seller-view-page">
+        <div id="seller-view-page" className="usr-page">
           <div id="seller-view-left">
             <label>Item name:</label>
             <input type="text" name="name" placeholder="Item" />

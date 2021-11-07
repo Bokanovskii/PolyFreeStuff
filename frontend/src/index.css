@@ -184,6 +184,10 @@ a {
   font-size: 3.8rem;
 }
 
+.usr-page {
+  margin: calc(var(--gap) * 2) !important;
+}
+
 /* LOGIN */
 
 #login-page {
