@@ -40,6 +40,12 @@ const ListingSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    categories: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
   },
   { collection: "Listings" }
 );

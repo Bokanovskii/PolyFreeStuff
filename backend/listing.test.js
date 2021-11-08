@@ -29,21 +29,28 @@ afterAll(async () => {
   await mongoServer.stop();
 });
 
-// beforeEach(async () => {
-//   let dummyUser = {
-//     name: "Chuck Norris",
-//     job: "Highlander",
-//   };
-//   let result = new userModel(dummyUser);
-//   await result.save();
-// });
+beforeEach(async () => {
+  let newUser = {
+    name: "Chuck Norris",
+    email: "chuck@calpoly.edu",
+  };
+});
 
 afterEach(async () => {
   await listingModel.deleteMany();
 });
 
-// test("Fetching all users", async () => {
-//   const users = await userServices.getUsers();
-//   expect(users).toBeDefined();
-//   expect(users.length).toBeGreaterThan(0);
-// });
+test("Sign up user", async () => {
+  let dummyEmail = "chuck@calpoly.edu";
+  const noUser = await userModel.find({ email: dummyEmail });
+  expect(noUser.length).toEqual(0);
+
+  const newUser = await createNewUser(dummyEmail);
+  const basicUser = {
+    name: "New User",
+    email: dummyEmail,
+    image: "",
+    listings: [],
+  };
+  expect(newUser).toEqual(basicUser);
+});
