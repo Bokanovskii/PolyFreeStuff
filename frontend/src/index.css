@@ -259,6 +259,11 @@ h1 {
   transition: background-color 0.1s;
 }
 
+#search-bar > input {
+  width: 100%;
+  max-width: 60ch;
+}
+
 @media (max-width: 37.5rem) {
   #topbar {
     display: grid;
@@ -272,6 +277,14 @@ h1 {
   #topbar a,
   .user-page-link {
     width: 100%;
+  }
+
+  .user-page-link {
+    grid-template-columns: 0fr 0fr !important;
+  }
+
+  #search-bar > input {
+    max-width: unset;
   }
 }
 
@@ -294,11 +307,6 @@ h1 {
 
 #search-area {
   width: calc(100% - calc(var(--gap) * 2));
-}
-
-#search-bar > input {
-  width: 100%;
-  max-width: 60ch;
 }
 
 .icon {
@@ -355,8 +363,12 @@ h1 {
   display: grid;
   align-items: center;
   display: grid;
-  gap: var(--gap);
+  gap: calc(var(--gap) * 2);
   min-width: 60%;
+}
+
+#seller-view-left > label > * {
+  width: 100%;
 }
 
 #item-image-browse {

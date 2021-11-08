@@ -16,6 +16,14 @@ function NavBar(props) {
   ) : (
     <span className="material-icons icon">account_circle</span>
   );
+  let my_listings_link = name ? (
+    <Link to="/my-listings">
+      <span id="my-listings-page-link" className="user-page-link">
+        <span className="material-icons icon">format_list_bulleted</span>
+        My Listings
+      </span>
+    </Link>
+  ) : (<div></div>);
   return (
     <div id="topbar" className="noselect">
       <Link to="/about-page">
@@ -29,12 +37,7 @@ function NavBar(props) {
           Home
         </span>
       </Link>
-      <Link to="/my-listings">
-        <span id="my-listings-page-link" className="user-page-link">
-          <span className="material-icons icon">format_list_bulleted</span>
-          My Listings
-        </span>
-      </Link>
+      {my_listings_link}
       <SearchBar />
       <Link to={user_nav_path}>
         <span id={user_page_id} className="user-page-link">
