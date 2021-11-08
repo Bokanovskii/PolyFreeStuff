@@ -3,7 +3,7 @@
   --white: #ddd;
   --accent: #555;
   --gray: #888;
-  --blue: #49F;
+  --blue: #49f;
   --gap: 5px;
   --radius: 3px;
   --icon-size: 24px;
@@ -269,12 +269,14 @@ h1 {
     background-color: var(--black);
   }
 
-  #topbar a, .user-page-link {
+  #topbar a,
+  .user-page-link {
     width: 100%;
   }
 }
 
-#about-page-link, #account-info-page-link {
+#about-page-link,
+#account-info-page-link {
   grid-template-columns: unset;
 }
 
