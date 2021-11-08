@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 dotenv.config();
 
-const userModel = require("./models/user");
+const userSchema = require("./models/user");
 const listingModel = require("./models/listing");
 
 const app = express();
@@ -12,21 +12,37 @@ const port = 5000;
 app.use(cors());
 app.use(express.json());
 
-mongoose
-  .connect(
-    "mongodb+srv://" +
-      process.env.MONGO_USER +
-      ":" +
-      process.env.MONGO_PWD +
-      "@polygold.uvj73.mongodb.net/" +
-      process.env.MONGO_DB +
-      "?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+let conn;
+
+function setConnection(newConn) {
+  return (conn = newConn);
+}
+
+function getConnection() {
+  if (!conn) {
+    if (process.argv.includes("--prod")) {
+      conn = mongoose.createConnection(
+        "mongodb+srv://" +
+          process.env.MONGO_USER +
+          ":" +
+          process.env.MONGO_PWD +
+          "@polygold.uvj73.mongodb.net/" +
+          process.env.MONGO_DB +
+          "?retryWrites=true&w=majority",
+        {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+        }
+      );
+    } else {
+      conn = mongoose.createConnection("mongodb://localhost:27017/PolyGold", {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
     }
-  )
-  .catch((error) => console.log(error));
+  }
+  return conn;
+}
 
 app.get("/", async (req, res) => {
   res.status(201).send("hello PolyGold user");
@@ -34,6 +50,7 @@ app.get("/", async (req, res) => {
 
 // user login endpoint
 app.get("/login/:email", async (req, res) => {
+  const userModel = getConnection().model("User", userSchema);
   const email = req.params["email"];
   const user = await userModel.find({ email: email });
 
@@ -49,12 +66,14 @@ app.get("/login/:email", async (req, res) => {
 
 // Get all users
 app.get("/users", async (req, res) => {
+  const userModel = getConnection().model("User", userSchema);
   const users_from_db = await userModel.find();
   res.status(201).send({ users_list: users_from_db });
 });
 
 // user profile edit endpoint
 app.post("/replace_user", async (req, res) => {
+  const userModel = getConnection().model("User", userSchema);
   const user = req.body;
   if (await userModel.findByIdAndUpdate(user._id, user))
     res.status(200).send(user);
@@ -63,6 +82,7 @@ app.post("/replace_user", async (req, res) => {
 
 // Get user by their database id
 app.get("/user/:id", async (req, res) => {
+  const userModel = getConnection().model("User", userSchema);
   const id = req.params["id"];
   const user_from_db = await userModel.findById(id);
   res.status(201).send(user_from_db);
@@ -70,6 +90,7 @@ app.get("/user/:id", async (req, res) => {
 
 // user profile delete endpoint
 app.delete("/user/:id", async (req, res) => {
+  const userModel = getConnection().model("User", userSchema);
   const id = req.params.id;
   try {
     const user_from_db = await userModel.findById(id);

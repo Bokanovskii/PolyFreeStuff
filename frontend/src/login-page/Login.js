@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import settings from "../settings";
 
 function Login(props) {
   const [validEmail, setValidEmail] = useState(null);
@@ -7,7 +8,7 @@ function Login(props) {
   async function login(email, setUserData) {
     //Make get req here when backend ready
     await axios
-      .get("http://localhost:5000/login/".concat(email.toString()))
+      .get(settings.URLBase.concat("/login/").concat(email.toString()))
       .then((response) => {
         let status = response.status;
         if (status === 201) {

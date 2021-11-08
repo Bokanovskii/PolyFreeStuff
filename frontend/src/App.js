@@ -2,6 +2,7 @@ import "./index.css";
 //import './App.css';
 import { useState, useEffect } from "react";
 import axios from "axios";
+import settings from "./settings";
 
 import {
   BrowserRouter as Router,
@@ -17,15 +18,19 @@ import MyListings from "./my-listings-page/my-listings";
 import AccountInfo from "./account-info/account-info";
 import ProductPage from "./product-page/product-page";
 import NavBar from "./navigation-buttons/navigation-buttons";
+import CreateListing from "./my-listings-page/create-listing";
 
 function App() {
   const [userData, setUserData] = useState(null);
+  const [validCreateListing, setValidCreateListing] = useState(false);
 
   async function checkLogin() {
     const LSUserData = JSON.parse(localStorage.getItem("userData"));
     if (LSUserData) {
       await axios
-        .get("http://localhost:5000/user/".concat(LSUserData["_id"].toString()))
+        .get(
+          settings.URLBase.concat("/user/").concat(LSUserData["_id"].toString())
+        )
         .then((response) => {
           if (response.status === 201) {
             localStorage.setItem("userData", JSON.stringify(response.data));
@@ -66,7 +71,7 @@ function App() {
           ) : (
             <div>
               <NavBar userData={userData} />
-              <MyListings />
+              <MyListings userData={userData} />
             </div>
           )}
         </Route>
@@ -88,14 +93,29 @@ function App() {
           <NavBar userData={userData} />
           <ProductPage />
         </Route>
+        <Route exact path="/create-listing">
+          {validCreateListing ? (
+            () => {
+              console.log("Reading as true...");
+              setValidCreateListing(false);
+              return <Redirect to={"/my-listings"} />;
+            }
+          ) : (
+            <div>
+              <NavBar userData={userData} />
+              <CreateListing
+                setValidCreateListing={setValidCreateListing}
+                userData={userData}
+              />
+            </div>
+          )}
+        </Route>
         <Route exact path="/">
-          {" "}
           {/* homepage */}
           <NavBar userData={userData} />
           <Homepage />
         </Route>
         <Route path="/">
-          {" "}
           {/* 404 page not found */}
           <NavBar userData={userData} />
           <PageNotFound />
