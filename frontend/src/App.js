@@ -102,7 +102,7 @@ function App() {
             }
           ) : (
             <div>
-              <NavBar />
+              <NavBar userData={userData} />
               <CreateListing
                 setValidCreateListing={setValidCreateListing}
                 userData={userData}
@@ -111,13 +111,11 @@ function App() {
           )}
         </Route>
         <Route exact path="/">
-          {" "}
           {/* homepage */}
           <NavBar userData={userData} />
           <Homepage />
         </Route>
         <Route path="/">
-          {" "}
           {/* 404 page not found */}
           <NavBar userData={userData} />
           <PageNotFound />

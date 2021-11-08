@@ -109,22 +109,26 @@ function CreateListing(props) {
       <form onSubmit={(e) => handleSubmit(e)}>
         <div id="seller-view-page" className="usr-page">
           <div id="seller-view-left">
-            <label>Item name:</label>
-            <input type="text" name="name" placeholder="Item" />
-            <label>Item description:</label>
-            <textarea name="description" placeholder="Description"></textarea>
-            <label>Planned location of transaction:</label>
-            <input
-              type="text"
-              name="location"
-              placeholder="On-campus location"
-            />
-            <label>Categories:</label>
+            <label>Item name:
+              <input type="text" name="name" placeholder="Item" />
+            </label>
+            <label>Item description:
+              <textarea name="description" placeholder="Description"></textarea>
+            </label>
+            <label>Planned location of transaction:
+              <input
+                type="text"
+                name="location"
+                placeholder="On-campus location"
+              />
+            </label>
+            <label>Categories:
             <Catlist
               selectedCats={selectedCats}
               setSelectedCats={setSelectedCats}
               categories={categories}
             />
+            </label>
           </div>
           <div id="item-image-browse" className="file-area btn">
             <img id="item-img" alt="preview" src={imageUpload.file}></img>

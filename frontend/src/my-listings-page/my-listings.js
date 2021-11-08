@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import CreateListing from "./create-listing";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import settings from "../settings";
