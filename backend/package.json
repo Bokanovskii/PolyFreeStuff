@@ -10,7 +10,8 @@
     "jest": "^27.3.1",
     "mongodb-memory-server": "^8.0.2",
     "mongoose": "^6.0.12",
-    "nodemon": "^2.0.14"
+    "nodemon": "^2.0.14",
+    "process": "^0.11.10"
   },
   "devDependencies": {
     "prettier": "2.4.1"
@@ -18,7 +19,7 @@
   "scripts": {
     "test": "jest --detectOpenHandles & prettier --check .",
     "dev": "nodemon backend_with_db.js",
-    "start": "node backend_with_db.js"
+    "start": "node backend_with_db.js --prod"
   },
   "author": "",
   "license": "ISC"

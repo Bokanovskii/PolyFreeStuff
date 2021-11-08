@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const { createNewUser, deleteUser, getConnection } = require("./user-services");
 const { addListing, deleteListing } = require("./listing-services");
+const process = require("process");
+
 const UserSchema = require("./models/user");
 const ListingSchema = require("./models/listing");
 
