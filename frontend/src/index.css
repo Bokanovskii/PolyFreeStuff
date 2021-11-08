@@ -3,6 +3,7 @@
   --white: #ddd;
   --accent: #555;
   --gray: #888;
+  --blue: #49F;
   --gap: 5px;
   --radius: 3px;
   --icon-size: 24px;
@@ -95,6 +96,7 @@ textarea {
   padding: 0.5em;
   box-sizing: border-box;
   background-color: #fff;
+  transition: border-color 0.1s;
 }
 
 input[type="file"] {
@@ -160,9 +162,35 @@ textarea:focus {
   outline: none;
 }
 
+button:focus,
+input[type="button"]:focus,
+input[type="submit"]:focus,
+.btn:focus {
+  outline: none;
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--white);
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
 a {
   -webkit-appearance: none;
+  text-decoration: none;
   color: inherit;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  font-weight: bold;
 }
 
 .noselect {
@@ -211,36 +239,59 @@ a {
 /* TOPBAR */
 
 #topbar {
-  display: flex;
+  display: grid;
+  grid-template-columns: 0fr 0fr 0fr auto 0fr;
+  place-items: center;
   width: 100%;
   color: var(--white);
   background-color: var(--black);
 }
 
 .user-page-link {
-  display: inline-block;
-  padding: 17px;
+  display: inline-grid;
+  grid-template-columns: 0fr 1fr;
+  gap: calc(var(--gap) * 2);
+  place-items: center;
+  padding: calc(var(--gap) * 2.5);
   color: inherit;
+  white-space: nowrap;
   text-decoration: none;
+  transition: background-color 0.1s;
+}
+
+@media (max-width: 37.5rem) {
+  #topbar {
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+    width: 100%;
+    color: var(--white);
+    background-color: var(--black);
+  }
+
+  #topbar a, .user-page-link {
+    width: 100%;
+  }
+}
+
+#about-page-link, #account-info-page-link {
+  grid-template-columns: unset;
 }
 
 @media (hover: hover) {
-  .user-page-link:hover,
-  .user-page-link:active {
+  .user-page-link:hover {
     background-color: var(--accent);
   }
 }
 
-#search-area {
-  display: inline-block;
-  flex: 1;
+.user-page-link:active,
+.user-page-link:focus {
+  outline: none;
+  background-color: var(--accent);
 }
 
-#search-bar {
-  display: inline-block;
-  width: 100%;
-  padding: 0.5em;
-  box-sizing: border-box;
+#search-area {
+  width: calc(100% - calc(var(--gap) * 2));
 }
 
 #search-bar > input {
@@ -249,13 +300,15 @@ a {
 }
 
 .icon {
-  position: absolute;
   height: var(--icon-size);
   border-radius: 50%;
-  transform: translate(-5px, -4px);
 }
 
 /* SELLER VIEW :TODO: */
+
+#create-listings h1 {
+  margin-left: calc(var(--gap) * 2) !important;
+}
 
 #seller-view-page {
   display: grid;
@@ -275,7 +328,7 @@ a {
   margin: var(--gap);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   #seller-view-page {
     display: grid;
     margin: var(--gap);

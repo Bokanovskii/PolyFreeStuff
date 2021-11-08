@@ -15,9 +15,9 @@ function MyListings(props) {
     }*/
 
   return (
-    <div>
-      <div id="my-listings-page">MY LISTINGS PAGE</div>
-      <Link to={"/create-listing"}>Create New Listing</Link>
+    <div id="my-listings-page" className="usr-page">
+      <h1>My Listings</h1>
+      <Link to={"/create-listing"}><button>Create New Listing</button></Link>
     </div>
   );
 }
