@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 const ListingSchema = require("./models/listing");
-const backend = require("./backend_with_db");
+const UserSchema = require("./models/user");
+const { setConnection, createNewUser } = require("./user-services");
+const { addListing, deleteListing } = require("./listing-services");
 const { MongoMemoryServer } = require("mongodb-memory-server");
+const { test, expect } = require("@jest/globals");
 
 let mongoServer;
 let conn;
@@ -19,8 +22,9 @@ beforeAll(async () => {
   conn = await mongoose.createConnection(uri, mongooseOpts);
 
   listingModel = conn.model("Listing", ListingSchema);
+  userModel = conn.model("User", UserSchema);
 
-  backend.setConnection(conn);
+  setConnection(conn);
 });
 
 afterAll(async () => {
@@ -38,19 +42,39 @@ beforeEach(async () => {
 
 afterEach(async () => {
   await listingModel.deleteMany();
+  await userModel.deleteMany();
 });
 
-test("Sign up user", async () => {
-  let dummyEmail = "chuck@calpoly.edu";
-  const noUser = await userModel.find({ email: dummyEmail });
-  expect(noUser.length).toEqual(0);
-
-  const newUser = await createNewUser(dummyEmail);
-  const basicUser = {
-    name: "New User",
-    email: dummyEmail,
-    image: "",
-    listings: [],
+test("Add listing (requires addUser)", async () => {
+  let email = "chuck@calpoly.edu";
+  let newUser = await createNewUser(email);
+  let newListing = {
+    name: "axe",
+    seller: newUser._id,
+    is_available: true,
   };
-  expect(newUser).toEqual(basicUser);
+  expect(await addListing(newListing)).toBeTruthy();
+  let users = await userModel.find();
+  expect(users.length).toEqual(1);
+  expect(users[0]["listings"].length).toEqual(1);
+  expect(users[0]["listings"][0]).toEqual(newListing._id);
+});
+
+test("Delete listing (requires addUser and addListing)", async () => {
+  let email = "chuck@calpoly.edu";
+  let newUser = await createNewUser(email);
+  let newListing = {
+    name: "axe",
+    seller: newUser._id,
+    is_available: true,
+  };
+  expect(await addListing(newListing)).toBeTruthy();
+  let users = await userModel.find();
+  expect(users.length).toEqual(1);
+  expect(users[0]["listings"].length).toEqual(1);
+
+  expect(await deleteListing(newListing._id)).toBeTruthy();
+  users = await userModel.find();
+  expect(users.length).toEqual(1);
+  expect(users[0]["listings"].length).toEqual(0);
 });
