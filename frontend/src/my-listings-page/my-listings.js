@@ -57,9 +57,7 @@ function MyListings(props) {
           .then((response) => {
               let status = response.status;
               if (status === 201) {
-                  setListings(listings.filter(id => id === listingId._id))
-                  //console.log(listingsIds);
-                  //console.log("Listings Idss: "+ listingsIds);
+                  setListings(listings.filter(listing => listing._id === listingId))
               }
           })
           .catch((error) => {
