@@ -1,7 +1,11 @@
 const express = require("express");
 const cors = require("cors");
 const { createNewUser, deleteUser, getConnection } = require("./user-services");
-const { addListing, deleteListing } = require("./listing-services");
+const {
+  addListing,
+  deleteListing,
+  filterAndOrder,
+} = require("./listing-services");
 const process = require("process");
 
 const UserSchema = require("./models/user");
@@ -90,8 +94,10 @@ app.get("/listing/:id", async (req, res) => {
 
 // Get all listings
 app.get("/listings", async (req, res) => {
+  // if orderBy not provided, by default order by creation_date
+  //{'start': 1, 'range': 10, 'orderBy': 'creation_date', 'categories': ['']}
   const listingModel = getConnection().model("Listing", ListingSchema);
-  const listings_from_db = await listingModel.find();
+  let listings_from_db = await filterAndOrder(listingModel, req.body);
   res.status(201).send({ listing_list: listings_from_db });
 });
 
