@@ -3,7 +3,7 @@ const listingSchema = require("./models/listing");
 const { getConnection } = require("./user-services");
 
 async function filterAndOrder(listingModel, params) {
-  // params is of the form: {'start': 1, 'range': 10, 'orderBy': 'creation_date', 'categories': []}
+  // params is of the form: {'start': 1, 'end': 10, 'orderBy': 'creation_date', 'categories': []}
   var filteredListings;
   if ("categories" in params) {
     let categoryGroup = [];
@@ -11,20 +11,6 @@ async function filterAndOrder(listingModel, params) {
       categoryGroup.push({ categories: params["categories"][i] });
     }
     filteredListings = await listingModel.find({ $and: categoryGroup });
-    // Code for category filtering if running a listingMode.find() <- gets all listings in the db
-    // const categories = params["categories"];
-    // filteredListings = [];
-    // var shouldAdd;
-    // for (var i = 0; i < listings.length; i++) {
-    //   shouldAdd = true;
-    //   for (var j = 0; j < categories.length; j++) {
-    //     if (!listings[i]["categories"].includes(categories[j])) {
-    //       shouldAdd = false;
-    //       break;
-    //     }
-    //   }
-    //   if (shouldAdd) filteredListings.push(listings[i]);
-    // }
   } else {
     filteredListings = await listingModel.find();
   }
@@ -40,8 +26,8 @@ async function filterAndOrder(listingModel, params) {
       else return 1;
     });
   }
-  if (!("start" in params) || !("range" in params)) return filteredListings;
-  return filteredListings.slice(params["start"], params["range"]);
+  if (!("start" in params) || !("end" in params)) return filteredListings;
+  return filteredListings.slice(params["start"], params["end"]);
 }
 
 async function addListing(listing) {

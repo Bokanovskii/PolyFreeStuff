@@ -9,7 +9,6 @@ const {
 } = require("./listing-services");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 const { test, expect } = require("@jest/globals");
-var _ = require("lodash");
 
 let mongoServer;
 let conn;
@@ -107,7 +106,7 @@ test("Get category filtered and date (not specified) listings (requires addUser 
   const listings_from_db = await listingModel.find();
   expect(listings_from_db.length).toEqual(4);
 
-  let params = { start: 0, range: 3, categories: ["hardware"] };
+  let params = { categories: ["hardware"] };
   const filteredListings = await filterAndOrder(listingModel, params);
   expect(filteredListings.length).toEqual(3);
 
@@ -125,7 +124,7 @@ test("Sorted get category filtered and dated (not specified) listings (requires 
   const listings_from_db = await listingModel.find();
   expect(listings_from_db.length).toEqual(4);
 
-  let params = { start: 0, range: 3, categories: ["hardware"] };
+  let params = { categories: ["hardware"] };
   const filteredListings = await filterAndOrder(listingModel, params);
   expect(filteredListings.length).toEqual(3);
 
@@ -143,8 +142,6 @@ test("Sorted get category and dated (specified) listings (requires addUser and a
   expect(listings_from_db.length).toEqual(3);
 
   let params = {
-    start: 0,
-    range: 3,
     categories: ["hardware"],
     orderBy: "creation_date",
   };
@@ -165,8 +162,6 @@ test("Sorted get named listings (requires addUser and addListing)", async () => 
   expect(listings_from_db.length).toEqual(3);
 
   let params = {
-    start: 0,
-    range: 3,
     orderBy: "name",
   };
   const filteredListings = await filterAndOrder(listingModel, params);
@@ -187,7 +182,7 @@ test("Get listings sliced (requires addUser and addListing)", async () => {
 
   let params = {
     start: 0,
-    range: 2,
+    end: 2,
   };
   const filteredListings = await filterAndOrder(listingModel, params);
   expect(filteredListings.length).toEqual(2);
@@ -206,7 +201,7 @@ test("Get listings sliced past tot index (requires addUser and addListing)", asy
 
   let params = {
     start: 0,
-    range: 10,
+    end: 10,
   };
   const filteredListings = await filterAndOrder(listingModel, params);
   expect(filteredListings.length).toEqual(3);
@@ -227,7 +222,7 @@ test("Get listing with multi-level category filtering (requires addUser and addL
 
   let params = {
     start: 0,
-    range: 10,
+    end: 10,
     categories: ["hardware", "tools"],
   };
   const filteredListings = await filterAndOrder(listingModel, params);

@@ -95,7 +95,7 @@ app.get("/listing/:id", async (req, res) => {
 // Get all listings
 app.get("/listings", async (req, res) => {
   // if orderBy not provided, by default order by creation_date
-  //{'start': 1, 'range': 10, 'orderBy': 'creation_date', 'categories': ['']}
+  //{'start': 1, 'end': 10, 'orderBy': 'creation_date', 'categories': ['']}
   const listingModel = getConnection().model("Listing", ListingSchema);
   let listings_from_db = await filterAndOrder(listingModel, req.body);
   res.status(201).send({ listing_list: listings_from_db });
