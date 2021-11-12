@@ -28,12 +28,11 @@ async function filterAndOrder(listingModel, params) {
   } else {
     filteredListings = await listingModel.find();
   }
-  if ("orderBy" in params && params["orderBy"] != "creation_date") {
-    if (params["orderBy"] === "name") {
-      filteredListings.sort((first, second) => {
-        return first["name"].localeCompare(second["name"]);
-      });
-    }
+  // Only set up to filter by name (a first) or default creation_date (newest first)
+  if ("orderBy" in params && params["orderBy"] === "name") {
+    filteredListings.sort((first, second) => {
+      return first["name"].localeCompare(second["name"]);
+    });
   } else {
     // always sort by creation_date (newest first) if no other key specified
     filteredListings.sort((first, second) => {
