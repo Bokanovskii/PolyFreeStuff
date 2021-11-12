@@ -51,49 +51,57 @@ function MyListings(props) {
     //console.log("Listing Objects: "+listingsObjs);
   }
 
-  async function deleteListing(listingId){
-      await axios
-          .delete(settings.URLBase.concat("/listing/").concat(listingId))
-          .then((response) => {
-              let status = response.status;
-              if (status === 201) {
-                  setListings(listings.filter(listing => listing._id === listingId))
-              }
-          })
-          .catch((error) => {
-              window.alert(error.toString());
-          });
+  async function deleteListing(listingId) {
+    await axios
+      .delete(settings.URLBase.concat("/listing/").concat(listingId))
+      .then((response) => {
+        let status = response.status;
+        if (status === 201) {
+          setListings(listings.filter((listing) => listing._id === listingId));
+        }
+      })
+      .catch((error) => {
+        window.alert(error.toString());
+      });
   }
 
-  function handleClick(e, listingId){
-      e.preventDefault();
-      deleteListing(listingId)
-      console.log("Clicked");
+  function handleClick(e, listingId) {
+    e.preventDefault();
+    deleteListing(listingId);
+    console.log("Clicked");
   }
 
   useEffect(() => {
     populateListingObjs();
-    console.log("Listings: " + listings.length)
+    console.log("Listings: " + listings.length);
   }, []);
 
   return (
     <div id="my-listings-page" className="usr-page">
       <h1>My Listings</h1>
       <div>
-        {(listings.length > 0)  ? listings.map((listing) => (
-          <div>
-            <label>Name: </label>
-            <div>{listing.name}</div>
-            <label>Description: </label>
-            <div>{listing.description}</div>
-            <label>Is Available: </label>
-            <div>{listing.is_available.toString()}</div>
-            <button onClick={(e) => {
-                handleClick(e, listing._id);
-            }}>DELETE</button>
-            <br />
-          </div>
-        )) : (<div></div>)}
+        {listings.length > 0 ? (
+          listings.map((listing) => (
+            <div>
+              <label>Name: </label>
+              <div>{listing.name}</div>
+              <label>Description: </label>
+              <div>{listing.description}</div>
+              <label>Is Available: </label>
+              <div>{listing.is_available.toString()}</div>
+              <button
+                onClick={(e) => {
+                  handleClick(e, listing._id);
+                }}
+              >
+                DELETE
+              </button>
+              <br />
+            </div>
+          ))
+        ) : (
+          <div></div>
+        )}
       </div>
       <Link to={"/create-listing"}>
         <button>Create New Listing</button>

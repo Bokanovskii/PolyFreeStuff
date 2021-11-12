@@ -53,7 +53,7 @@ beforeEach(async () => {
     categories: ["exercise", "hardware"],
   };
   newListing_3 = {
-    name: "fridge",
+    name: "fridge kelvinator",
     seller: newUser._id,
     is_available: true,
     categories: ["hardware", "tools", "furniture"],
@@ -230,4 +230,78 @@ test("Get listing with multi-level category filtering (requires addUser and addL
 
   expect(filteredListings[0]["name"]).toEqual(newListing["name"]);
   expect(filteredListings[1]["name"]).toEqual(newListing_3["name"]);
+});
+
+test("Get listing based on full search query: name (requires addUser and addListing)", async () => {
+  expect(await addListing(newListing_4)).toBeTruthy();
+  expect(await addListing(newListing_3)).toBeTruthy();
+  expect(await addListing(newListing_2)).toBeTruthy();
+  expect(await addListing(newListing)).toBeTruthy();
+
+  const listings_from_db = await listingModel.find();
+  expect(listings_from_db.length).toEqual(4);
+
+  let params = {
+    search: "axe",
+  };
+  const filteredListings = await filterAndOrder(listingModel, params);
+  expect(filteredListings.length).toEqual(1);
+
+  expect(filteredListings[0]["name"]).toEqual(newListing["name"]);
+});
+
+test("Get listing based on full search query: category (requires addUser and addListing)", async () => {
+  expect(await addListing(newListing_4)).toBeTruthy();
+  expect(await addListing(newListing_3)).toBeTruthy();
+  expect(await addListing(newListing_2)).toBeTruthy();
+  expect(await addListing(newListing)).toBeTruthy();
+
+  const listings_from_db = await listingModel.find();
+  expect(listings_from_db.length).toEqual(4);
+
+  let params = {
+    search: "hardware",
+  };
+  const filteredListings = await filterAndOrder(listingModel, params);
+  expect(filteredListings.length).toEqual(3);
+
+  expect(filteredListings[0]["name"]).toEqual(newListing["name"]);
+  expect(filteredListings[1]["name"]).toEqual(newListing_2["name"]);
+  expect(filteredListings[2]["name"]).toEqual(newListing_3["name"]);
+});
+
+test("Get listing based on partial search query: name (requires addUser and addListing)", async () => {
+  expect(await addListing(newListing_4)).toBeTruthy();
+  expect(await addListing(newListing_3)).toBeTruthy();
+  expect(await addListing(newListing_2)).toBeTruthy();
+  expect(await addListing(newListing)).toBeTruthy();
+
+  const listings_from_db = await listingModel.find();
+  expect(listings_from_db.length).toEqual(4);
+
+  let params = {
+    search: "fridge",
+  };
+  const filteredListings = await filterAndOrder(listingModel, params);
+  expect(filteredListings.length).toEqual(1);
+
+  expect(filteredListings[0]["name"]).toEqual(newListing_3["name"]);
+});
+
+test("Get listing based on pre-stemmed search query: name (requires addUser and addListing)", async () => {
+  expect(await addListing(newListing_4)).toBeTruthy();
+  expect(await addListing(newListing_3)).toBeTruthy();
+  expect(await addListing(newListing_2)).toBeTruthy();
+  expect(await addListing(newListing)).toBeTruthy();
+
+  const listings_from_db = await listingModel.find();
+  expect(listings_from_db.length).toEqual(4);
+
+  let params = {
+    search: "fridges",
+  };
+  const filteredListings = await filterAndOrder(listingModel, params);
+  expect(filteredListings.length).toEqual(1);
+
+  expect(filteredListings[0]["name"]).toEqual(newListing_3["name"]);
 });

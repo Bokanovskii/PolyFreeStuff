@@ -88,17 +88,46 @@ app.post("/listing", async (req, res) => {
 app.get("/listing/:id", async (req, res) => {
   const listingModel = getConnection().model("Listing", ListingSchema);
   const id = req.params["id"];
-  const listing_from_db = await listingModel.findById(id);
-  res.status(201).send({ listing_from_db });
+  const listingFromDb = await listingModel.findById(id);
+  // Always return the user as their JSON
+  const userModel = getConnection().model("User", UserSchema);
+  listingFromDb["seller"] = await userModel.findById(listingFromDb["seller"]);
+
+  res.status(201).send({ listingFromDb });
 });
 
 // Get all listings
 app.get("/listings", async (req, res) => {
   // if orderBy not provided, by default order by creation_date
-  //{'start': 1, 'end': 10, 'orderBy': 'creation_date', 'categories': ['']}
+  //{'start': 1, 'end': 4, 'orderBy': 'name', 'categories': [''], 'search': '', 'getUser': 'true'}
   const listingModel = getConnection().model("Listing", ListingSchema);
-  let listings_from_db = await filterAndOrder(listingModel, req.body);
-  res.status(201).send({ listing_list: listings_from_db });
+  let listingsFromDb = await filterAndOrder(listingModel, req.query);
+
+  if ("getUser" in req.query && req.query["getUser"] === "true") {
+    const userModel = getConnection().model("User", UserSchema);
+    for (var i = 0; i < listingsFromDb.length; i++) {
+      listingsFromDb[i]["seller"] = await userModel.findById(
+        listingsFromDb[i]["seller"]
+      );
+    }
+  }
+  res.status(201).send({ listing_list: listingsFromDb });
+});
+
+app.get("/listings_from_user/:id", async (req, res) => {
+  const id = req.params["id"];
+  const userModel = getConnection().model("User", UserSchema);
+  const listingModel = getConnection().model("Listing", ListingSchema);
+  const user = await userModel.findById(id);
+  var listings = [];
+  for (var i = 0; i < user["listings"].length; i++) {
+    try {
+      listings.push(await listingModel.findById(user["listings"][i]));
+    } catch (error) {
+      res.status(404).send(error);
+    }
+  }
+  res.status(201).send({ listing_list: listings });
 });
 
 // Delete a listing by its database id

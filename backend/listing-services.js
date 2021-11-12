@@ -3,16 +3,20 @@ const listingSchema = require("./models/listing");
 const { getConnection } = require("./user-services");
 
 async function filterAndOrder(listingModel, params) {
-  // params is of the form: {'start': 1, 'end': 10, 'orderBy': 'creation_date', 'categories': []}
+  // params is of the form: {'start': 1, 'end': 10, 'orderBy': 'creation_date', 'categories': [], 'search': ''}
   var filteredListings;
+  var listingSearchParams = {};
+  if ("search" in params)
+    listingSearchParams["$text"] = { $search: params["search"] };
   if ("categories" in params) {
     let categoryGroup = [];
     for (let i = 0; i < params["categories"].length; i++) {
       categoryGroup.push({ categories: params["categories"][i] });
     }
-    filteredListings = await listingModel.find({ $and: categoryGroup });
+    listingSearchParams["$and"] = categoryGroup;
+    filteredListings = await listingModel.find(listingSearchParams);
   } else {
-    filteredListings = await listingModel.find();
+    filteredListings = await listingModel.find(listingSearchParams);
   }
   // Only set up to filter by name (a first) or default creation_date (newest first)
   if ("orderBy" in params && params["orderBy"] === "name") {
