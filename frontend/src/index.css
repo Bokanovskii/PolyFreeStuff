@@ -22,6 +22,12 @@ body {
   color: var(--black);
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -401,3 +407,59 @@ h1 {
 }
 
 /* ABOUT PAGE */
+
+/* LISTING GRID */
+
+#listing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--gap);
+  padding: calc(var(--gap) * 2);
+}
+
+.listing-grid-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--black);
+  background-color: var(--black);
+  color: var(--white);
+  border-radius: calc(var(--gap) * 3);
+  padding: calc(var(--gap));
+  transition: background-color 0.1s, border-color 0.1s;
+  text-decoration: none;
+}
+.listing-grid-item:hover {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+.listing-grid-item-name {
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+}
+.listing-grid-item img {
+  max-width: 100%;
+  height: 8em;
+  object-fit: cover;
+}
+.listing-grid-item-user {
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+}
+.listing-grid-item-date {
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+}
+.listing-grid-item-cats {
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+}
+.listing-grid-item-cats span {
+  display: inline-block;
+  margin: 0 5px;
+}

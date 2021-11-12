@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import CreateListing from "./create-listing";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import settings from "../settings";
+import ListingGrid from "../listings/listing-grid";
 
 function MyListings(props) {
   const [listings, setListings] = useState([]);
@@ -51,37 +51,37 @@ function MyListings(props) {
     //console.log("Listing Objects: "+listingsObjs);
   }
 
-  async function deleteListing(listingId){
-      await axios
-          .delete(settings.URLBase.concat("/listing/").concat(listingId))
-          .then((response) => {
-              let status = response.status;
-              if (status === 201) {
-                  setListings(listings.filter(listing => listing._id === listingId))
-              }
-          })
-          .catch((error) => {
-              window.alert(error.toString());
-          });
+  async function deleteListing(listingId) {
+    await axios
+      .delete(settings.URLBase.concat("/listing/").concat(listingId))
+      .then((response) => {
+        let status = response.status;
+        if (status === 201) {
+          setListings(listings.filter((listing) => listing._id === listingId));
+        }
+      })
+      .catch((error) => {
+        window.alert(error.toString());
+      });
   }
 
-  function handleClick(e, listingId){
-      e.preventDefault();
-      deleteListing(listingId)
-      console.log("Clicked");
+  function handleClick(e, listingId) {
+    e.preventDefault();
+    deleteListing(listingId);
+    console.log("Clicked");
   }
 
   useEffect(() => {
     populateListingObjs();
-    console.log("Listings: " + listings.length)
+    console.log("Listings: " + listings.length);
   }, []);
 
   return (
     <div id="my-listings-page" className="usr-page">
       <h1>My Listings</h1>
-      <div>
-        {(listings.length > 0)  ? listings.map((listing) => (
-          <div>
+      {/* <div>
+        {(listings.length > 0)  ? listings.map((listing, index) => (
+          <div key={index}>
             <label>Name: </label>
             <div>{listing.name}</div>
             <label>Description: </label>
@@ -93,8 +93,10 @@ function MyListings(props) {
             }}>DELETE</button>
             <br />
           </div>
+
         )) : (<div></div>)}
-      </div>
+      </div> */}
+      <ListingGrid items={listings} itemPath="/my-listings/item/:itemID" />
       <Link to={"/create-listing"}>
         <button>Create New Listing</button>
       </Link>

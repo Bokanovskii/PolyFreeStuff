@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from "react";
-import CreateListing from "./create-listing";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import settings from "../settings";
+import React from "react";
 import { categories } from "../categories";
 
 /*
- ** props: {itemName, itemUser, itemImageURL, itemCats, itemID}
+ ** props: {itemName, itemUser, itemDate, itemImageURL, itemCats, itemID, itemPath}
+ ** itemPath example:         '/my-listings/item/:itemID' (':itemID' is required in the string)
+ ** full joined path example: '/my-listings/item/ae0dfoih87jkb6erh9' (:itemID is replaced with the actual id)
  */
 function GridItem(props) {
   return (
-    <a href={`/my-listings/item/${props.itemID}`} className="listing-grid-item">
-      <img src={props.itemImageURL} alt="" />
+    <a
+      href={props.itemPath.replace(":itemID", props.itemID)}
+      className="listing-grid-item"
+    >
       <span className="listing-grid-item-name">{props.itemName}</span>
+      <img src={props.itemImageURL} alt="" />
       <span className="listing-grid-item-user">{props.itemUser}</span>
+      <span className="listing-grid-item-date">{props.itemDate}</span>
       <div className="listing-grid-item-cats">
         {props.itemCats.map((catValue, index) => {
           return (
@@ -31,15 +33,17 @@ function ListingGrid(props) {
   return (
     <div id="listing-grid" className="usr-page">
       {props.items.map(
-        ({ itemName, itemUser, itemImageURL, itemCats, itemID }, index) => {
+        ({ name, image, seller, creation_date, categories, _id }, index) => {
           return (
             <GridItem
               key={index}
-              itemName={itemName}
-              itemUser={itemUser}
-              itemImageURL={itemImageURL}
-              itemCats={itemCats}
-              itemID={itemID}
+              itemName={name}
+              itemUser={seller}
+              itemDate={creation_date}
+              itemImageURL={image}
+              itemCats={categories}
+              itemID={_id}
+              itemPath={props.itemPath}
             />
           );
         }
