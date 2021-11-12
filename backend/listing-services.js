@@ -2,6 +2,34 @@ const userSchema = require("./models/user");
 const listingSchema = require("./models/listing");
 const { getConnection } = require("./user-services");
 
+async function filterAndOrder(listingModel, params) {
+  // params is of the form: {'start': 1, 'end': 10, 'orderBy': 'creation_date', 'categories': []}
+  var filteredListings;
+  if ("categories" in params) {
+    let categoryGroup = [];
+    for (let i = 0; i < params["categories"].length; i++) {
+      categoryGroup.push({ categories: params["categories"][i] });
+    }
+    filteredListings = await listingModel.find({ $and: categoryGroup });
+  } else {
+    filteredListings = await listingModel.find();
+  }
+  // Only set up to filter by name (a first) or default creation_date (newest first)
+  if ("orderBy" in params && params["orderBy"] === "name") {
+    filteredListings.sort((first, second) => {
+      return first["name"].localeCompare(second["name"]);
+    });
+  } else {
+    // always sort by creation_date (newest first) if no other key specified
+    filteredListings.sort((first, second) => {
+      if (second["creation_date"] < first["creation_date"]) return -1;
+      else return 1;
+    });
+  }
+  if (!("start" in params) || !("end" in params)) return filteredListings;
+  return filteredListings.slice(params["start"], params["end"]);
+}
+
 async function addListing(listing) {
   const userModel = getConnection().model("User", userSchema);
   const listingModel = getConnection().model("Listing", listingSchema);
@@ -43,3 +71,4 @@ async function deleteListing(id) {
 
 exports.addListing = addListing;
 exports.deleteListing = deleteListing;
+exports.filterAndOrder = filterAndOrder;
