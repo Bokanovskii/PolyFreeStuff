@@ -79,23 +79,6 @@ function MyListings(props) {
   return (
     <div id="my-listings-page" className="usr-page">
       <h1>My Listings</h1>
-      {/* <div>
-        {(listings.length > 0)  ? listings.map((listing, index) => (
-          <div key={index}>
-            <label>Name: </label>
-            <div>{listing.name}</div>
-            <label>Description: </label>
-            <div>{listing.description}</div>
-            <label>Is Available: </label>
-            <div>{listing.is_available.toString()}</div>
-            <button onClick={(e) => {
-                handleClick(e, listing._id);
-            }}>DELETE</button>
-            <br />
-          </div>
-
-        )) : (<div></div>)}
-      </div> */}
       <ListingGrid items={listings} itemPath="/my-listings/item/:itemID" />
       <Link to={"/create-listing"}>
         <button>Create New Listing</button>
