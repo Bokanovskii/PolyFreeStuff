@@ -28,7 +28,9 @@ function MyListings(props) {
 
   async function appendListing(listingId) {
     await axios
-      .get(settings.URLBase.concat("/listing/").concat(listingId))
+      .get(
+        settings.URLBase.concat(`/listing?getUser=${true}`).concat(listingId)
+      )
       .then((response) => {
         let status = response.status;
         if (status === 201) {
