@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import settings from "../settings";
+import ListingGrid from "../listings/listing-grid";
 
 function Homepage() {
 
@@ -25,9 +26,11 @@ function Homepage() {
     getAllListings();
   }, []);
 
+  /*
   return (<div>
       <div id="homepage">HOMEPAGE</div>
       <br/>
+
       <div>
           {(listings.length > 0)  ? listings.map((listing, index) => (
               <div>
@@ -41,7 +44,13 @@ function Homepage() {
               </div>
           )) : (<div></div>)}
       </div>
-  </div>);
+  </div>);*/
+
+    return (<div>
+        <div id="homepage">HOMEPAGE</div>
+        <br/>
+        <ListingGrid items={listings} itemPath={"/item/:itemID"}/>
+    </div>);
 
 }
 
