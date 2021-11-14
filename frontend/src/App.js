@@ -9,6 +9,7 @@ import {
   Switch,
   Route,
   Redirect,
+  withRouter,
 } from "react-router-dom";
 
 import Login from "./login-page/Login";
@@ -19,10 +20,12 @@ import AccountInfo from "./account-info/account-info";
 import ProductPage from "./product-page/product-page";
 import NavBar from "./navigation-buttons/navigation-buttons";
 import CreateListing from "./my-listings-page/create-listing";
+import MyListingsListing from "./listings/myListingsListing";
 
 function App() {
   const [userData, setUserData] = useState(null);
   const [validCreateListing, setValidCreateListing] = useState(false);
+  const [sucDelete, setSucDelete] = useState(false);
 
   async function checkLogin() {
     const LSUserData = JSON.parse(localStorage.getItem("userData"));
@@ -75,6 +78,20 @@ function App() {
             </div>
           )}
         </Route>
+
+        <Route exact path={"/my-listings/listing/:id"}>
+          {sucDelete ? (
+              <Redirect to={"/my-listings"}/>
+          ) : (
+              <div>
+                <NavBar userData={userData}/>
+                <MyListingsListing setSucDelete={setSucDelete}/>
+              </div>
+            )
+          }
+
+        </Route>
+
         <Route exact path="/about-page">
           <NavBar userData={userData} />
           <AboutPage />
