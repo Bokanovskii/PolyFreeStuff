@@ -4,7 +4,6 @@ import {useEffect, useState} from "react";
 import { Link, useHistory } from "react-router-dom";
 import { categories } from "../categories";
 import Catlist from "./category-checkboxes";
-import imgbbUploader from "imgbb-uploader/lib/cjs";
 
 function CreateListing(props) {
   const [listingErr, setListingErr] = useState(false);
@@ -48,7 +47,6 @@ function CreateListing(props) {
     catch (e) {
       alert(e)
     }
-
   }
 
   async function handleSubmit(e) {

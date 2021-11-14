@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, {useState, useEffect} from 'react';
 import CreateListing from "./create-listing";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import axios from "axios";
 import settings from "../settings";
 
