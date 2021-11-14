@@ -3,12 +3,15 @@ const cors = require("cors");
 const { createNewUser, deleteUser, getConnection } = require("./user-services");
 const { addListing, deleteListing } = require("./listing-services");
 const process = require("process");
+const bodyParser = require("body-parser");
 
 const UserSchema = require("./models/user");
 const ListingSchema = require("./models/listing");
 
 const app = express();
 const port = 5000;
+app.use(bodyParser.json({limit: "50mb"}));
+app.use(bodyParser.urlencoded({limit:"50mb", extended: true, parameterLimit:50000}));
 app.use(cors());
 app.use(express.json());
 

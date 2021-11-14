@@ -1,15 +1,18 @@
 import axios from "axios";
 import settings from "../settings";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { Link, useHistory } from "react-router-dom";
 import { categories } from "../categories";
 import Catlist from "./category-checkboxes";
+import imgbbUploader from "imgbb-uploader/lib/cjs";
 
 function CreateListing(props) {
   const [listingErr, setListingErr] = useState(false);
+  const [imageBase64, setImageBase64] = useState("")
   const [imageUpload, setImageUpload] = useState({
     file: require("../no-image-icon-15.png").default,
   });
+  const [imgURL, setImgURL] = useState("");
   const [selectedCats, setSelectedCats] = useState(
     new Array(categories.length).fill(false)
   );
@@ -18,90 +21,83 @@ function CreateListing(props) {
   async function createListing(
     name,
     description,
-    seller /*, image, location, cats */
+    seller,
+    image //location, cats
   ) {
-    await axios
-      .post(settings.URLBase.concat("/listing"), {
-        name: name,
-        description: description,
-        seller: seller,
-        // image: image,
-        // location: location,
-        // cats: cats,
-        is_available: true,
-      })
-      .then((response) => {
-        if (response.status === 201) {
-          console.log("Successfully Posted");
-          props.setValidCreateListing(true);
-        } else {
-          setListingErr(true);
-        }
-      });
+    //console.log(imageUpload);
+    try{
+      await axios
+          .post(settings.URLBase.concat("/listing"), {
+            name: name,
+            description: description,
+            seller: seller,
+            image: image,
+            // location: location,
+            // cats: cats,
+            is_available: true,
+          })
+          .then((response) => {
+            if (response.status === 201) {
+              console.log("Successfully Posted");
+              props.setValidCreateListing(true);
+            } else {
+              setListingErr(true);
+            }
+          });
+    }
+    catch (e) {
+      alert(e)
+    }
+
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    console.log("Image base 64: "+imageBase64)
+
     let name = e.target.name.value;
     let description = e.target.description.value;
     let seller = props.userData["_id"];
-    let image = e.target.image.value; // add to post request
+    let image = imageBase64;
     let location = e.target.location.value; // add to post request
     let cats = JSON.stringify(
       categories // add to post request
         .filter((cat, index) => selectedCats[index])
         .map((cat) => cat.value)
     );
-    await createListing(name, description, seller /*, image, location, cats */);
+    await createListing(name, description, seller, image/* location, cats */);
   }
 
   const handleFileUpload = (event) => {
     try {
+
+      let file = event.target.files[0];
+      getBase64(file)
       setImageUpload({
-        file: URL.createObjectURL(event.target.files[0]),
+        file: URL.createObjectURL(file),
       });
     } catch (error) {
       console.log(error);
     }
   };
 
-  // return (
-  //   <div id="create-listings">
-  //     <form onSubmit={(e) => handleSubmit(e)}>
-  //       <label>Product Name: </label>
-  //       <input
-  //         type={"text"}
-  //         id={"listing-name"}
-  //         name={"name"}
-  //         placeholder="Used Couch!"
-  //       />
-  //       <label>Product Description: </label>
-  //       <input
-  //         type={"text"}
-  //         id={"listing-description"}
-  //         name={"description"}
-  //         placeholder={"This is a used couch, here for free!!!"}
-  //       />
-  //       <label>Pickup Location: </label>
-  //       <input
-  //         type={"text"}
-  //         id={"listing-location"}
-  //         name={"location"}
-  //         placeholder={"Yakitutu"}
-  //       />
-  //       <div>
-  //         {() => {
-  //           if (listingErr) {
-  //             return <p>Listing Error</p>;
-  //           }
-  //         }}
-  //       </div>
-  //       <button type={"submit"} id={"listing-btn"}>
-  //         Create Listing
-  //       </button>
-  //     </form>
-  //   </div>
-  // );
+  function getBase64(file){
+
+      let reader = new FileReader();
+
+      reader.readAsDataURL(file);
+
+      reader.onload= () => {
+        let base64 = reader.result;
+        let splitBase64 = base64.split(",");
+        let base64WoSlash = splitBase64[1].slice(1);
+        console.log(base64WoSlash)
+        //console.log(splitBase64)
+        //setImageBase64(base64WoSlash);
+        setImageBase64("R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
+      }
+  }
 
   return (
     <div id="create-listings">
