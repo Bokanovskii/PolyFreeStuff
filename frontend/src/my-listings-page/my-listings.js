@@ -7,23 +7,26 @@ import ListingGrid from "../listings/listing-grid";
 function MyListings(props) {
   const [listings, setListings] = useState([]);
 
+  useEffect(() => {
     async function getUserListings() {
-        await axios
-            .get(settings.URLBase.concat("/listings_from_user/").concat(props.userData._id))
-            .then((response) => {
-                let status = response.status;
-                if (status === 201) {
-                    setListings(response.data.listing_list);
-                }
-            })
-            .catch((error) => {
-                window.alert(error.toString());
-            });
+      await axios
+        .get(
+          settings.URLBase.concat("/listings_from_user/").concat(
+            props.userData._id
+          )
+        )
+        .then((response) => {
+          let status = response.status;
+          if (status === 201) {
+            setListings(response.data.listing_list);
+          }
+        })
+        .catch((error) => {
+          window.alert(error.toString());
+        });
     }
-
-  useEffect(async () => {
-      await getUserListings()
-  }, []);
+    getUserListings();
+  }, [props.userData._id]);
 
   return (
     <div id="my-listings-page" className="usr-page">
