@@ -132,6 +132,10 @@ app.get("/listings_from_user/:id", async (req, res) => {
       res.status(404).send(error);
     }
   }
+  listings.sort((first, second) => {
+    if (second["creation_date"] < first["creation_date"]) return -1;
+    else return 1;
+  });
   res.status(201).send({ listing_list: listings });
 });
 
