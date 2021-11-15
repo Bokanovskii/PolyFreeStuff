@@ -20,6 +20,7 @@ import ProductPage from "./product-page/product-page";
 import NavBar from "./navigation-buttons/navigation-buttons";
 import CreateListing from "./my-listings-page/create-listing";
 import MyListingsListing from "./listings/myListingsListing";
+import HomePageListing from "./listings/homepageListing";
 
 function App() {
   const [userData, setUserData] = useState(null);
@@ -87,6 +88,19 @@ function App() {
               <MyListingsListing setSucDelete={setSucDelete} />
             </div>
           )}
+        </Route>
+
+        <Route exact path={"/homepage/listing/:id"}>
+          {sucDelete ? (
+              <Redirect to={"/homepage"}/>
+          ) : (
+              <div>
+                <NavBar userData={userData}/>
+                <HomePageListing/>
+              </div>
+          )
+          }
+
         </Route>
 
         <Route exact path="/about-page">
