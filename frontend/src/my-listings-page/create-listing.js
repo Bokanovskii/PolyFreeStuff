@@ -66,10 +66,10 @@ function CreateListing(props) {
   };
 
   return (
-    <div id="create-listings">
+    <div id="create-listings" className="usr-page">
       <h1>Create New Listing</h1>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <div id="seller-view-page" className="usr-page">
+        <div id="seller-view-page">
           <div id="seller-view-left">
             <label>
               Item name:

@@ -28,7 +28,11 @@ function Homepage() {
     <div>
       <div id="homepage" className="usr-page">
         <h1>Homepage</h1>
-        <ListingGrid items={listings} itemPath={"/homepage/listing/:itemID"} max="20" />
+        <ListingGrid
+          items={listings}
+          itemPath={"/homepage/listing/:itemID"}
+          max="20"
+        />
       </div>
     </div>
   );

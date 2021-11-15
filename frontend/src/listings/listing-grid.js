@@ -42,7 +42,7 @@ function GridItem(props) {
 function ListingGrid(props) {
   return (
     <div>
-      <div id="listing-grid" className="usr-page">
+      <div id="listing-grid">
         {props.items.map(
           ({ name, image, seller, creation_date, categories, _id }, index) => {
             return (
