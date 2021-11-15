@@ -57,34 +57,35 @@ function MyListingsListing(props) {
       <center>
         <h2>{listing.name}</h2>
         <h3>{moment(listing.creation_date).format("LL")}</h3>
+        <div id="listing-page-grid">
+          <img src={listing.image} alt=""></img>
+          <div id="listing-page-description">{listing.description}</div>
+          <div id="listing-page-location">
+            <b>Pickup Location:</b> <i>{listing.pickup_location}</i>
+          </div>
+          <div id="listing-page-cats">
+            {Object.keys(listing).length === 0 ? (
+              <div></div>
+            ) : (
+              listing.categories.map((catValue, index) => {
+                return (
+                  <span key={index}>
+                    {categories.find((cat) => cat.value === catValue).text}
+                  </span>
+                );
+              })
+            )}
+          </div>
+        </div>
+        <button
+          id="delete"
+          onClick={async (e) => {
+            await handleClick(e, listing._id);
+          }}
+        >
+          DELETE
+        </button>
       </center>
-      <div id="listing-page-grid">
-        <img src={listing.image} alt=""></img>
-        <div id="listing-page-description">{listing.description}</div>
-        <div id="listing-page-location">
-          Pickup Location: {listing.pickup_location}
-        </div>
-        <div id="listing-page-cats">
-          {Object.keys(listing).length === 0 ? (
-            <div></div>
-          ) : (
-            listing.categories.map((catValue, index) => {
-              return (
-                <span key={index}>
-                  {categories.find((cat) => cat.value === catValue).text}
-                </span>
-              );
-            })
-          )}
-        </div>
-      </div>
-      <button
-        onClick={async (e) => {
-          await handleClick(e, listing._id);
-        }}
-      >
-        DELETE
-      </button>
     </div>
   );
 }

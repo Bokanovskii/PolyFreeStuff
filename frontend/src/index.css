@@ -488,3 +488,44 @@ h1 {
   border: solid 1px var(--white);
   border-radius: var(--radius);
 }
+
+/* LISTING PAGE */
+
+#listing-page-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(10rem, 1fr));
+  gap: calc(var(--gap) * 2);
+}
+
+#listing-page-grid img {
+  place-self: center;
+}
+
+#listing-page-location {
+  margin: 0 auto;
+}
+
+#listing-page-grid img {
+  background-color: var(--black);
+  border-radius: var(--radius);
+  max-width: 100%;
+}
+
+#listing-page-cats span {
+  display: inline-block;
+  padding: var(--gap);
+  background-color: var(--black);
+  color: var(--white);
+  border-radius: var(--radius);
+  margin: var(--gap);
+}
+
+@media (max-width: 37.5rem) {
+  #listing-page-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #delete {
+    width: 100%;
+  }
+}
