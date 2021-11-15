@@ -23,8 +23,17 @@ function Body() {
       <h3>The Creators</h3>
       <p>
         This project was developed by Evan Witulski, Charlie Ward, Nathan
-        McCutchen, Dylan Jessen, and Jack de la Motte. The source can be found{" "}
-        <a>here</a>
+        McCutchen, Dylan Jessen, and Jack de la Motte. The source can be
+        found&nbsp;
+        <a
+          className="link"
+          href="https://github.com/Bokanovskii/PolyFreeStuff/tree/main"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          here
+        </a>
+        .
       </p>
     </div>
   );

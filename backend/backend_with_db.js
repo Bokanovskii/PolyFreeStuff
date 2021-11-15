@@ -122,7 +122,12 @@ app.get("/listings_from_user/:id", async (req, res) => {
   var listings = [];
   for (var i = 0; i < user["listings"].length; i++) {
     try {
-      listings.push(await listingModel.findById(user["listings"][i]));
+      let listing = await listingModel.findById(user["listings"][i]);
+      listing.seller =
+        "getUser" in req.query && req.query["getUser"] === "true"
+          ? user
+          : listing.seller;
+      listings.push(listing);
     } catch (error) {
       res.status(404).send(error);
     }

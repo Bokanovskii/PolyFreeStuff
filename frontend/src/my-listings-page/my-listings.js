@@ -12,7 +12,7 @@ function MyListings(props) {
       await axios
         .get(
           settings.URLBase.concat("/listings_from_user/").concat(
-            props.userData._id
+            `${props.userData._id}?getUser=${true}`
           )
         )
         .then((response) => {
@@ -31,10 +31,10 @@ function MyListings(props) {
   return (
     <div id="my-listings-page" className="usr-page">
       <h1>My Listings</h1>
-      <ListingGrid items={listings} itemPath="/my-listings/listing/:itemID" />
       <Link to={"/create-listing"}>
         <button>Create New Listing</button>
       </Link>
+      <ListingGrid items={listings} itemPath="/my-listings/listing/:itemID" />
     </div>
   );
 }

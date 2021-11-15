@@ -9,7 +9,6 @@ import {
   Switch,
   Route,
   Redirect,
-  withRouter,
 } from "react-router-dom";
 
 import Login from "./login-page/Login";
@@ -81,15 +80,13 @@ function App() {
 
         <Route exact path={"/my-listings/listing/:id"}>
           {sucDelete ? (
-              <Redirect to={"/my-listings"}/>
+            <Redirect to={"/my-listings"} />
           ) : (
-              <div>
-                <NavBar userData={userData}/>
-                <MyListingsListing setSucDelete={setSucDelete}/>
-              </div>
-            )
-          }
-
+            <div>
+              <NavBar userData={userData} />
+              <MyListingsListing setSucDelete={setSucDelete} />
+            </div>
+          )}
         </Route>
 
         <Route exact path="/about-page">
