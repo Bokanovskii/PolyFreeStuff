@@ -50,4 +50,6 @@ const ListingSchema = new mongoose.Schema(
   { collection: "Listings" }
 );
 
+ListingSchema.index({ "$**": "text" });
+
 module.exports = ListingSchema;
