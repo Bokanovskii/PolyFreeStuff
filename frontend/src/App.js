@@ -103,6 +103,19 @@ function App() {
 
         </Route>
 
+        <Route exact path={"/homepage/listing/:id"}>
+          {sucDelete ? (
+              <Redirect to={"/homepage"}/>
+          ) : (
+              <div>
+                <NavBar userData={userData}/>
+                <HomePageListing/>
+              </div>
+          )
+          }
+
+        </Route>
+
         <Route exact path="/about-page">
           <NavBar userData={userData} />
           <AboutPage />
