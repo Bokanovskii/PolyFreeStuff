@@ -501,6 +501,16 @@ h1 {
   border-radius: var(--radius);
 }
 
+/* MY LISTING PAGE */
+
+#my-listings-page #create-listing-add {
+  display: grid;
+  grid-template-columns: 0fr 0fr;
+  place-items: center;
+  white-space: nowrap;
+  gap: 1rem;
+}
+
 /* LISTING PAGE */
 
 #listing-page-grid {

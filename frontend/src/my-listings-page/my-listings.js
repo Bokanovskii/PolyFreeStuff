@@ -32,7 +32,10 @@ function MyListings(props) {
     <div id="my-listings-page" className="usr-page">
       <h1>My Listings</h1>
       <Link to={"/create-listing"}>
-        <button>Create New Listing</button>
+        <button id="create-listing-add">
+          <span className="material-icons">add</span>
+          Create New Listing
+        </button>
       </Link>
       <ListingGrid items={listings} itemPath="/my-listings/listing/:itemID" />
     </div>
