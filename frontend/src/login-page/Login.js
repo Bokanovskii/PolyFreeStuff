@@ -1,23 +1,22 @@
 import { useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import settings from "../settings";
 
 function Login(props) {
   const [validEmail, setValidEmail] = useState(null);
-  let history = useHistory();
 
-  async function login(email, setEmail, setLoggedIn) {
+  async function login(email, setUserData) {
     //Make get req here when backend ready
     await axios
-      .get("http://localhost:5000/login/".concat(email.toString()))
+      .get(settings.URLBase.concat("/login/").concat(email.toString()))
       .then((response) => {
         let status = response.status;
         if (status === 201) {
-          console.log("Good login");
-          setEmail(email);
-          localStorage.setItem("email", email);
-          setLoggedIn(true);
-          history.push("/");
+          localStorage.setItem("userData", JSON.stringify(response.data));
+          setUserData(response.data);
+        } else {
+          localStorage.removeItem("userData");
+          setUserData(null);
         }
       })
       .catch((error) => {
@@ -26,12 +25,10 @@ function Login(props) {
   }
 
   function checkLoggedIn() {
-    console.log(props.email);
-    const loggedInEmail = localStorage.getItem("email");
-    if (props.loggedIn || loggedInEmail) {
-      history.push("/");
+    if (localStorage.getItem("userData")) {
       return <span>Successfully Logged In</span>;
     }
+    props.setUserData(null);
     return;
   }
 
@@ -48,7 +45,7 @@ function Login(props) {
     let emailLongerThan0 = email.substr(0, email.indexOf("@")).length > 0;
     if (endsWithCPEmail && emailLongerThan0) {
       setValidEmail(true);
-      login(email, props.setEmail, props.setLoggedIn);
+      login(email, props.setUserData);
     } else {
       setValidEmail(false);
     }

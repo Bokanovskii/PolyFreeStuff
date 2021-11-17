@@ -2,6 +2,7 @@ import "./index.css";
 //import './App.css';
 import { useState, useEffect } from "react";
 import axios from "axios";
+import settings from "./settings";
 
 import {
   BrowserRouter as Router,
@@ -17,37 +18,40 @@ import MyListings from "./my-listings-page/my-listings";
 import AccountInfo from "./account-info/account-info";
 import ProductPage from "./product-page/product-page";
 import NavBar from "./navigation-buttons/navigation-buttons";
+import CreateListing from "./my-listings-page/create-listing";
+import MyListingsListing from "./listings/myListingsListing";
+import HomePageListing from "./listings/homepageListing";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [email, setEmail] = useState("");
+  const [userData, setUserData] = useState(null);
+  const [validCreateListing, setValidCreateListing] = useState(false);
+  const [sucDelete, setSucDelete] = useState(false);
 
   async function checkLogin() {
-    const loggedInEmail = localStorage.getItem("email");
-    if (loggedInEmail) {
+    const LSUserData = JSON.parse(localStorage.getItem("userData"));
+    if (LSUserData) {
       await axios
-        .get("http://localhost:5000/login/".concat(loggedInEmail.toString()))
+        .get(
+          settings.URLBase.concat("/user/").concat(LSUserData["_id"].toString())
+        )
         .then((response) => {
           if (response.status === 201) {
-            setEmail(loggedInEmail);
-            setLoggedIn(true);
+            localStorage.setItem("userData", JSON.stringify(response.data));
+            setUserData(response.data);
           } else {
-            setEmail("");
-            setLoggedIn(false);
-            localStorage.removeItem("email");
+            localStorage.removeItem("userData");
+            setUserData(null);
           }
         });
     } else {
-      setEmail("");
-      setLoggedIn(false);
-      localStorage.removeItem("email");
+      localStorage.removeItem("userData");
+      setUserData(null);
     }
   }
 
   function logout() {
-    localStorage.removeItem("email");
-    setEmail("");
-    setLoggedIn(false);
+    localStorage.removeItem("userData");
+    setUserData(null);
   }
 
   useEffect(() => {
@@ -58,51 +62,97 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/login">
-          <Login
-            email={email}
-            setEmail={setEmail}
-            loggedIn={loggedIn}
-            setLoggedIn={setLoggedIn}
-          />
+          {userData ? (
+            <Redirect to="/" />
+          ) : (
+            <Login userData={userData} setUserData={setUserData} />
+          )}
         </Route>
         <Route exact path="/my-listings">
-          {!loggedIn ? (
+          {!userData ? (
             <Redirect to="/login" />
           ) : (
             <div>
-              <NavBar loggedIn={loggedIn} />
-              <MyListings />
+              <NavBar userData={userData} />
+              <MyListings userData={userData} />
             </div>
           )}
         </Route>
+
+        <Route exact path={"/my-listings/listing/:id"}>
+          {sucDelete ? (
+            <Redirect to={"/my-listings"} />
+          ) : (
+            <div>
+              <NavBar userData={userData} />
+              <MyListingsListing setSucDelete={setSucDelete} />
+            </div>
+          )}
+        </Route>
+
+        <Route exact path={"/homepage/listing/:id"}>
+              <div>
+                <NavBar userData={userData}/>
+                <HomePageListing/>
+              </div>
+        </Route>
+
+        <Route exact path={"/homepage/listing/:id"}>
+          {sucDelete ? (
+              <Redirect to={"/homepage"}/>
+          ) : (
+              <div>
+                <NavBar userData={userData}/>
+                <HomePageListing/>
+              </div>
+          )
+          }
+
+        </Route>
+
         <Route exact path="/about-page">
-          <NavBar loggedIn={loggedIn} />
+          <NavBar userData={userData} />
           <AboutPage />
         </Route>
         <Route exact path="/account-info">
-          {!loggedIn ? (
+          {!userData ? (
             <Redirect to="/login" />
           ) : (
             <div>
-              <NavBar loggedIn={loggedIn} />
+              <NavBar userData={userData} />
               <AccountInfo logout={logout} />
             </div>
           )}
         </Route>
         <Route exact path="/product-page">
-          <NavBar loggedIn={loggedIn} />
+          <NavBar userData={userData} />
           <ProductPage />
         </Route>
+        <Route exact path="/create-listing">
+          {validCreateListing ? (
+            () => {
+              console.log("Reading as true...");
+              setValidCreateListing(false);
+              return <Redirect to={"/my-listings"} />;
+            }
+          ) : (
+            <div>
+              <NavBar userData={userData} />
+              <CreateListing
+                setValidCreateListing={setValidCreateListing}
+                userData={userData}
+              />
+            </div>
+          )}
+        </Route>
         <Route exact path="/">
-          {" "}
           {/* homepage */}
-          <NavBar loggedIn={loggedIn} />
+          <NavBar userData={userData} />
           <Homepage />
         </Route>
         <Route path="/">
-          {" "}
           {/* 404 page not found */}
-          <NavBar loggedIn={loggedIn} />
+          <NavBar userData={userData} />
           <PageNotFound />
         </Route>
       </Switch>

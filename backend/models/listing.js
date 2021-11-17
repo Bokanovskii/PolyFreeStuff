@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const path = require("path");
 
 const ListingSchema = new mongoose.Schema(
   {
@@ -21,6 +22,8 @@ const ListingSchema = new mongoose.Schema(
       type: String,
       required: false,
       trim: true,
+      default: "https://www.freeiconspng.com/uploads/no-image-icon-15.png",
+      // TODO: save to imgur or whatever service and host this image there instead of using this url ^^^
     },
     seller: {
       type: mongoose.Schema.Types.ObjectId,
@@ -40,10 +43,16 @@ const ListingSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    categories: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
   },
   { collection: "Listings" }
 );
 
-const Listing = mongoose.model("Listing", ListingSchema);
+ListingSchema.index({ "$**": "text" });
 
-module.exports = Listing;
+module.exports = ListingSchema;
