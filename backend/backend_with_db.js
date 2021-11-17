@@ -19,8 +19,8 @@ const {
 } = require("./listing-services");
 const process = require("process");
 
-const UserSchema = require("./models/user");
-const ListingSchema = require("./models/listing");
+const userSchema = require("./models/user");
+const listingSchema = require("./models/listing");
 
 const app = express();
 const port = 5000;
@@ -108,7 +108,7 @@ app.get("/listing/:id", async (req, res) => {
 app.get("/listings", async (req, res) => {
   // if orderBy not provided, by default order by creation_date
   // {'start': 1, 'end': 4, 'orderBy': 'name', 'categories': [''], 'search': '', 'getUser': 'true'}
-  const listingsFromDb = getListingsFromQuery(req.query);
+  const listingsFromDb = await getListingsFromQuery(req.query);
   if ("getUser" in req.query && req.query["getUser"] === "true") {
     for (var i = 0; i < listingsFromDb.length; i++) {
       listingsFromDb[i] = await getSellerDataWithinListing(listingsFromDb[i]);
@@ -135,8 +135,8 @@ app.delete("/listing/:id", async (req, res) => {
 
 // Delete all users and lisitings from database
 app.delete("/reset_db", async (req, res) => {
-  const userModel = getConnection().model("User", UserSchema);
-  const listingModel = getConnection().model("Listing", ListingSchema);
+  const userModel = getConnection().model("User", userSchema);
+  const listingModel = getConnection().model("Listing", listingSchema);
   await listingModel.deleteMany();
   await userModel.deleteMany();
   res.status(201).send();

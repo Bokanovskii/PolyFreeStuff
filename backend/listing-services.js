@@ -4,7 +4,7 @@ const { getConnection } = require("./user-services");
 
 async function getListingsFromQuery(params) {
   // params is of the form: {'start': 1, 'end': 10, 'orderBy': 'creation_date', 'categories': [], 'search': ''}
-  const listingModel = getConnection().model("Listing", ListingSchema);
+  const listingModel = getConnection().model("Listing", listingSchema);
   var filteredListings;
   var listingSearchParams = {};
   if ("search" in params)
@@ -56,19 +56,19 @@ async function addListing(listing) {
 }
 
 async function getListingById(id) {
-  const listingModel = getConnection().model("Listing", ListingSchema);
+  const listingModel = getConnection().model("Listing", listingSchema);
   return await listingModel.findById(id);
 }
 
 async function getSellerDataWithinListing(listingFromDb) {
-  const userModel = getConnection().model("User", UserSchema);
+  const userModel = getConnection().model("User", userSchema);
   listingFromDb["seller"] = await userModel.findById(listingFromDb["seller"]);
   return listingFromDb;
 }
 
 async function getListingsForUser(userId, query) {
-  const userModel = getConnection().model("User", UserSchema);
-  const listingModel = getConnection().model("Listing", ListingSchema);
+  const userModel = getConnection().model("User", userSchema);
+  const listingModel = getConnection().model("Listing", listingSchema);
   const user = await userModel.findById(userId);
 
   const listings = [];

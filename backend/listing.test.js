@@ -5,7 +5,7 @@ const { setConnection, createNewUser } = require("./user-services");
 const {
   addListing,
   deleteListing,
-  filterAndOrder,
+  getListingsFromQuery,
 } = require("./listing-services");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 const { test, expect } = require("@jest/globals");
@@ -107,7 +107,7 @@ test("Get category filtered and date (not specified) listings (requires addUser 
   expect(listings_from_db.length).toEqual(4);
 
   let params = { categories: ["hardware"] };
-  const filteredListings = await filterAndOrder(listingModel, params);
+  const filteredListings = await getListingsFromQuery(params);
   expect(filteredListings.length).toEqual(3);
 
   expect(filteredListings[0]["name"]).toEqual(newListing["name"]);
@@ -125,7 +125,7 @@ test("Sorted get category filtered and dated (not specified) listings (requires 
   expect(listings_from_db.length).toEqual(4);
 
   let params = { categories: ["hardware"] };
-  const filteredListings = await filterAndOrder(listingModel, params);
+  const filteredListings = await getListingsFromQuery(params);
   expect(filteredListings.length).toEqual(3);
 
   expect(filteredListings[0]["name"]).toEqual(newListing_2["name"]);
@@ -145,7 +145,7 @@ test("Sorted get category and dated (specified) listings (requires addUser and a
     categories: ["hardware"],
     orderBy: "creation_date",
   };
-  const filteredListings = await filterAndOrder(listingModel, params);
+  const filteredListings = await getListingsFromQuery(params);
   expect(filteredListings.length).toEqual(3);
 
   expect(filteredListings[0]["name"]).toEqual(newListing["name"]);
@@ -164,7 +164,7 @@ test("Sorted get named listings (requires addUser and addListing)", async () => 
   let params = {
     orderBy: "name",
   };
-  const filteredListings = await filterAndOrder(listingModel, params);
+  const filteredListings = await getListingsFromQuery(params);
   expect(filteredListings.length).toEqual(3);
 
   expect(filteredListings[0]["name"]).toEqual(newListing["name"]);
@@ -184,7 +184,7 @@ test("Get listings sliced (requires addUser and addListing)", async () => {
     start: 0,
     end: 2,
   };
-  const filteredListings = await filterAndOrder(listingModel, params);
+  const filteredListings = await getListingsFromQuery(params);
   expect(filteredListings.length).toEqual(2);
 
   expect(filteredListings[0]["name"]).toEqual(newListing["name"]);
@@ -203,7 +203,7 @@ test("Get listings sliced past tot index (requires addUser and addListing)", asy
     start: 0,
     end: 10,
   };
-  const filteredListings = await filterAndOrder(listingModel, params);
+  const filteredListings = await getListingsFromQuery(params);
   expect(filteredListings.length).toEqual(3);
 
   expect(filteredListings[0]["name"]).toEqual(newListing["name"]);
@@ -225,7 +225,7 @@ test("Get listing with multi-level category filtering (requires addUser and addL
     end: 10,
     categories: ["hardware", "tools"],
   };
-  const filteredListings = await filterAndOrder(listingModel, params);
+  const filteredListings = await getListingsFromQuery(params);
   expect(filteredListings.length).toEqual(2);
 
   expect(filteredListings[0]["name"]).toEqual(newListing["name"]);
@@ -244,7 +244,7 @@ test("Get listing based on full search query: name (requires addUser and addList
   let params = {
     search: "axe",
   };
-  const filteredListings = await filterAndOrder(listingModel, params);
+  const filteredListings = await getListingsFromQuery(params);
   expect(filteredListings.length).toEqual(1);
 
   expect(filteredListings[0]["name"]).toEqual(newListing["name"]);
@@ -262,7 +262,7 @@ test("Get listing based on full search query: category (requires addUser and add
   let params = {
     search: "hardware",
   };
-  const filteredListings = await filterAndOrder(listingModel, params);
+  const filteredListings = await getListingsFromQuery(params);
   expect(filteredListings.length).toEqual(3);
 
   expect(filteredListings[0]["name"]).toEqual(newListing["name"]);
@@ -282,7 +282,7 @@ test("Get listing based on partial search query: name (requires addUser and addL
   let params = {
     search: "fridge",
   };
-  const filteredListings = await filterAndOrder(listingModel, params);
+  const filteredListings = await getListingsFromQuery(params);
   expect(filteredListings.length).toEqual(1);
 
   expect(filteredListings[0]["name"]).toEqual(newListing_3["name"]);
@@ -300,7 +300,7 @@ test("Get listing based on pre-stemmed search query: name (requires addUser and 
   let params = {
     search: "fridges",
   };
-  const filteredListings = await filterAndOrder(listingModel, params);
+  const filteredListings = await getListingsFromQuery(params);
   expect(filteredListings.length).toEqual(1);
 
   expect(filteredListings[0]["name"]).toEqual(newListing_3["name"]);

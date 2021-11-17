@@ -64,22 +64,22 @@ async function addUser(user) {
 }
 
 async function getUserFromEmail(email) {
-  const userModel = getConnection().model("User", UserSchema);
+  const userModel = getConnection().model("User", userSchema);
   return await userModel.find({ email: email });
 }
 
 async function getAllUsers() {
-  const userModel = getConnection().model("User", UserSchema);
+  const userModel = getConnection().model("User", userSchema);
   return await userModel.find();
 }
 
 async function updateUserById(user, id) {
-  const userModel = getConnection().model("User", UserSchema);
+  const userModel = getConnection().model("User", userSchema);
   return await userModel.findByIdAndUpdate(id, user);
 }
 
 async function getUserById(id) {
-  const userModel = getConnection().model("User", UserSchema);
+  const userModel = getConnection().model("User", userSchema);
   return await userModel.findById(id);
 }
 
