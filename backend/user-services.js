@@ -63,6 +63,26 @@ async function addUser(user) {
   }
 }
 
+async function getUserFromEmail(email) {
+  const userModel = getConnection().model("User", UserSchema);
+  return await userModel.find({ email: email });
+}
+
+async function getAllUsers() {
+  const userModel = getConnection().model("User", UserSchema);
+  return await userModel.find();
+}
+
+async function updateUserById(user, id) {
+  const userModel = getConnection().model("User", UserSchema);
+  return await userModel.findByIdAndUpdate(id, user);
+}
+
+async function getUserById(id) {
+  const userModel = getConnection().model("User", UserSchema);
+  return await userModel.findById(id);
+}
+
 async function deleteUser(id) {
   const { deleteListing } = require("./listing-services");
   const userModel = getConnection().model("User", userSchema);
@@ -84,3 +104,7 @@ exports.addUser = addUser;
 exports.deleteUser = deleteUser;
 exports.setConnection = setConnection;
 exports.getConnection = getConnection;
+exports.getUserFromEmail = getUserFromEmail;
+exports.getAllUsers = getAllUsers;
+exports.updateUserById = updateUserById;
+exports.getUserById = getUserById;
