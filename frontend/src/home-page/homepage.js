@@ -51,11 +51,13 @@ function Homepage() {
           max="20"
         />
         <div id="pagination">
-          <button onClick={() => prevPage()}>
-            <span className="material-icons">arrow_back_ios</span>Prev
+          <button onClick={() => prevPage()} disabled={page <= 0}>
+            <span className="material-icons">arrow_back_ios</span>
+            Prev
           </button>
-          <button onClick={() => nextPage()}>
-            Next<span className="material-icons">arrow_forward_ios</span>
+          <button onClick={() => nextPage()} disabled={page >= numPages}>
+            Next
+            <span className="material-icons">arrow_forward_ios</span>
           </button>
         </div>
       </div>

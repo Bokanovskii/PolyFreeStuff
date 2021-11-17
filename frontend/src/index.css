@@ -161,6 +161,16 @@ button:active,
   border-color: var(--black);
 }
 
+input[type="button"]:disabled,
+input[type="submit"]:disabled,
+button:disabled,
+.btn:disabled {
+  background-color: var(--gray);
+  color: var(--white);
+  border-color: var(--gray);
+  cursor: auto;
+}
+
 a:focus,
 button:focus,
 input:focus,
