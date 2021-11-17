@@ -114,6 +114,12 @@ app.get("/listings", async (req, res) => {
   res.status(201).send({ listing_list: listingsFromDb });
 });
 
+app.get("/num_listings", async (req, res) => {
+  const listingModel = getConnection().model("Listing", ListingSchema);
+  let allListings = await listingModel.find();
+  res.status(201).send({ numListings: allListings.length });
+});
+
 app.get("/listings_from_user/:id", async (req, res) => {
   const id = req.params["id"];
   const userModel = getConnection().model("User", UserSchema);
