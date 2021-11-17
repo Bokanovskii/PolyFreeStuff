@@ -501,6 +501,26 @@ h1 {
   border-radius: var(--radius);
 }
 
+/* PAGINATION */
+
+#pagination {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-items: center;
+  gap: var(--gap);
+}
+
+#pagination button {
+  display: grid;
+  grid-template-columns: 0fr 0fr;
+  place-items: center;
+  gap: 1em;
+}
+
+#pagination button:first-child span {
+  transform: translateX(calc(var(--icon-size) / 4));
+}
+
 /* MY LISTING PAGE */
 
 #my-listings-page #create-listing-add {

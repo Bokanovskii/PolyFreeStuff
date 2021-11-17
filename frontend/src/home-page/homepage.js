@@ -52,10 +52,10 @@ function Homepage() {
         />
         <div id="pagination">
           <button onClick={() => prevPage()}>
-            <span className="material-icons">arrow_back_ios_new</span>Prev
+            <span className="material-icons">arrow_back_ios</span>Prev
           </button>
           <button onClick={() => nextPage()}>
-            <span className="material-icons">arrow_forward_ios_new</span>Next
+            Next<span className="material-icons">arrow_forward_ios</span>
           </button>
         </div>
       </div>
