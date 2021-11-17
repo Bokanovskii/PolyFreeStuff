@@ -39,7 +39,7 @@ function Homepage() {
         });
     }
     getAllListings();
-  }, [page]);
+  }, [numPages, page]);
 
   return (
     <div>
@@ -51,10 +51,10 @@ function Homepage() {
           max="20"
         />
         <div id="pagination">
-          <button onClick={prevPage()}>
+          <button onClick={() => prevPage()}>
             <span className="material-icons">arrow_back_ios_new</span>Prev
           </button>
-          <button onClick={nextPage()}>
+          <button onClick={() => nextPage()}>
             <span className="material-icons">arrow_forward_ios_new</span>Next
           </button>
         </div>
