@@ -1,3 +1,4 @@
+![Node.js CI](https://github.com/Bokanovskii/PolyFreeStuff/actions/workflows/node.js.yml/badge.svg)
 
 Code Style: 
 - Install VSCode extnesion 'Prettier'
