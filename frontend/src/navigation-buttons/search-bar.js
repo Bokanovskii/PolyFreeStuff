@@ -1,10 +1,19 @@
 import React from "react";
 
-function SearchBar() {
+function SearchBar(props) {
+
+    async function handleSearch(e){
+        e.preventDefault();
+        props.setSearchValue(e.target.search.value);
+    }
+
   return (
     <div id="search-area">
       <div id="search-bar">
-        <input type="text" placeholder="Search..." />
+          <form onSubmit={(e) => handleSearch(e)}>
+              <input type="text" name="search" placeholder="Search..."/>
+              <button>Submit</button>
+          </form>
       </div>
     </div>
   );

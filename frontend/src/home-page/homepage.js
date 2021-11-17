@@ -3,12 +3,14 @@ import axios from "axios";
 import settings from "../settings";
 import ListingGrid from "../listings/listing-grid";
 
-function Homepage() {
+function Homepage(props) {
   const [listings, setListings] = useState([]);
 
   async function getAllListings() {
+      console.log(props.searchValue)
+      console.log("Calling: ".concat(`/listings?getUser=${true}${props.searchValue?("search="+props.searchValue):("")}`))
     await axios
-      .get(settings.URLBase.concat(`/listings?getUser=${true}`))
+      .get(settings.URLBase.concat(`/listings?getUser=${true}${props.searchValue?("search="+props.searchValue):("")}`))
       .then((response) => {
         let status = response.status;
         if (status === 201) {

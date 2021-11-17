@@ -26,6 +26,7 @@ function App() {
   const [userData, setUserData] = useState(null);
   const [validCreateListing, setValidCreateListing] = useState(false);
   const [sucDelete, setSucDelete] = useState(false);
+  const [searchValue, setSearchValue] = useState("")
 
   async function checkLogin() {
     const LSUserData = JSON.parse(localStorage.getItem("userData"));
@@ -73,7 +74,10 @@ function App() {
             <Redirect to="/login" />
           ) : (
             <div>
-              <NavBar userData={userData} />
+              <NavBar userData={userData}
+                      setSearchValue={setSearchValue}
+                      searchValue={searchValue}
+              />
               <MyListings userData={userData} />
             </div>
           )}
@@ -84,7 +88,10 @@ function App() {
             <Redirect to={"/my-listings"} />
           ) : (
             <div>
-              <NavBar userData={userData} />
+              <NavBar userData={userData}
+                      setSearchValue={setSearchValue}
+                      searchValue={searchValue}
+              />
               <MyListingsListing setSucDelete={setSucDelete} />
             </div>
           )}
@@ -92,7 +99,10 @@ function App() {
 
         <Route exact path={"/homepage/listing/:id"}>
               <div>
-                <NavBar userData={userData}/>
+                <NavBar userData={userData}
+                        setSearchValue={setSearchValue}
+                        searchValue={searchValue}
+                />
                 <HomePageListing/>
               </div>
         </Route>
@@ -102,7 +112,10 @@ function App() {
               <Redirect to={"/homepage"}/>
           ) : (
               <div>
-                <NavBar userData={userData}/>
+                <NavBar userData={userData}
+                        setSearchValue={setSearchValue}
+                        searchValue={searchValue}
+                />
                 <HomePageListing/>
               </div>
           )
@@ -111,7 +124,10 @@ function App() {
         </Route>
 
         <Route exact path="/about-page">
-          <NavBar userData={userData} />
+          <NavBar userData={userData}
+                  setSearcValue={setSearchValue}
+                  searchValue={searchValue}
+          />
           <AboutPage />
         </Route>
         <Route exact path="/account-info">
@@ -119,13 +135,19 @@ function App() {
             <Redirect to="/login" />
           ) : (
             <div>
-              <NavBar userData={userData} />
+              <NavBar userData={userData}
+                      setSearchValue={setSearchValue}
+                      searchValue={searchValue}
+              />
               <AccountInfo logout={logout} />
             </div>
           )}
         </Route>
         <Route exact path="/product-page">
-          <NavBar userData={userData} />
+          <NavBar userData={userData}
+                  setSearchValue={setSearchValue}
+                  searchValue={searchValue}
+          />
           <ProductPage />
         </Route>
         <Route exact path="/create-listing">
@@ -137,7 +159,10 @@ function App() {
             }
           ) : (
             <div>
-              <NavBar userData={userData} />
+              <NavBar userData={userData}
+                      setSearchValue={setSearchValue}
+                      searchValue={searchValue}
+              />
               <CreateListing
                 setValidCreateListing={setValidCreateListing}
                 userData={userData}
@@ -147,12 +172,18 @@ function App() {
         </Route>
         <Route exact path="/">
           {/* homepage */}
-          <NavBar userData={userData} />
-          <Homepage />
+          <NavBar userData={userData}
+                  setSearchValue={setSearchValue}
+                  searchValue={searchValue}
+          />
+          <Homepage searchValue={searchValue}/>
         </Route>
         <Route path="/">
           {/* 404 page not found */}
-          <NavBar userData={userData} />
+          <NavBar userData={userData}
+                  setSearchValue={setSearchValue}
+                  searchValue={searchValue}
+          />
           <PageNotFound />
         </Route>
       </Switch>
