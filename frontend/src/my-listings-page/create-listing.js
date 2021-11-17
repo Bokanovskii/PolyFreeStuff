@@ -1,43 +1,45 @@
 import axios from "axios";
 import settings from "../settings";
 import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
 import { categories } from "../categories";
 import Catlist from "./category-checkboxes";
 
 function CreateListing(props) {
-  const [listingErr, setListingErr] = useState(false);
+  // const [listingErr, setListingErr] = useState(false);
   const [imageUpload, setImageUpload] = useState({
     file: require("../no-image-icon-15.png").default,
   });
   const [selectedCats, setSelectedCats] = useState(
     new Array(categories.length).fill(false)
   );
-  let history = useHistory();
 
   async function createListing(
     name,
     description,
-    seller /*, image, location, cats */
+    seller,
+    image,
+    location,
+    cats
   ) {
     await axios
       .post(settings.URLBase.concat("/listing"), {
         name: name,
         description: description,
         seller: seller,
-        // image: image,
-        // location: location,
-        // cats: cats,
+        pickup_location: location,
+        categories: cats,
         is_available: true,
+        ...(image !== "" && { image: image }),
       })
       .then((response) => {
         if (response.status === 201) {
           console.log("Successfully Posted");
           props.setValidCreateListing(true);
-        } else {
+        } /*else {
           setListingErr(true);
-        }
-      });
+        }*/
+      })
+      .catch((e) => alert(`${e}\nPlease fill out all required fields.`));
   }
 
   async function handleSubmit(e) {
@@ -45,14 +47,12 @@ function CreateListing(props) {
     let name = e.target.name.value;
     let description = e.target.description.value;
     let seller = props.userData["_id"];
-    let image = e.target.image.value; // add to post request
-    let location = e.target.location.value; // add to post request
-    let cats = JSON.stringify(
-      categories // add to post request
-        .filter((cat, index) => selectedCats[index])
-        .map((cat) => cat.value)
-    );
-    await createListing(name, description, seller /*, image, location, cats */);
+    let image = e.target.image.value;
+    let location = e.target.location.value;
+    let cats = categories
+      .filter((cat, index) => selectedCats[index])
+      .map((cat) => cat.value);
+    await createListing(name, description, seller, image, location, cats);
   }
 
   const handleFileUpload = (event) => {
@@ -65,69 +65,35 @@ function CreateListing(props) {
     }
   };
 
-  // return (
-  //   <div id="create-listings">
-  //     <form onSubmit={(e) => handleSubmit(e)}>
-  //       <label>Product Name: </label>
-  //       <input
-  //         type={"text"}
-  //         id={"listing-name"}
-  //         name={"name"}
-  //         placeholder="Used Couch!"
-  //       />
-  //       <label>Product Description: </label>
-  //       <input
-  //         type={"text"}
-  //         id={"listing-description"}
-  //         name={"description"}
-  //         placeholder={"This is a used couch, here for free!!!"}
-  //       />
-  //       <label>Pickup Location: </label>
-  //       <input
-  //         type={"text"}
-  //         id={"listing-location"}
-  //         name={"location"}
-  //         placeholder={"Yakitutu"}
-  //       />
-  //       <div>
-  //         {() => {
-  //           if (listingErr) {
-  //             return <p>Listing Error</p>;
-  //           }
-  //         }}
-  //       </div>
-  //       <button type={"submit"} id={"listing-btn"}>
-  //         Create Listing
-  //       </button>
-  //     </form>
-  //   </div>
-  // );
-
   return (
-    <div id="create-listings">
+    <div id="create-listings" className="usr-page">
       <h1>Create New Listing</h1>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <div id="seller-view-page" className="usr-page">
+        <div id="seller-view-page">
           <div id="seller-view-left">
-            <label>Item name:
+            <label>
+              Item name:
               <input type="text" name="name" placeholder="Item" />
             </label>
-            <label>Item description:
+            <label>
+              Item description:
               <textarea name="description" placeholder="Description"></textarea>
             </label>
-            <label>Planned location of transaction:
+            <label>
+              Planned location of transaction:
               <input
                 type="text"
                 name="location"
                 placeholder="On-campus location"
               />
             </label>
-            <label>Categories:
-            <Catlist
-              selectedCats={selectedCats}
-              setSelectedCats={setSelectedCats}
-              categories={categories}
-            />
+            <label>
+              Categories:
+              <Catlist
+                selectedCats={selectedCats}
+                setSelectedCats={setSelectedCats}
+                categories={categories}
+              />
             </label>
           </div>
           <div id="item-image-browse" className="file-area btn">
@@ -140,11 +106,7 @@ function CreateListing(props) {
               type="file"
               name="image"
               accept="image/*"
-              onChange={
-                (e) => handleFileUpload(e)
-                /*(document.getElementById("item-img").src =
-                  window.URL.createObjectURL(this.files[0]))*/
-              }
+              onChange={(e) => handleFileUpload(e)}
             />
           </div>
           <input type="submit" id="item-submit-input" />
