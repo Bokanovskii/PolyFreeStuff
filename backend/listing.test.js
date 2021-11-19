@@ -1,11 +1,18 @@
 const mongoose = require("mongoose");
 const ListingSchema = require("./models/listing");
 const UserSchema = require("./models/user");
-const { setConnection, createNewUser } = require("./user-services");
+const {
+  setConnection,
+  createNewUser,
+  updateUserById,
+} = require("./user-services");
 const {
   addListing,
   deleteListing,
   getListingsFromQuery,
+  getListingById,
+  getSellerDataWithinListing,
+  getListingsForUser,
 } = require("./listing-services");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 const { test, expect } = require("@jest/globals");
@@ -39,7 +46,7 @@ afterAll(async () => {
 
 beforeEach(async () => {
   let email = "chuck@calpoly.edu";
-  let newUser = await createNewUser(email);
+  newUser = await createNewUser(email);
   newListing = {
     name: "axe",
     seller: newUser._id,
@@ -82,6 +89,13 @@ test("Add listing (requires addUser)", async () => {
   expect(listings_from_db.length).toEqual(1);
 });
 
+test("Add listing bad", async () => {
+  let badListing = {
+    name: "haha",
+  };
+  expect(await addListing(badListing)).toBeFalsy();
+});
+
 test("Delete listing (requires addUser and addListing)", async () => {
   expect(await addListing(newListing)).toBeTruthy();
   let users = await userModel.find();
@@ -95,6 +109,14 @@ test("Delete listing (requires addUser and addListing)", async () => {
 
   const listings_from_db = await listingModel.find();
   expect(listings_from_db.length).toEqual(0);
+});
+
+test("Delete listing bad", async () => {
+  expect(await addListing(newListing)).toBeTruthy();
+  let users = await userModel.find();
+  expect(users.length).toEqual(1);
+
+  expect(await deleteListing("haha")).toBeFalsy();
 });
 
 test("Get category filtered and date (not specified) listings (requires addUser and addListing)", async () => {
@@ -113,6 +135,31 @@ test("Get category filtered and date (not specified) listings (requires addUser 
   expect(filteredListings[0]["name"]).toEqual(newListing["name"]);
   expect(filteredListings[1]["name"]).toEqual(newListing_2["name"]);
   expect(filteredListings[2]["name"]).toEqual(newListing_3["name"]);
+});
+
+test("Get listing by id", async () => {
+  expect(await addListing(newListing)).toBeTruthy();
+  const retListing = await getListingById(newListing._id);
+  expect(retListing._id).toEqual(newListing._id);
+});
+
+test("Get Seller data within listing", async () => {
+  expect(await addListing(newListing)).toBeTruthy();
+  newListing = await getSellerDataWithinListing(newListing);
+  expect(newListing["seller"]["email"]).toEqual(newUser["email"]);
+});
+
+test("Get listings for user", async () => {
+  expect(await addListing(newListing_4)).toBeTruthy();
+  expect(await addListing(newListing_3)).toBeTruthy();
+  expect(await addListing(newListing)).toBeTruthy();
+  expect(await addListing(newListing_2)).toBeTruthy();
+
+  const listings_from_db = await listingModel.find();
+  expect(listings_from_db.length).toEqual(4);
+
+  let userListings = await getListingsForUser(newUser._id, { getUser: "true" });
+  expect(userListings.length).toEqual(4);
 });
 
 test("Sorted get category filtered and dated (not specified) listings (requires addUser and addListing)", async () => {

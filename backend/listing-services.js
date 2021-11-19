@@ -1,6 +1,6 @@
 const userSchema = require("./models/user");
 const listingSchema = require("./models/listing");
-const { getConnection } = require("./user-services");
+const { getConnection, getUserById } = require("./user-services");
 
 async function getListingsFromQuery(params) {
   // params is of the form: {'start': 1, 'end': 10, 'orderBy': 'creation_date', 'categories': [], 'search': ''}
@@ -50,7 +50,6 @@ async function addListing(listing) {
     await userModel.findByIdAndUpdate(user["_id"], user);
     return true;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }
@@ -61,8 +60,7 @@ async function getListingById(id) {
 }
 
 async function getSellerDataWithinListing(listingFromDb) {
-  const userModel = getConnection().model("User", userSchema);
-  listingFromDb["seller"] = await userModel.findById(listingFromDb["seller"]);
+  listingFromDb["seller"] = await getUserById(listingFromDb["seller"]);
   return listingFromDb;
 }
 
@@ -73,16 +71,10 @@ async function getListingsForUser(userId, query) {
 
   const listings = [];
   for (var i = 0; i < user["listings"].length; i++) {
-    try {
-      let listing = await listingModel.findById(user["listings"][i]);
-      listing.seller =
-        "getUser" in query && query["getUser"] === "true"
-          ? user
-          : listing.seller;
-      listings.push(listing);
-    } catch (error) {
-      return null;
-    }
+    let listing = await listingModel.findById(user["listings"][i]);
+    listing.seller =
+      "getUser" in query && query["getUser"] === "true" ? user : listing.seller;
+    listings.push(listing);
   }
   listings.sort((first, second) => {
     if (second["creation_date"] < first["creation_date"]) return -1;
@@ -105,7 +97,6 @@ async function deleteListing(id) {
     await userModel.findByIdAndUpdate(user["_id"], user);
     return true;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }

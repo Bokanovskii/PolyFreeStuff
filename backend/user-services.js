@@ -44,9 +44,9 @@ async function createNewUser(email) {
     listings: [],
   };
   // if correctly placed in the database, return the created user
-  //    will have an '_id' variable appended as part of the addUser call
-  if (await addUser(basicUser)) {
-    return basicUser;
+  let newUser = await addUser(basicUser);
+  if (newUser != null) {
+    return newUser;
   } else return null;
 }
 
@@ -54,16 +54,15 @@ async function addUser(user) {
   const userModel = getConnection().model("User", userSchema);
   try {
     const userToAdd = new userModel(user);
-    let added_user = await userToAdd.save();
-    user["_id"] = added_user._id;
-    return true;
+    let addedUser = await userToAdd.save();
+    return addedUser;
   } catch (error) {
-    console.log(error);
-    return false;
+    return null;
   }
 }
 
 async function getUserFromEmail(email) {
+  // returns a list of users, will be length 0 if not found or length 1 if found.
   const userModel = getConnection().model("User", userSchema);
   return await userModel.find({ email: email });
 }
@@ -75,7 +74,9 @@ async function getAllUsers() {
 
 async function updateUserById(user, id) {
   const userModel = getConnection().model("User", userSchema);
-  return await userModel.findByIdAndUpdate(id, user);
+  return await userModel.findByIdAndUpdate(id, user, {
+    returnDocument: "after",
+  });
 }
 
 async function getUserById(id) {
@@ -94,7 +95,6 @@ async function deleteUser(id) {
     await userModel.findByIdAndDelete(id);
     return true;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }
