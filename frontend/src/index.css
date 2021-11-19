@@ -283,9 +283,47 @@ h1 {
   transition: background-color 0.1s;
 }
 
-#search-bar > input {
+#search-bar {
+  display: inline-grid;
+  align-items: center;
+  height: 100%;
   width: 100%;
   max-width: 60ch;
+  padding: 0 calc(var(--gap) * 2);
+  transition: background-color 0.1s;
+}
+
+#search-bar input,
+#search-drop {
+  width: 100%;
+  max-width: 60ch;
+}
+
+#search-area {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+#search-drop {
+  position: absolute;
+  display: none;
+  top: 100%;
+  width: 100%;
+  padding: calc(var(--gap) * 2);
+  background-color: var(--black);
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  transition: background-color 0.1s;
+}
+
+#search-area:focus-within #search-bar,
+#search-area:focus-within #search-drop {
+  background-color: var(--accent);
+}
+
+#search-area:focus-within #search-drop {
+  display: grid;
 }
 
 @media (max-width: 37.5rem) {

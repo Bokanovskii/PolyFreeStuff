@@ -1,4 +1,4 @@
-function Catbox(props) {
+export function Catbox(props) {
   return (
     <label className="checkbox-container">
       <input
