@@ -9,6 +9,7 @@ import {
   Switch,
   Route,
   Redirect,
+  useHistory
 } from "react-router-dom";
 
 import Login from "./login-page/Login";
@@ -22,11 +23,12 @@ import CreateListing from "./my-listings-page/create-listing";
 import MyListingsListing from "./listings/myListingsListing";
 import HomePageListing from "./listings/homepageListing";
 
-function App() {
+function App(props) {
   const [userData, setUserData] = useState(null);
   const [validCreateListing, setValidCreateListing] = useState(false);
   const [sucDelete, setSucDelete] = useState(false);
   const [searchValue, setSearchValue] = useState("")
+  let history = useHistory();
 
   async function checkLogin() {
     const LSUserData = JSON.parse(localStorage.getItem("userData"));
@@ -62,6 +64,7 @@ function App() {
   return (
     <Router>
       <Switch>
+
         <Route exact path="/login">
           {userData ? (
             <Redirect to="/" />
@@ -105,22 +108,6 @@ function App() {
                 />
                 <HomePageListing/>
               </div>
-        </Route>
-
-        <Route exact path={"/homepage/listing/:id"}>
-          {sucDelete ? (
-              <Redirect to={"/homepage"}/>
-          ) : (
-              <div>
-                <NavBar userData={userData}
-                        setSearchValue={setSearchValue}
-                        searchValue={searchValue}
-                />
-                <HomePageListing/>
-              </div>
-          )
-          }
-
         </Route>
 
         <Route exact path="/about-page">
@@ -176,7 +163,7 @@ function App() {
                   setSearchValue={setSearchValue}
                   searchValue={searchValue}
           />
-          <Homepage searchValue={searchValue}/>
+          <Homepage location={props.location}/>
         </Route>
         <Route path="/">
           {/* 404 page not found */}

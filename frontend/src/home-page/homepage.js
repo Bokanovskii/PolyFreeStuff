@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import settings from "../settings";
 import ListingGrid from "../listings/listing-grid";
+import {useHistory} from "react-router-dom";
 
 function Homepage(props) {
   const [listings, setListings] = useState([]);
+  const queryString = require("query-string");
+  let history = useHistory();
 
-  async function getAllListings() {
-      console.log(props.searchValue)
-      console.log("Calling: ".concat(`/listings?getUser=${true}${props.searchValue?("search="+props.searchValue):("")}`))
+  async function getAllListings(searchValue) {
+      console.log("Calling: ".concat(`/listings?getUser=${true}&${searchValue?("search="+searchValue):("")}`))
     await axios
-      .get(settings.URLBase.concat(`/listings?getUser=${true}${props.searchValue?("search="+props.searchValue):("")}`))
+      .get(settings.URLBase.concat(`/listings?getUser=${true}&${searchValue?("search="+searchValue):("")}`))
       .then((response) => {
         let status = response.status;
         if (status === 201) {
@@ -23,7 +25,8 @@ function Homepage(props) {
   }
 
   useEffect(() => {
-    getAllListings();
+      const parsed = queryString.parse(history.location.search)
+    getAllListings(parsed.search);
   }, []);
 
   return (
