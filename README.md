@@ -26,7 +26,6 @@ View our full UI protoype <a href="https://www.figma.com/file/dIHkl7bid9EDPGmS3L
 
 PASS  ./listing.test.js
 PASS  ./user.test.js
--------------------|---------|----------|---------|---------|-------------------
 File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
 -------------------|---------|----------|---------|---------|-------------------
 All files          |   95.38 |       75 |     100 |   95.93 |                   
@@ -36,7 +35,6 @@ All files          |   95.38 |       75 |     100 |   95.93 |
  backend/models    |     100 |      100 |     100 |     100 |                   
   listing.js       |     100 |      100 |     100 |     100 |                   
   user.js          |     100 |      100 |     100 |     100 |                   
--------------------|---------|----------|---------|---------|-------------------
 
 Test Suites: 2 passed, 2 total
 Tests:       27 passed, 27 total
