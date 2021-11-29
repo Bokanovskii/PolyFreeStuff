@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
+//const multer = require("multer");
 const { createNewUser, deleteUser, getConnection } = require("./user-services");
 const {
   addListing,
@@ -14,7 +16,25 @@ const ListingSchema = require("./models/listing");
 const app = express();
 const port = 5000;
 app.use(cors());
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({extended: false, limit: '50mb'}));
+app.use(bodyParser.json({limit: '50mb', extended: true}));
+
+/*
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads')
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + '-' + Date.now())
+  }
+});
+
+const upload = multer({storage: storage})
+
+app.post("/", upload.single("image"), (req, res, next) => {
+
+})*/
 
 app.get("/", async (req, res) => {
   res.status(201).send("hello PolyGold user");

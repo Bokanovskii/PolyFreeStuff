@@ -5,13 +5,28 @@ import { categories } from "../categories";
 import Catlist from "./category-checkboxes";
 
 function CreateListing(props) {
-  // const [listingErr, setListingErr] = useState(false);
+  const [imageBase64, setImageBase64] = useState("");
   const [imageUpload, setImageUpload] = useState({
     file: require("../no-image-icon-15.png").default,
   });
   const [selectedCats, setSelectedCats] = useState(
     new Array(categories.length).fill(false)
   );
+
+  function getBase64(file){
+
+    let reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onload= () => {
+      let data = reader.result;
+      let splitBase64 = data.split(",");
+      let base64 = splitBase64[1];
+      console.log(base64)
+      setImageBase64(base64);
+    }
+  }
 
   async function createListing(
     name,
@@ -47,7 +62,7 @@ function CreateListing(props) {
     let name = e.target.name.value;
     let description = e.target.description.value;
     let seller = props.userData["_id"];
-    let image = e.target.image.value;
+    let image = imageBase64;
     let location = e.target.location.value;
     let cats = categories
       .filter((cat, index) => selectedCats[index])
@@ -57,9 +72,11 @@ function CreateListing(props) {
 
   const handleFileUpload = (event) => {
     try {
+      let file = event.target.files[0]
       setImageUpload({
-        file: URL.createObjectURL(event.target.files[0]),
+        file: URL.createObjectURL(file),
       });
+      getBase64(file);
     } catch (error) {
       console.log(error);
     }
