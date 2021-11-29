@@ -9,15 +9,16 @@ on:
   pull_request:
     branches: [ main, dev ]
 
-defaults:
-  run:
-    working-directory: ./backend
-
 jobs:
-  build:
+  build-backend:
 
     runs-on: ubuntu-latest
-
+    env:
+      CI: false
+    defaults:
+      run:
+        working-directory: ./backend
+        
     strategy:
       matrix:
         node-version: [14.x]
@@ -39,3 +40,25 @@ jobs:
         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
         heroku_app_name: "poly-gold"
         heroku_email: "cward11@calpoly.edu"
+  
+  build-frontend:
+      runs-on: ubuntu-latest
+      defaults:
+        run:
+          working-directory: ./frontend
+
+      strategy:
+        matrix:
+          node-version: [14.x]
+          # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+      steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+      - run: npm run build --if-present
