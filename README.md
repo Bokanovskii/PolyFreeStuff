@@ -24,8 +24,9 @@ View our full UI protoype <a href="https://www.figma.com/file/dIHkl7bid9EDPGmS3L
 
 <h2>Code Coverage</h2>
 
-PASS  ./listing.test.js
-PASS  ./user.test.js
+<span>11/29/2021 11am<span>
+<span>PASS  ./listing.test.js<span>
+<span>PASS  ./user.test.js<span>
 File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
 -------------------|---------|----------|---------|---------|-------------------
 All files          |   95.38 |       75 |     100 |   95.93 |                   
@@ -40,3 +41,4 @@ Test Suites: 2 passed, 2 total
 Tests:       27 passed, 27 total
 Snapshots:   0 total
 Time:        2.532 s
+
