@@ -5,6 +5,10 @@ const {
   addUser,
   createNewUser,
   deleteUser,
+  getUserFromEmail,
+  getAllUsers,
+  updateUserById,
+  getUserById,
   setConnection,
   getConnection,
 } = require("./user-services");
@@ -56,8 +60,20 @@ test("Sign up user", async () => {
     image: "",
     listings: [],
     _id: newUser["_id"],
+    __v: 0,
   };
-  expect(newUser).toEqual(basicUser);
+  expect(newUser.name).toEqual(basicUser.name);
+  expect(newUser.email).toEqual(basicUser.email);
+  expect(newUser.image).toEqual(basicUser.image);
+  expect(newUser.listings).toEqual(basicUser.listings);
+  expect(newUser._id).toEqual(basicUser._id);
+});
+
+test("Add user bad", async () => {
+  let badUser = {
+    name: "Bad user",
+  };
+  expect(await addUser(badUser)).toEqual(null);
 });
 
 test("Delete User (requires addUser)", async () => {
@@ -68,6 +84,15 @@ test("Delete User (requires addUser)", async () => {
   expect(await deleteUser(newUser._id)).toBeTruthy();
   dbUser = await userModel.find({ email: dummyEmail });
   expect(dbUser.length).toEqual(0);
+});
+
+test("Delete User bad", async () => {
+  let dummyEmail = "chuck@calpoly.edu";
+  const newUser = await createNewUser(dummyEmail);
+  let dbUser = await userModel.find({ email: dummyEmail });
+  expect(dbUser.length).toEqual(1);
+
+  expect(await deleteUser("haha")).toBeFalsy();
 });
 
 test("Delete User with listing (requires addUser, addListing, deleteListing)", async () => {
@@ -94,4 +119,47 @@ test("Delete User with listing (requires addUser, addListing, deleteListing)", a
   expect(users.length).toEqual(0);
   listings = await listingModel.find();
   expect(listings.length).toEqual(0);
+});
+
+test("Get user from email", async () => {
+  let dummyEmail = "chuck@calpoly.edu";
+  const newUser = await createNewUser(dummyEmail);
+  let users = await userModel.find();
+  expect(users.length).toEqual(1);
+
+  let retUser = await getUserFromEmail(dummyEmail);
+  expect(retUser[0]._id).toEqual(newUser._id);
+});
+
+test("Get all users", async () => {
+  let dummyEmail1 = "chuck@calpoly.edu";
+  let dummyEmail2 = "charles@calpoly.edu";
+  await createNewUser(dummyEmail1);
+  await createNewUser(dummyEmail2);
+  let users = await userModel.find();
+  expect(users.length).toEqual(2);
+
+  let foundUsers = await getAllUsers();
+  expect(foundUsers.length).toEqual(2);
+});
+
+test("Update user by id", async () => {
+  let dummyEmail = "chuck@calpoly.edu";
+  const newUser = await createNewUser(dummyEmail);
+  let users = await userModel.find();
+  expect(users.length).toEqual(1);
+
+  newUser["name"] = "Chuck";
+  let updatedUser = await updateUserById(newUser, newUser._id);
+  expect(updatedUser["name"]).toEqual("Chuck");
+});
+
+test("Get user by id", async () => {
+  let dummyEmail = "chuck@calpoly.edu";
+  const newUser = await createNewUser(dummyEmail);
+  let users = await userModel.find();
+  expect(users.length).toEqual(1);
+
+  let findUser = await getUserById(newUser._id);
+  expect(findUser._id).toEqual(newUser._id);
 });
