@@ -22,11 +22,10 @@ View our full UI protoype <a href="https://www.figma.com/file/dIHkl7bid9EDPGmS3L
 
 <img src="frontend/public/class-diagram.png"/>
 
-<h2>Code Coverage</h2>
+<h2>Code Coverage 11/29/2021 11am</h2>
 
-<span>11/29/2021 11am\n<span>
-<span>PASS  ./listing.test.js\n<span>
-<span>PASS  ./user.test.js<span>
+PASS  ./listing.test.js
+PASS  ./user.test.js
 File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
 -------------------|---------|----------|---------|---------|-------------------
 All files          |   95.38 |       75 |     100 |   95.93 |                   
