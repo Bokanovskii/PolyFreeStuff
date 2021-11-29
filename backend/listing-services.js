@@ -1,9 +1,10 @@
 const userSchema = require("./models/user");
 const listingSchema = require("./models/listing");
-const { getConnection } = require("./user-services");
+const { getConnection, getUserById } = require("./user-services");
 
-async function filterAndOrder(listingModel, params) {
+async function getListingsFromQuery(params) {
   // params is of the form: {'start': 1, 'end': 10, 'orderBy': 'creation_date', 'categories': [], 'search': ''}
+  const listingModel = getConnection().model("Listing", listingSchema);
   var filteredListings;
   var listingSearchParams = {};
   if ("search" in params)
@@ -49,9 +50,37 @@ async function addListing(listing) {
     await userModel.findByIdAndUpdate(user["_id"], user);
     return true;
   } catch (error) {
-    console.log(error);
     return false;
   }
+}
+
+async function getListingById(id) {
+  const listingModel = getConnection().model("Listing", listingSchema);
+  return await listingModel.findById(id);
+}
+
+async function getSellerDataWithinListing(listingFromDb) {
+  listingFromDb["seller"] = await getUserById(listingFromDb["seller"]);
+  return listingFromDb;
+}
+
+async function getListingsForUser(userId, query) {
+  const userModel = getConnection().model("User", userSchema);
+  const listingModel = getConnection().model("Listing", listingSchema);
+  const user = await userModel.findById(userId);
+
+  const listings = [];
+  for (var i = 0; i < user["listings"].length; i++) {
+    let listing = await listingModel.findById(user["listings"][i]);
+    listing.seller =
+      "getUser" in query && query["getUser"] === "true" ? user : listing.seller;
+    listings.push(listing);
+  }
+  listings.sort((first, second) => {
+    if (second["creation_date"] < first["creation_date"]) return -1;
+    else return 1;
+  });
+  return listings;
 }
 
 async function deleteListing(id) {
@@ -68,11 +97,13 @@ async function deleteListing(id) {
     await userModel.findByIdAndUpdate(user["_id"], user);
     return true;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }
 
 exports.addListing = addListing;
 exports.deleteListing = deleteListing;
-exports.filterAndOrder = filterAndOrder;
+exports.getListingsFromQuery = getListingsFromQuery;
+exports.getListingById = getListingById;
+exports.getSellerDataWithinListing = getSellerDataWithinListing;
+exports.getListingsForUser = getListingsForUser;
