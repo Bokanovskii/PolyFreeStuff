@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { categories } from "../categories";
 import moment from "moment";
 
@@ -7,7 +7,10 @@ import moment from "moment";
  ** itemPath example:         '/my-listings/item/:itemID' (':itemID' is required in the string)
  ** full joined path example: '/my-listings/item/ae0dfoih87jkb6erh9' (:itemID is replaced with the actual id)
  */
+
+
 function GridItem(props) {
+
   return (
     <a
       href={props.itemPath.replace(":itemID", props.itemID)}
@@ -17,7 +20,7 @@ function GridItem(props) {
       <span className="listing-grid-item-date">
         {moment(props.itemDate).format("LL")}
       </span>
-      <img src={props.itemImageURL} alt="" />
+      <img src={"data:image/png;base64,"+(props.itemImageURL)} alt="" />
       <div className="listing-grid-item-cats">
         {props.itemCats.map((catValue, index) => {
           return (
