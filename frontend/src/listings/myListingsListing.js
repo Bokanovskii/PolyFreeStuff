@@ -1,9 +1,6 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState } from "react";
 import settings from "../settings";
-import { categories } from "../categories";
-import moment from "moment";
 import SingleListing from "./singleListing";
 
 function MyListingsListing(props) {

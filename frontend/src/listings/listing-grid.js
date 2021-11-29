@@ -10,7 +10,7 @@ import moment from "moment";
 
 function GridItem(props) {
   function checkDefaultImage(image){
-    if(image == "https://www.freeiconspng.com/uploads/no-image-icon-15.png"){
+    if(image === "https://www.freeiconspng.com/uploads/no-image-icon-15.png"){
       return image;
     }
     else{

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import settings from "../settings";
 import { categories } from "../categories";
@@ -10,7 +10,7 @@ function SingleListing(props) {
     let listing_id = location.pathname.split("/").at(-1);
 
     function checkDefaultImage(image){
-        if(image == "https://www.freeiconspng.com/uploads/no-image-icon-15.png"){
+        if(image === "https://www.freeiconspng.com/uploads/no-image-icon-15.png"){
             return image;
         }
         else{
@@ -32,9 +32,8 @@ function SingleListing(props) {
                     window.alert(error.toString());
                 });
         }
-        console.log(listing_id);
         getListing(listing_id);
-    }, [listing_id]);
+    }, [listing_id, props]);
 
     return (
         <div id="listing-page" className="usr-page">

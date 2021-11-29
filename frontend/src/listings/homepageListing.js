@@ -1,7 +1,4 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import settings from "../settings";
+import React, { useState } from "react";
 import SingleListing from "./singleListing";
 
 function HomePageListing() {
