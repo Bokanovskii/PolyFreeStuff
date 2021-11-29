@@ -13,6 +13,8 @@ jobs:
   build-backend:
 
     runs-on: ubuntu-latest
+    env:
+      CI: false
     defaults:
       run:
         working-directory: ./backend
