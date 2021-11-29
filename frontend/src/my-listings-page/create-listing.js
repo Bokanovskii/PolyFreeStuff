@@ -48,9 +48,7 @@ function CreateListing(props) {
       .then((response) => {
         if (response.status === 201) {
           props.setValidCreateListing(true);
-        } /*else {
-          setListingErr(true);
-        }*/
+        }
       })
       .catch((e) => alert(`${e}\nPlease fill out all required fields.`));
   }
