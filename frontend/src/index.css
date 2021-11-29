@@ -161,6 +161,16 @@ button:active,
   border-color: var(--black);
 }
 
+input[type="button"]:disabled,
+input[type="submit"]:disabled,
+button:disabled,
+.btn:disabled {
+  background-color: var(--gray);
+  color: var(--white);
+  border-color: var(--gray);
+  cursor: auto;
+}
+
 a:focus,
 button:focus,
 input:focus,
@@ -273,9 +283,47 @@ h1 {
   transition: background-color 0.1s;
 }
 
-#search-bar > input {
+#search-bar {
+  display: inline-grid;
+  align-items: center;
+  height: 100%;
   width: 100%;
   max-width: 60ch;
+  padding: 0 calc(var(--gap) * 2);
+  transition: background-color 0.1s;
+}
+
+#search-bar input,
+#search-drop {
+  width: 100%;
+  max-width: 60ch;
+}
+
+#search-area {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+#search-drop {
+  position: absolute;
+  display: none;
+  top: 100%;
+  width: 100%;
+  padding: calc(var(--gap) * 2);
+  background-color: var(--black);
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  transition: background-color 0.1s;
+}
+
+#search-area:focus-within #search-bar,
+#search-area:focus-within #search-drop {
+  background-color: var(--accent);
+}
+
+#search-area:focus-within #search-drop {
+  display: grid;
 }
 
 @media (max-width: 37.5rem) {
@@ -499,6 +547,26 @@ h1 {
   padding: var(--gap) calc(var(--gap) * 2);
   border: solid 1px var(--white);
   border-radius: var(--radius);
+}
+
+/* PAGINATION */
+
+#pagination {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-items: center;
+  gap: var(--gap);
+}
+
+#pagination button {
+  display: grid;
+  grid-template-columns: 0fr 0fr;
+  place-items: center;
+  gap: 1em;
+}
+
+#pagination button:first-child span {
+  transform: translateX(calc(var(--icon-size) / 4));
 }
 
 /* MY LISTING PAGE */
