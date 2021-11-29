@@ -11,6 +11,15 @@ import moment from "moment";
 
 function GridItem(props) {
 
+  function checkDefaultImage(image){
+    if(image == "https://www.freeiconspng.com/uploads/no-image-icon-15.png"){
+      return image;
+    }
+    else{
+      return "data:image/png;base64,"+(image);
+    }
+  }
+
   return (
     <a
       href={props.itemPath.replace(":itemID", props.itemID)}
@@ -20,7 +29,7 @@ function GridItem(props) {
       <span className="listing-grid-item-date">
         {moment(props.itemDate).format("LL")}
       </span>
-      <img src={"data:image/png;base64,"+(props.itemImageURL)} alt="" />
+      <img src={checkDefaultImage(props.itemImageURL)} alt="" />
       <div className="listing-grid-item-cats">
         {props.itemCats.map((catValue, index) => {
           return (
