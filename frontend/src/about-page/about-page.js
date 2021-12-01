@@ -12,7 +12,7 @@ function Body() {
       <p>
         PolyGold is a CSC 307 (Intro to Software Engineering) project that aims
         to reduce waste on campus at Cal Poly by making the sharing of goods
-        more possible and accessible to students. PolyGold is a webapp for Cal
+        possible and accessible to students. PolyGold is a webapp for Cal
         Poly students that allows users to list and claim free items and pick
         them up around campus. This allows students who are moving out or are no
         longer in need of certain items to get connected to students who do need
