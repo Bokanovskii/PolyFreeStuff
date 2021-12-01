@@ -25,6 +25,11 @@ export const categories = [
     text: "Appliances",
   },
   {
+    name: "food-cat",
+    value: "food",
+    text: "Food",
+  },
+  {
     name: "entertainment-cat",
     value: "entertainment",
     text: "Entertainment",
