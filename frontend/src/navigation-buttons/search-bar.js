@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { categories } from "../categories";
 import Catlist, { Catbox } from "../my-listings-page/category-checkboxes";
 

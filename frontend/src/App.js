@@ -9,7 +9,6 @@ import {
   Switch,
   Route,
   Redirect,
-  useHistory
 } from "react-router-dom";
 
 import Login from "./login-page/Login";
@@ -29,7 +28,6 @@ function App(props) {
   const [validCreateListing, setValidCreateListing] = useState(false);
   const [sucDelete, setSucDelete] = useState(false);
   const [searchValue, setSearchValue] = useState("")
-  let history = useHistory();
   const [filterByName, setFilterByName] = useState(false);
   const [selectedCats, setSelectedCats] = useState(
       new Array(categories.length).fill(false)
@@ -190,7 +188,6 @@ function App(props) {
         <Route exact path="/create-listing">
           {validCreateListing ? (
             () => {
-              console.log("Reading as true...");
               setValidCreateListing(false);
               return <Redirect to={"/my-listings"} />;
             }
