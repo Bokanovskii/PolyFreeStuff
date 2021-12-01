@@ -53,7 +53,7 @@ function Login(props) {
 
   return (
     <div id="login-page">
-      <form onSubmit={(e) => handleSubmit(e)}>
+      <form onSubmit={(e) => handleSubmit(e)} style={{ fontSize: 0 }}>
         <label>Email: </label>
         <input
           type={"text"}
