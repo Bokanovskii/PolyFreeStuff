@@ -6,11 +6,16 @@ function SearchBar(props) {
     <div id="search-area">
       <form style={{ height: "100%" }}>
         <div id="search-bar">
-          <input type="text" name="search" placeholder="Search..." />
+          <input
+            type="text"
+            name="search"
+            placeholder="Search..."
+            autoComplete="off"
+          />
         </div>
         <div id="search-drop" tabIndex="0">
           <label tabIndex="0">
-            Filters:&nbsp;
+            Sort By:&nbsp;
             <div id="cat-select">
               <Catbox
                 name={`name`}
