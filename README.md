@@ -40,4 +40,3 @@ Test Suites: 2 passed, 2 total
 Tests:       27 passed, 27 total
 Snapshots:   0 total
 Time:        2.532 s
-
