@@ -372,6 +372,10 @@ h1 {
   grid-template-columns: unset;
 }
 
+#about-page-link img {
+  border-radius: 0 !important;
+}
+
 @media (hover: hover) {
   .user-page-link:hover {
     background-color: var(--accent);
