@@ -2,9 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import settings from "../settings";
 import ListingGrid from "../listings/listing-grid";
+import {useHistory} from "react-router-dom";
+import {categories} from "../categories";
 
-function Homepage() {
+function Homepage(props) {
   const [listings, setListings] = useState([]);
+  const queryString = require("query-string");
+  let history = useHistory();
+
   const [page, setPage] = useState(0);
   const [numPages, setNumPages] = useState(null);
   const pageSize = 10;
@@ -18,14 +23,48 @@ function Homepage() {
   }
 
   useEffect(() => {
-    async function getAllListings() {
+    function getSelectedCats(){
+      const parsed = queryString.parse(history.location.search);
+      let cats = [];
+      let catValues=[];
+      for(const query in parsed){
+        if(query.includes("-cat")){
+          cats.push(query);
+        }
+      }
+      for(const cat in categories){
+        if(cats.includes(categories[cat].name)){
+          catValues.push(categories[cat].value);
+        }
+      }
+      return catValues;
+    }
+
+    function assembleCatReq(catValues){
+      let retStr = "";
+      if(catValues.length > 0){
+        for(const cat in catValues){
+         retStr += `&categories[]=${catValues[cat]}`;
+        }
+      }
+      return retStr;
+    }
+
+    function getOrderByName(){
+      const parsed = queryString.parse(history.location.search);
+      if(parsed.name){
+        return true;
+      }
+    }
+
+    async function getAllListings(searchValue, catValues, filterByName) {
       setNumPages(5);
       await axios
         .get(
           settings.URLBase.concat(
             `/listings?getUser=${true}&start=${page * pageSize}&end=${
               (page + 1) * pageSize
-            }`
+            }&${searchValue?("search="+searchValue):("")}${assembleCatReq(catValues)}${filterByName?("&orderBy=name"):("")}`
           )
         )
         .then((response) => {
@@ -38,8 +77,9 @@ function Homepage() {
           window.alert(error.toString());
         });
     }
-    getAllListings();
-  }, [numPages, page]);
+    const parsed = queryString.parse(history.location.search)
+    getAllListings(parsed.search, getSelectedCats(), getOrderByName());
+  }, [numPages, page, history.location.search, queryString]);
 
   return (
     <div>
@@ -49,6 +89,7 @@ function Homepage() {
           items={listings}
           itemPath={"/homepage/listing/:itemID"}
           max="20"
+          filterByName={props.filterByName}
         />
         <div id="pagination">
           <button onClick={() => prevPage()} disabled={page <= 0}>
