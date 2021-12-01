@@ -12,7 +12,7 @@ function Homepage(props) {
 
   const [page, setPage] = useState(0);
   const [numPages, setNumPages] = useState(null);
-  const pageSize = 10;
+  const pageSize = 9;
 
   function prevPage() {
     if (page > 0) setPage(page - 1);
@@ -23,6 +23,18 @@ function Homepage(props) {
   }
 
   useEffect(() => {
+    async function getNumPages(){
+      let resp = await axios.get(settings.URLBase.concat("/num_listings"));
+      let numListings = resp.data.numListings;
+      console.log("NumListings: "+numListings)
+      let numPages = Math.floor(numListings/pageSize);
+      console.log("NumPages: "+numPages);
+      if(numListings === pageSize){
+        numPages-=1;
+      }
+     setNumPages(numPages);
+    }
+
     function getSelectedCats(){
       const parsed = queryString.parse(history.location.search);
       let cats = [];
@@ -58,7 +70,7 @@ function Homepage(props) {
     }
 
     async function getAllListings(searchValue, catValues, filterByName) {
-      setNumPages(5);
+      getNumPages();
       await axios
         .get(
           settings.URLBase.concat(
@@ -79,7 +91,7 @@ function Homepage(props) {
     }
     const parsed = queryString.parse(history.location.search)
     getAllListings(parsed.search, getSelectedCats(), getOrderByName());
-  }, [numPages, page, history.location.search, queryString]);
+  }, [setNumPages, page, history.location.search, queryString]);
 
   return (
     <div>
