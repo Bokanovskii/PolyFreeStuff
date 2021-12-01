@@ -31,25 +31,8 @@ function SingleListing(props) {
           window.alert(error.toString());
         });
     }
-
-    async function getSeller() {
-      await axios
-        .get(settings.URLBase.concat("/users?id=").concat(props.listing.seller))
-        .then((response) => {
-          let status = response.status;
-          if (status === 201) {
-            props.setSeller(response.data.users_list[0]);
-            //seller = response.data.users_list[0];
-            //console.log(seller);
-          }
-        })
-        .catch((error) => {
-          window.alert(error.toString());
-        });
-    }
-    getSeller();
     getListing(listing_id);
-  }, [listing_id, props]);
+  }, [listing_id, props.setListing]);
 
   return (
     <div id="listing-page" className="usr-page">
@@ -66,7 +49,7 @@ function SingleListing(props) {
             <br />
             <b>Contact the Seller:</b>{" "}
             <i>
-              {props.seller === undefined ? "Not listed." : props.seller.email}
+              {props.listing.seller === undefined ? "Not listed." : props.listing.seller.email}
             </i>
           </div>
           {/* <div id="listing-page-seller">

@@ -5,7 +5,6 @@ import SingleListing from "./singleListing";
 
 function MyListingsListing(props) {
   const [listing, setListing] = useState({});
-  const [seller, setSeller] = useState({});
 
   async function deleteListing(listingId) {
     await axios
@@ -33,8 +32,6 @@ function MyListingsListing(props) {
       <SingleListing
         setListing={setListing}
         listing={listing}
-        setSeller={setSeller}
-        seller={seller}
       />
       <button
         id="delete"

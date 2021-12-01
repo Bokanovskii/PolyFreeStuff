@@ -3,7 +3,6 @@ import SingleListing from "./singleListing";
 
 function HomePageListing() {
   const [listing, setListing] = useState({});
-  const [seller, setSeller] = useState({});
 
   return (
     <div>
@@ -11,8 +10,6 @@ function HomePageListing() {
       <SingleListing
         setListing={setListing}
         listing={listing}
-        setSeller={setSeller}
-        seller={seller}
       />
     </div>
   );
