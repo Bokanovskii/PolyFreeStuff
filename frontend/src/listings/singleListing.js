@@ -9,6 +9,8 @@ function SingleListing(props) {
   const location = useLocation();
   let listing_id = location.pathname.split("/").at(-1);
 
+  let setListing = props.setListing;
+
   function checkDefaultImage(image) {
     if (image === "https://www.freeiconspng.com/uploads/no-image-icon-15.png") {
       return image;
@@ -24,7 +26,7 @@ function SingleListing(props) {
         .then((response) => {
           let status = response.status;
           if (status === 201) {
-            props.setListing(response.data.listingFromDb);
+            setListing(response.data.listingFromDb);
           }
         })
         .catch((error) => {
@@ -32,7 +34,7 @@ function SingleListing(props) {
         });
     }
     getListing(listing_id);
-  }, [listing_id, props.setListing]);
+  }, [listing_id, setListing]);
 
   return (
     <div id="listing-page" className="usr-page">
