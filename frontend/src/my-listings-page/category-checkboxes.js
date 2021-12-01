@@ -1,4 +1,4 @@
-function Catbox(props) {
+export function Catbox(props) {
   return (
     <label className="checkbox-container">
       <input
@@ -6,7 +6,7 @@ function Catbox(props) {
         name={props.name}
         value={props.value}
         id={`cat-${props.id}`}
-        checked={props.selectedCats[props.id]}
+        checked={props.eval ? props.eval() : props.selectedCats[props.id]}
         onChange={() => props.handleOnChange(props.id)}
       />
       <div className="checkbox">{props.text}</div>

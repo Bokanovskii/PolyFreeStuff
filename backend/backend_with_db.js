@@ -1,20 +1,31 @@
 const express = require("express");
 const cors = require("cors");
-const { createNewUser, deleteUser, getConnection } = require("./user-services");
+const {
+  createNewUser,
+  deleteUser,
+  getUserFromEmail,
+  getConnection,
+  getAllUsers,
+  getUserById,
+  updateUserById,
+} = require("./user-services");
 const {
   addListing,
   deleteListing,
-  filterAndOrder,
+  getListingsFromQuery,
+  getListingById,
+  getSellerDataWithinListing,
+  getListingsForUser,
 } = require("./listing-services");
 const process = require("process");
 
-const UserSchema = require("./models/user");
-const ListingSchema = require("./models/listing");
+const userSchema = require("./models/user");
+const listingSchema = require("./models/listing");
 
 const app = express();
 const port = 5000;
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 
 app.get("/", async (req, res) => {
   res.status(201).send("hello PolyGold user");
@@ -22,10 +33,9 @@ app.get("/", async (req, res) => {
 
 // user login endpoint
 app.get("/login/:email", async (req, res) => {
-  const userModel = getConnection().model("User", UserSchema);
   const email = req.params["email"];
-  const user = await userModel.find({ email: email });
-
+  const user = await getUserFromEmail(email);
+  // if no user is found length will be 0
   if (user.length === 0) {
     const newUser = await createNewUser(email);
     // internal server error
@@ -38,26 +48,24 @@ app.get("/login/:email", async (req, res) => {
 
 // Get all users
 app.get("/users", async (req, res) => {
-  const userModel = getConnection().model("User", UserSchema);
-  const users_from_db = await userModel.find();
+  const users_from_db = await getAllUsers();
   res.status(201).send({ users_list: users_from_db });
 });
 
 // user profile edit endpoint
 app.post("/replace_user", async (req, res) => {
-  const userModel = getConnection().model("User", UserSchema);
   const user = req.body;
-  if (await userModel.findByIdAndUpdate(user._id, user))
-    res.status(200).send(user);
+
+  if (await updateUserById(user, user._id)) res.status(200).send(user);
   else res.status(404).send(null);
 });
 
 // Get user by their database id
 app.get("/user/:id", async (req, res) => {
-  const userModel = getConnection().model("User", UserSchema);
   const id = req.params["id"];
-  const user_from_db = await userModel.findById(id);
-  res.status(201).send(user_from_db);
+  const userFromDb = await getUserById(id);
+  if (userFromDb.length === 0) res.status(404).send("User id not found");
+  else res.status(201).send(userFromDb);
 });
 
 // user profile delete endpoint
@@ -86,12 +94,12 @@ app.post("/listing", async (req, res) => {
 
 // Get a listing by its database id
 app.get("/listing/:id", async (req, res) => {
-  const listingModel = getConnection().model("Listing", ListingSchema);
   const id = req.params["id"];
-  const listingFromDb = await listingModel.findById(id);
+  const listingFromDb = await getListingById(id);
+  if (listingFromDb.length === 0)
+    res.status(404).send("Could not find listing.");
   // Always return the user as their JSON
-  const userModel = getConnection().model("User", UserSchema);
-  listingFromDb["seller"] = await userModel.findById(listingFromDb["seller"]);
+  await getSellerDataWithinListing(listingFromDb);
 
   res.status(201).send({ listingFromDb });
 });
@@ -99,43 +107,28 @@ app.get("/listing/:id", async (req, res) => {
 // Get all listings
 app.get("/listings", async (req, res) => {
   // if orderBy not provided, by default order by creation_date
-  //{'start': 1, 'end': 4, 'orderBy': 'name', 'categories': [''], 'search': '', 'getUser': 'true'}
-  const listingModel = getConnection().model("Listing", ListingSchema);
-  let listingsFromDb = await filterAndOrder(listingModel, req.query);
-
+  // {'start': 1, 'end': 4, 'orderBy': 'name', 'categories': [''], 'search': '', 'getUser': 'true'}
+  const listingsFromDb = await getListingsFromQuery(req.query);
   if ("getUser" in req.query && req.query["getUser"] === "true") {
-    const userModel = getConnection().model("User", UserSchema);
     for (var i = 0; i < listingsFromDb.length; i++) {
-      listingsFromDb[i]["seller"] = await userModel.findById(
-        listingsFromDb[i]["seller"]
-      );
+      listingsFromDb[i] = await getSellerDataWithinListing(listingsFromDb[i]);
     }
   }
+  // if no listings matched the query then listingsFromDb.length === 0
   res.status(201).send({ listing_list: listingsFromDb });
+});
+
+app.get("/num_listings", async (req, res) => {
+  const listingModel = getConnection().model("Listing", ListingSchema);
+  let allListings = await listingModel.find();
+  res.status(201).send({ numListings: allListings.length });
 });
 
 app.get("/listings_from_user/:id", async (req, res) => {
   const id = req.params["id"];
-  const userModel = getConnection().model("User", UserSchema);
-  const listingModel = getConnection().model("Listing", ListingSchema);
-  const user = await userModel.findById(id);
-  var listings = [];
-  for (var i = 0; i < user["listings"].length; i++) {
-    try {
-      let listing = await listingModel.findById(user["listings"][i]);
-      listing.seller =
-        "getUser" in req.query && req.query["getUser"] === "true"
-          ? user
-          : listing.seller;
-      listings.push(listing);
-    } catch (error) {
-      res.status(404).send(error);
-    }
-  }
-  listings.sort((first, second) => {
-    if (second["creation_date"] < first["creation_date"]) return -1;
-    else return 1;
-  });
+  // sorted by creation_date (newest first) and gets seller data within listing if query getUser === 'true'
+  const listings = await getListingsForUser(id, req.query);
+  if (listings === null) res.status(404).send(null);
   res.status(201).send({ listing_list: listings });
 });
 
@@ -148,8 +141,8 @@ app.delete("/listing/:id", async (req, res) => {
 
 // Delete all users and lisitings from database
 app.delete("/reset_db", async (req, res) => {
-  const userModel = getConnection().model("User", UserSchema);
-  const listingModel = getConnection().model("Listing", ListingSchema);
+  const userModel = getConnection().model("User", userSchema);
+  const listingModel = getConnection().model("Listing", listingSchema);
   await listingModel.deleteMany();
   await userModel.deleteMany();
   res.status(201).send();

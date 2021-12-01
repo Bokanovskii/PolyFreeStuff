@@ -21,11 +21,17 @@ import NavBar from "./navigation-buttons/navigation-buttons";
 import CreateListing from "./my-listings-page/create-listing";
 import MyListingsListing from "./listings/myListingsListing";
 import HomePageListing from "./listings/homepageListing";
+import {categories} from "./categories";
 
-function App() {
+function App(props) {
   const [userData, setUserData] = useState(null);
   const [validCreateListing, setValidCreateListing] = useState(false);
   const [sucDelete, setSucDelete] = useState(false);
+  const [searchValue, setSearchValue] = useState("")
+  const [filterByName, setFilterByName] = useState(false);
+  const [selectedCats, setSelectedCats] = useState(
+      new Array(categories.length).fill(false)
+  );
 
   async function checkLogin() {
     const LSUserData = JSON.parse(localStorage.getItem("userData"));
@@ -61,6 +67,7 @@ function App() {
   return (
     <Router>
       <Switch>
+
         <Route exact path="/login">
           {userData ? (
             <Redirect to="/" />
@@ -73,7 +80,15 @@ function App() {
             <Redirect to="/login" />
           ) : (
             <div>
-              <NavBar userData={userData} />
+              <NavBar
+                  userData={userData}
+                  setSearchValue={setSearchValue}
+                  searchValue={searchValue}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
+              />
               <MyListings userData={userData} />
             </div>
           )}
@@ -84,7 +99,15 @@ function App() {
             <Redirect to={"/my-listings"} />
           ) : (
             <div>
-              <NavBar userData={userData} />
+              <NavBar
+                  userData={userData}
+                  setSearchValue={setSearchValue}
+                  searchValue={searchValue}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
+              />
               <MyListingsListing setSucDelete={setSucDelete} />
             </div>
           )}
@@ -92,7 +115,14 @@ function App() {
 
         <Route exact path={"/homepage/listing/:id"}>
               <div>
-                <NavBar userData={userData}/>
+                <NavBar userData={userData}
+                        setSearchValue={setSearchValue}
+                        searchValue={searchValue}
+                        selectedCats={selectedCats}
+                        setSelectedCats={setSelectedCats}
+                        filterByName={filterByName}
+                        setFilterByName={setFilterByName}
+                />
                 <HomePageListing/>
               </div>
         </Route>
@@ -102,16 +132,29 @@ function App() {
               <Redirect to={"/homepage"}/>
           ) : (
               <div>
-                <NavBar userData={userData}/>
+                <NavBar userData={userData}
+                        setSearchValue={setSearchValue}
+                        searchValue={searchValue}
+                        selectedCats={selectedCats}
+                        setSelectedCats={setSelectedCats}
+                        filterByName={filterByName}
+                        setFilterByName={setFilterByName}
+                />
                 <HomePageListing/>
               </div>
           )
           }
-
         </Route>
 
         <Route exact path="/about-page">
-          <NavBar userData={userData} />
+          <NavBar userData={userData}
+                  setSearchValue={setSearchValue}
+                  searchValue={searchValue}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
+          />
           <AboutPage />
         </Route>
         <Route exact path="/account-info">
@@ -119,25 +162,45 @@ function App() {
             <Redirect to="/login" />
           ) : (
             <div>
-              <NavBar userData={userData} />
+              <NavBar userData={userData}
+                      setSearchValue={setSearchValue}
+                      searchValue={searchValue}
+                      selectedCats={selectedCats}
+                      setSelectedCats={setSelectedCats}
+                      filterByName={filterByName}
+                      setFilterByName={setFilterByName}
+              />
               <AccountInfo logout={logout} />
             </div>
           )}
         </Route>
         <Route exact path="/product-page">
-          <NavBar userData={userData} />
+          <NavBar userData={userData}
+                  setSearchValue={setSearchValue}
+                  searchValue={searchValue}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
+          />
           <ProductPage />
         </Route>
         <Route exact path="/create-listing">
           {validCreateListing ? (
             () => {
-              console.log("Reading as true...");
               setValidCreateListing(false);
               return <Redirect to={"/my-listings"} />;
             }
           ) : (
             <div>
-              <NavBar userData={userData} />
+              <NavBar userData={userData}
+                      setSearchValue={setSearchValue}
+                      searchValue={searchValue}
+                      selectedCats={selectedCats}
+                      setSelectedCats={setSelectedCats}
+                      filterByName={filterByName}
+                      setFilterByName={setFilterByName}
+              />
               <CreateListing
                 setValidCreateListing={setValidCreateListing}
                 userData={userData}
@@ -147,12 +210,28 @@ function App() {
         </Route>
         <Route exact path="/">
           {/* homepage */}
-          <NavBar userData={userData} />
-          <Homepage />
+          <NavBar userData={userData}
+                  setSearchValue={setSearchValue}
+                  searchValue={searchValue}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
+          />
+          <Homepage location={props.location}
+                    selectedCats={selectedCats}
+          />
         </Route>
         <Route path="/">
           {/* 404 page not found */}
-          <NavBar userData={userData} />
+          <NavBar userData={userData}
+                  setSearchValue={setSearchValue}
+                  searchValue={searchValue}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
+          />
           <PageNotFound />
         </Route>
       </Switch>
