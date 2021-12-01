@@ -1,4 +1,4 @@
 const settings = {
-  URLBase: "http://localhost:5000",
+  URLBase: "https://poly-gold.herokuapp.com",
 };
 export default settings;

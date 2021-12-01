@@ -119,9 +119,10 @@ app.get("/listings", async (req, res) => {
 });
 
 app.get("/num_listings", async (req, res) => {
-  const listingModel = getConnection().model("Listing", ListingSchema);
+  const listingModel = getConnection().model("Listing", listingSchema);
   let allListings = await listingModel.find();
-  res.status(201).send({ numListings: allListings.length });
+  if (allListings === null) res.status(201).send({ numListings: 0 });
+  else res.status(201).send({ numListings: allListings.length });
 });
 
 app.get("/listings_from_user/:id", async (req, res) => {

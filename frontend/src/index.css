@@ -93,6 +93,7 @@ input[type="checkbox"] {
 }
 
 input[type="text"],
+input[type="email"],
 textarea {
   font-family: var(--font);
   display: block;
@@ -189,6 +190,7 @@ input[type="submit"]:focus,
 }
 
 input[type="text"]:focus,
+input[type="email"]:focus,
 textarea:focus {
   outline: none;
   border-color: var(--blue);
@@ -246,14 +248,16 @@ h1 {
   place-items: center;
 }
 
-#login-email {
-  display: inline-block;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border-right: none;
+#login-email,
+.txt-btn-txt {
+  display: inline-block !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-right: none !important;
 }
 
-#login-btn {
+#login-btn,
+.txt-btn-btn {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -315,6 +319,10 @@ h1 {
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
   transition: background-color 0.1s;
+}
+
+#search-drop *:focus {
+  outline: none;
 }
 
 #search-area:focus-within #search-bar,
@@ -470,8 +478,6 @@ h1 {
 #item-submit-input {
   margin-top: calc(var(--gap) * 6);
 }
-
-/* ABOUT PAGE */
 
 /* LISTING GRID */
 
