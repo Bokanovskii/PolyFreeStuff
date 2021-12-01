@@ -23,6 +23,7 @@ View our full UI protoype <a href="https://www.figma.com/file/dIHkl7bid9EDPGmS3L
 <img src="frontend/public/class-diagram.png"/>
 
 <h2>Code Coverage 11/29/2021 11am</h2>
+Note: Uncovered lines in user-services.js are due to connection the local database and not the production cloud databse.
 
 PASS  ./listing.test.js
 PASS  ./user.test.js
