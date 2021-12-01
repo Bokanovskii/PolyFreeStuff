@@ -26,9 +26,7 @@ function Homepage(props) {
     async function getNumPages(){
       let resp = await axios.get(settings.URLBase.concat("/num_listings"));
       let numListings = resp.data.numListings;
-      console.log("NumListings: "+numListings)
       let numPages = Math.floor(numListings/pageSize);
-      console.log("NumPages: "+numPages);
       if(numListings === pageSize){
         numPages-=1;
       }

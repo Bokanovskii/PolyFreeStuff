@@ -72,13 +72,13 @@ function AccountInfo(props) {
   }
 
   async function updateName(e) {
-    e.preventDefault();
+    //e.preventDefault();
     const name = e.target.name.value;
     await updateNameCall(id, name);
   }
 
   async function updateEmail(e) {
-    e.preventDefault();
+    //e.preventDefault();
     const email = e.target.email.value;
     if(checkValidEmail(email)){
         await updateEmailCall(id, email);
