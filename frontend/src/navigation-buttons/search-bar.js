@@ -3,18 +3,9 @@ import { categories } from "../categories";
 import Catlist, { Catbox } from "../my-listings-page/category-checkboxes";
 
 function SearchBar(props) {
-    const [filterByName, setFilterByName] = useState(false);
-    const [selectedCats, setSelectedCats] = useState(
-        new Array(categories.length).fill(false)
-    );
-
-    async function handleSearch(e){
-        props.setSearchValue(e.target.search.value);
-    }
-
   return (
     <div id="search-area">
-        <form onSubmit={(e) => handleSearch(e)}>
+        <form>
         <div id="search-bar">
               <input type="text" name="search" placeholder="Search..."/>
       </div>
@@ -28,10 +19,10 @@ function SearchBar(props) {
               value={`name`}
               id={`filter-name`}
               eval={() => {
-                return filterByName;
+                return props.filterByName;
               }}
               handleOnChange={() => {
-                setFilterByName(!filterByName);
+                props.setFilterByName(!props.filterByName);
               }}
             />
             <Catbox
@@ -40,10 +31,10 @@ function SearchBar(props) {
               value={`date`}
               id={`filter-date`}
               eval={() => {
-                return !filterByName;
+                return !props.filterByName;
               }}
               handleOnChange={() => {
-                setFilterByName(!filterByName);
+                props.setFilterByName(!props.filterByName);
               }}
             />
           </div>
@@ -51,13 +42,13 @@ function SearchBar(props) {
         <label tabIndex="0">
           Categories:&nbsp;
           <Catlist
-            selectedCats={selectedCats}
-            setSelectedCats={setSelectedCats}
+            selectedCats={props.selectedCats}
+            setSelectedCats={props.setSelectedCats}
             categories={categories}
           />
         </label>
         <br />
-        <input type="submit" value="Search" />
+        <input type="submit" value="Search"/>
       </div>
         </form>
     </div>

@@ -22,6 +22,7 @@ import NavBar from "./navigation-buttons/navigation-buttons";
 import CreateListing from "./my-listings-page/create-listing";
 import MyListingsListing from "./listings/myListingsListing";
 import HomePageListing from "./listings/homepageListing";
+import {categories} from "./categories";
 
 function App(props) {
   const [userData, setUserData] = useState(null);
@@ -29,6 +30,10 @@ function App(props) {
   const [sucDelete, setSucDelete] = useState(false);
   const [searchValue, setSearchValue] = useState("")
   let history = useHistory();
+  const [filterByName, setFilterByName] = useState(false);
+  const [selectedCats, setSelectedCats] = useState(
+      new Array(categories.length).fill(false)
+  );
 
   async function checkLogin() {
     const LSUserData = JSON.parse(localStorage.getItem("userData"));
@@ -77,9 +82,14 @@ function App(props) {
             <Redirect to="/login" />
           ) : (
             <div>
-              <NavBar userData={userData}
-                      setSearchValue={setSearchValue}
-                      searchValue={searchValue}
+              <NavBar
+                  userData={userData}
+                  setSearchValue={setSearchValue}
+                  searchValue={searchValue}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
               />
               <MyListings userData={userData} />
             </div>
@@ -91,9 +101,14 @@ function App(props) {
             <Redirect to={"/my-listings"} />
           ) : (
             <div>
-              <NavBar userData={userData}
-                      setSearchValue={setSearchValue}
-                      searchValue={searchValue}
+              <NavBar
+                  userData={userData}
+                  setSearchValue={setSearchValue}
+                  searchValue={searchValue}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
               />
               <MyListingsListing setSucDelete={setSucDelete} />
             </div>
@@ -105,15 +120,42 @@ function App(props) {
                 <NavBar userData={userData}
                         setSearchValue={setSearchValue}
                         searchValue={searchValue}
+                        selectedCats={selectedCats}
+                        setSelectedCats={setSelectedCats}
+                        filterByName={filterByName}
+                        setFilterByName={setFilterByName}
                 />
                 <HomePageListing/>
               </div>
         </Route>
 
+        <Route exact path={"/homepage/listing/:id"}>
+          {sucDelete ? (
+              <Redirect to={"/homepage"}/>
+          ) : (
+              <div>
+                <NavBar userData={userData}
+                        setSearchValue={setSearchValue}
+                        searchValue={searchValue}
+                        selectedCats={selectedCats}
+                        setSelectedCats={setSelectedCats}
+                        filterByName={filterByName}
+                        setFilterByName={setFilterByName}
+                />
+                <HomePageListing/>
+              </div>
+          )
+          }
+        </Route>
+
         <Route exact path="/about-page">
           <NavBar userData={userData}
-                  setSearcValue={setSearchValue}
+                  setSearchValue={setSearchValue}
                   searchValue={searchValue}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
           />
           <AboutPage />
         </Route>
@@ -125,6 +167,10 @@ function App(props) {
               <NavBar userData={userData}
                       setSearchValue={setSearchValue}
                       searchValue={searchValue}
+                      selectedCats={selectedCats}
+                      setSelectedCats={setSelectedCats}
+                      filterByName={filterByName}
+                      setFilterByName={setFilterByName}
               />
               <AccountInfo logout={logout} />
             </div>
@@ -134,6 +180,10 @@ function App(props) {
           <NavBar userData={userData}
                   setSearchValue={setSearchValue}
                   searchValue={searchValue}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
           />
           <ProductPage />
         </Route>
@@ -149,6 +199,10 @@ function App(props) {
               <NavBar userData={userData}
                       setSearchValue={setSearchValue}
                       searchValue={searchValue}
+                      selectedCats={selectedCats}
+                      setSelectedCats={setSelectedCats}
+                      filterByName={filterByName}
+                      setFilterByName={setFilterByName}
               />
               <CreateListing
                 setValidCreateListing={setValidCreateListing}
@@ -162,14 +216,24 @@ function App(props) {
           <NavBar userData={userData}
                   setSearchValue={setSearchValue}
                   searchValue={searchValue}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
           />
-          <Homepage location={props.location}/>
+          <Homepage location={props.location}
+                    selectedCats={selectedCats}
+          />
         </Route>
         <Route path="/">
           {/* 404 page not found */}
           <NavBar userData={userData}
                   setSearchValue={setSearchValue}
                   searchValue={searchValue}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
           />
           <PageNotFound />
         </Route>

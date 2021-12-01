@@ -23,7 +23,6 @@ function CreateListing(props) {
       let data = reader.result;
       let splitBase64 = data.split(",");
       let base64 = splitBase64[1];
-      console.log(base64)
       setImageBase64(base64);
     }
   }
@@ -48,11 +47,8 @@ function CreateListing(props) {
       })
       .then((response) => {
         if (response.status === 201) {
-          console.log("Successfully Posted");
           props.setValidCreateListing(true);
-        } /*else {
-          setListingErr(true);
-        }*/
+        }
       })
       .catch((e) => alert(`${e}\nPlease fill out all required fields.`));
   }
