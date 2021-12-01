@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import { categories } from "../categories";
 import Catlist, { Catbox } from "../my-listings-page/category-checkboxes";
 
-function SearchBar() {
-  const [filterByName, setFilterByName] = useState(false);
-  const [selectedCats, setSelectedCats] = useState(
-    new Array(categories.length).fill(false)
-  );
+function SearchBar(props) {
+
   return (
     <div id="search-area">
       <div id="search-bar">
@@ -22,10 +19,10 @@ function SearchBar() {
               value={`name`}
               id={`filter-name`}
               eval={() => {
-                return filterByName;
+                return props.filterByName;
               }}
               handleOnChange={() => {
-                setFilterByName(!filterByName);
+                props.setFilterByName(!props.filterByName);
               }}
             />
             <Catbox
@@ -34,10 +31,10 @@ function SearchBar() {
               value={`date`}
               id={`filter-date`}
               eval={() => {
-                return !filterByName;
+                return !props.filterByName;
               }}
               handleOnChange={() => {
-                setFilterByName(!filterByName);
+                props.setFilterByName(!props.filterByName);
               }}
             />
           </div>
@@ -45,8 +42,8 @@ function SearchBar() {
         <label tabIndex="0">
           Categories:&nbsp;
           <Catlist
-            selectedCats={selectedCats}
-            setSelectedCats={setSelectedCats}
+            selectedCats={props.selectedCats}
+            setSelectedCats={props.setSelectedCats}
             categories={categories}
           />
         </label>

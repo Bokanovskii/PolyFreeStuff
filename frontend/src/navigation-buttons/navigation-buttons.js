@@ -38,7 +38,12 @@ function NavBar(props) {
         </span>
       </Link>
       {my_listings_link}
-      <SearchBar />
+      <SearchBar
+          selectedCats={props.selectedCats}
+          setSelectedCats={props.setSelectedCats}
+          filterByName={props.filterByName}
+          setFilterByName={props.setFilterByName}
+      />
       <Link to={user_nav_path}>
         <span id={user_page_id} className="user-page-link">
           {user_nav_icon}

@@ -21,11 +21,16 @@ import NavBar from "./navigation-buttons/navigation-buttons";
 import CreateListing from "./my-listings-page/create-listing";
 import MyListingsListing from "./listings/myListingsListing";
 import HomePageListing from "./listings/homepageListing";
+import {categories} from "./categories";
 
 function App() {
   const [userData, setUserData] = useState(null);
   const [validCreateListing, setValidCreateListing] = useState(false);
   const [sucDelete, setSucDelete] = useState(false);
+  const [filterByName, setFilterByName] = useState(false);
+  const [selectedCats, setSelectedCats] = useState(
+      new Array(categories.length).fill(false)
+  );
 
   async function checkLogin() {
     const LSUserData = JSON.parse(localStorage.getItem("userData"));
@@ -73,7 +78,13 @@ function App() {
             <Redirect to="/login" />
           ) : (
             <div>
-              <NavBar userData={userData} />
+              <NavBar
+                  userData={userData}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
+              />
               <MyListings userData={userData} />
             </div>
           )}
@@ -84,7 +95,13 @@ function App() {
             <Redirect to={"/my-listings"} />
           ) : (
             <div>
-              <NavBar userData={userData} />
+              <NavBar
+                  userData={userData}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
+              />
               <MyListingsListing setSucDelete={setSucDelete} />
             </div>
           )}
@@ -92,7 +109,12 @@ function App() {
 
         <Route exact path={"/homepage/listing/:id"}>
               <div>
-                <NavBar userData={userData}/>
+                <NavBar userData={userData}
+                        selectedCats={selectedCats}
+                        setSelectedCats={setSelectedCats}
+                        filterByName={filterByName}
+                        setFilterByName={setFilterByName}
+                />
                 <HomePageListing/>
               </div>
         </Route>
@@ -102,7 +124,12 @@ function App() {
               <Redirect to={"/homepage"}/>
           ) : (
               <div>
-                <NavBar userData={userData}/>
+                <NavBar userData={userData}
+                        selectedCats={selectedCats}
+                        setSelectedCats={setSelectedCats}
+                        filterByName={filterByName}
+                        setFilterByName={setFilterByName}
+                />
                 <HomePageListing/>
               </div>
           )
@@ -111,7 +138,12 @@ function App() {
         </Route>
 
         <Route exact path="/about-page">
-          <NavBar userData={userData} />
+          <NavBar userData={userData}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
+          />
           <AboutPage />
         </Route>
         <Route exact path="/account-info">
@@ -119,13 +151,23 @@ function App() {
             <Redirect to="/login" />
           ) : (
             <div>
-              <NavBar userData={userData} />
+              <NavBar userData={userData}
+                      selectedCats={selectedCats}
+                      setSelectedCats={setSelectedCats}
+                      filterByName={filterByName}
+                      setFilterByName={setFilterByName}
+              />
               <AccountInfo logout={logout} />
             </div>
           )}
         </Route>
         <Route exact path="/product-page">
-          <NavBar userData={userData} />
+          <NavBar userData={userData}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
+          />
           <ProductPage />
         </Route>
         <Route exact path="/create-listing">
@@ -137,7 +179,12 @@ function App() {
             }
           ) : (
             <div>
-              <NavBar userData={userData} />
+              <NavBar userData={userData}
+                      selectedCats={selectedCats}
+                      setSelectedCats={setSelectedCats}
+                      filterByName={filterByName}
+                      setFilterByName={setFilterByName}
+              />
               <CreateListing
                 setValidCreateListing={setValidCreateListing}
                 userData={userData}
@@ -147,12 +194,22 @@ function App() {
         </Route>
         <Route exact path="/">
           {/* homepage */}
-          <NavBar userData={userData} />
+          <NavBar userData={userData}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
+          />
           <Homepage />
         </Route>
         <Route path="/">
           {/* 404 page not found */}
-          <NavBar userData={userData} />
+          <NavBar userData={userData}
+                  selectedCats={selectedCats}
+                  setSelectedCats={setSelectedCats}
+                  filterByName={filterByName}
+                  setFilterByName={setFilterByName}
+          />
           <PageNotFound />
         </Route>
       </Switch>
