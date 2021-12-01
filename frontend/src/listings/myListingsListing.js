@@ -5,6 +5,7 @@ import SingleListing from "./singleListing";
 
 function MyListingsListing(props) {
   const [listing, setListing] = useState({});
+  const [seller, setSeller] = useState({});
 
   async function deleteListing(listingId) {
     await axios
@@ -28,20 +29,22 @@ function MyListingsListing(props) {
   }
 
   return (
-      <div>
-        <SingleListing
+    <div>
+      <SingleListing
         setListing={setListing}
         listing={listing}
-        />
-        <button
-            id="delete"
-            onClick={async (e) => {
-              await handleClick(e, listing._id);
-            }}
-        >
-          DELETE
-        </button>
-      </div>
+        setSeller={setSeller}
+        seller={seller}
+      />
+      <button
+        id="delete"
+        onClick={async (e) => {
+          await handleClick(e, listing._id);
+        }}
+      >
+        DELETE
+      </button>
+    </div>
   );
 }
 

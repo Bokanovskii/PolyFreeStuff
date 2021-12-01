@@ -3,14 +3,17 @@ import SingleListing from "./singleListing";
 
 function HomePageListing() {
   const [listing, setListing] = useState({});
+  const [seller, setSeller] = useState({});
 
   return (
     <div>
       <p>Listing</p>
-        <SingleListing
+      <SingleListing
         setListing={setListing}
         listing={listing}
-        />
+        setSeller={setSeller}
+        seller={seller}
+      />
     </div>
   );
 }
