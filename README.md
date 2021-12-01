@@ -10,11 +10,9 @@ View our full UI protoype <a href="https://www.figma.com/file/dIHkl7bid9EDPGmS3L
 
 <h2>Environment Setup</h2>
 
-```npm install```
+```cd backend```>```npm install```>```npm run dev```
 
-```cd backend```>```npm run dev```
-
-```cd frontend```>```npm start```
+```cd frontend```>```npm install```>```npm start```
 
 <h2>Diagrams</h2>
 
